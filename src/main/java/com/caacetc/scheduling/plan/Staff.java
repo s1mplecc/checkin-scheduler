@@ -1,7 +1,11 @@
 package com.caacetc.scheduling.plan;
 
 public class Staff {
-    private int id;
+    private final int id;
+
+    public Staff(int id) {
+        this.id = id;
+    }
 
     @Override
     public int hashCode() {
