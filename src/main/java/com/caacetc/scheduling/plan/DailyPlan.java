@@ -40,23 +40,40 @@ public class DailyPlan {
                 date, morning.number(), afternoon.number(), night.number(), totalNumber());
     }
 
-    private class Container {
+    public Container morning() {
+        return morning;
+    }
+
+    public Container afternoon() {
+        return afternoon;
+    }
+
+    public Container night() {
+        return night;
+    }
+
+    public class Container {
         private int number;
-        private Set<Staff> staffs;
+        private Set<Staff> assignedStaffs;
 
         public Container(int lowerBound, int upperBound) {
             Random random = new Random();
             this.number = lowerBound + random.nextInt(upperBound - lowerBound);
-            this.staffs = new HashSet<>();
+            this.assignedStaffs = new HashSet<>();
         }
 
         public int number() {
             return number;
         }
 
-        public void assign(LinkedList<Staff> staff) {
-//            staff.pollFirst()
-//            staffs.add(staff);
+        public void assign(LinkedList<Staff> staffs) {
+            while (assignedStaffs.size() < number) {
+                // todo: if morning, afternoon, night average
+                Staff first = staffs.pollFirst();
+                assignedStaffs.add(first);
+                first.addWorkPlan(date, "早");
+                staffs.addLast(first);
+            }
         }
     }
 }
