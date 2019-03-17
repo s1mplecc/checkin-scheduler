@@ -10,27 +10,27 @@ import static com.caacetc.scheduling.plan.Period.*;
 public class Staff implements Comparable<Staff> {
     private final int id;
     private final List<WorkPlan> workPlans;
-    private final Set<Period> flags;
+    private final Set<Period> periodFlags;
 
     public Staff(int id) {
         this.id = id;
         this.workPlans = new ArrayList<>();
-        this.flags = new HashSet<>();
+        this.periodFlags = new HashSet<>();
     }
 
     public boolean isBalancedAfterAssign(Period period) {
-        return !flags.contains(period);
+        return !periodFlags.contains(period);
     }
 
     public void addWorkPlan(int date, Period period) {
         if (!isBalancedAfterAssign(period)) {
-            throw new RuntimeException("安排早中晚不均衡");
+            throw new RuntimeException();
         }
 
         workPlans.add(new WorkPlan(date, period));
-        flags.add(period);
-        if (flags.size() == 3) {
-            flags.clear();
+        periodFlags.add(period);
+        if (periodFlags.size() == 3) {
+            periodFlags.clear();
         }
     }
 

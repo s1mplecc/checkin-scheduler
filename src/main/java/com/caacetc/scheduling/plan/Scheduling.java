@@ -21,20 +21,17 @@ public class Scheduling {
     public void schedule() {
         int expectStaffs = expectStaffs();
         staffs = initStaffList(expectStaffs);
-
         for (DailyPlan dailyPlan : dailyPlans) {
-            dailyPlan.morning().assign(staffs);
-            dailyPlan.afternoon().assign(staffs);
-            dailyPlan.night().assign(staffs);
+            dailyPlan.assign(staffs);
         }
     }
 
     public int expectStaffs() {
         List<Integer> needs = new ArrayList<>();
         for (DailyPlan dailyPlan : dailyPlans) {
-            needs.add(dailyPlan.morningNumber());
-            needs.add(dailyPlan.afternoonNumber());
-            needs.add(dailyPlan.nightNumber());
+            needs.add(dailyPlan.morning().number());
+            needs.add(dailyPlan.afternoon().number());
+            needs.add(dailyPlan.night().number());
         }
         int max = 0;
         int begin = 0;
