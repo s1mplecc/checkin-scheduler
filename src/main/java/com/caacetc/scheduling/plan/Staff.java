@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Staff {
+public class Staff implements Comparable<Staff> {
     private final int id;
     private final List<WorkPlan> workPlans;
     private final Set<String> flags;
@@ -39,13 +39,13 @@ public class Staff {
         for (WorkPlan workPlan : workPlans) {
             sb.append(workPlan).append(", ");
         }
-        sb.append("}.");
+        sb.deleteCharAt(sb.length() - 2).append("} | { ");
         int total = workPlans.size();
         long morning = workPlans.stream().filter(workPlan -> "早".equals(workPlan.period)).count();
         long afternoon = workPlans.stream().filter(workPlan -> "中".equals(workPlan.period)).count();
         long night = workPlans.stream().filter(workPlan -> "晚".equals(workPlan.period)).count();
-        sb.append("总计上班").append(total).append("天，其中早班").append(morning)
-                .append("，中班").append(afternoon).append("，晚班").append(night);
+        sb.append("总计(天): ").append(total).append(", 早班(天): ").append(morning)
+                .append(", 中班(天)").append(afternoon).append(", 晚班(天): ").append(night).append(" }");
         return sb.toString();
     }
 
@@ -57,6 +57,11 @@ public class Staff {
     @Override
     public boolean equals(Object obj) {
         return this.id == ((Staff) obj).id;
+    }
+
+    @Override
+    public int compareTo(Staff another) {
+        return this.id - another.id;
     }
 
     static class WorkPlan {

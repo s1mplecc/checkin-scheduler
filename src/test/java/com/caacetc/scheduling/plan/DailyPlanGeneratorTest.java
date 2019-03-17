@@ -11,5 +11,10 @@ public class DailyPlanGeneratorTest {
         List<DailyPlan> dailyPlans = generator.generate(31);
         Scheduling scheduling = new Scheduling(dailyPlans);
         System.out.println(generator);
+
+        scheduling.schedule();
+        for (Staff staff : scheduling.staffs()) {
+            System.out.println(staff);
+        }
     }
 }

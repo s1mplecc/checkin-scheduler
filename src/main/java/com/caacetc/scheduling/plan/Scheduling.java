@@ -3,6 +3,7 @@ package com.caacetc.scheduling.plan;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Scheduling {
     private static final int CYCLE = 3;
@@ -11,6 +12,10 @@ public class Scheduling {
 
     public Scheduling(List<DailyPlan> dailyPlans) {
         this.dailyPlans = dailyPlans;
+    }
+
+    public List<Staff> staffs() {
+        return staffs.stream().sorted().collect(Collectors.toList());
     }
 
     public void schedule() {

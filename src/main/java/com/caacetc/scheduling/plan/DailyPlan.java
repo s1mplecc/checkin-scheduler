@@ -13,9 +13,9 @@ public class DailyPlan {
 
     public DailyPlan(int date, int lowerBound, int upperBound) {
         this.date = date;
-        this.morning = new Container(lowerBound, upperBound);
-        this.afternoon = new Container(lowerBound, upperBound);
-        this.night = new Container(lowerBound, upperBound);
+        this.morning = new Container("早", upperBound, lowerBound);
+        this.afternoon = new Container("中", upperBound, lowerBound);
+        this.night = new Container("晚", upperBound, lowerBound);
     }
 
     public int totalNumber() {
@@ -53,10 +53,12 @@ public class DailyPlan {
     }
 
     public class Container {
+        private String period;
         private int number;
         private Set<Staff> assignedStaffs;
 
-        public Container(int lowerBound, int upperBound) {
+        public Container(String period, int upperBound, int lowerBound) {
+            this.period = period;
             Random random = new Random();
             this.number = lowerBound + random.nextInt(upperBound - lowerBound);
             this.assignedStaffs = new HashSet<>();
@@ -68,11 +70,15 @@ public class DailyPlan {
 
         public void assign(LinkedList<Staff> staffs) {
             while (assignedStaffs.size() < number) {
-                // todo: if morning, afternoon, night average
-                Staff first = staffs.pollFirst();
-                assignedStaffs.add(first);
-                first.addWorkPlan(date, "早");
-                staffs.addLast(first);
+                for (int i = 0; i < staffs.size(); i++) {
+                    if (staffs.get(i).isBalancedAfterAssign(period)) {
+                        Staff staff = staffs.remove(i);
+                        assignedStaffs.add(staff);
+                        staff.addWorkPlan(date, period);
+                        staffs.addLast(staff);
+                        break;
+                    }
+                }
             }
         }
     }
