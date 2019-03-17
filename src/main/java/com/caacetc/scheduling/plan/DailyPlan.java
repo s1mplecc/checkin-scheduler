@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 
+import static com.caacetc.scheduling.plan.Period.*;
+
 public class DailyPlan {
     private int date;
     private Container morning;
@@ -13,9 +15,9 @@ public class DailyPlan {
 
     public DailyPlan(int date, int lowerBound, int upperBound) {
         this.date = date;
-        this.morning = new Container("早", upperBound, lowerBound);
-        this.afternoon = new Container("中", upperBound, lowerBound);
-        this.night = new Container("晚", upperBound, lowerBound);
+        this.morning = new Container(MORNING, upperBound, lowerBound);
+        this.afternoon = new Container(AFTERNOON, upperBound, lowerBound);
+        this.night = new Container(NIGHT, upperBound, lowerBound);
     }
 
     public int totalNumber() {
@@ -53,11 +55,11 @@ public class DailyPlan {
     }
 
     public class Container {
-        private String period;
+        private Period period;
         private int number;
         private Set<Staff> assignedStaffs;
 
-        public Container(String period, int upperBound, int lowerBound) {
+        public Container(Period period, int upperBound, int lowerBound) {
             this.period = period;
             Random random = new Random();
             this.number = lowerBound + random.nextInt(upperBound - lowerBound);

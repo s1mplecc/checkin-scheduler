@@ -5,10 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.caacetc.scheduling.plan.Period.*;
+
 public class Staff implements Comparable<Staff> {
     private final int id;
     private final List<WorkPlan> workPlans;
-    private final Set<String> flags;
+    private final Set<Period> flags;
 
     public Staff(int id) {
         this.id = id;
@@ -16,11 +18,11 @@ public class Staff implements Comparable<Staff> {
         this.flags = new HashSet<>();
     }
 
-    public boolean isBalancedAfterAssign(String period) {
+    public boolean isBalancedAfterAssign(Period period) {
         return !flags.contains(period);
     }
 
-    public void addWorkPlan(int date, String period) {
+    public void addWorkPlan(int date, Period period) {
         if (!isBalancedAfterAssign(period)) {
             throw new RuntimeException("安排早中晚不均衡");
         }
@@ -41,9 +43,9 @@ public class Staff implements Comparable<Staff> {
         }
         sb.deleteCharAt(sb.length() - 2).append("} | { ");
         int total = workPlans.size();
-        long morning = workPlans.stream().filter(workPlan -> "早".equals(workPlan.period)).count();
-        long afternoon = workPlans.stream().filter(workPlan -> "中".equals(workPlan.period)).count();
-        long night = workPlans.stream().filter(workPlan -> "晚".equals(workPlan.period)).count();
+        long morning = workPlans.stream().filter(workPlan -> MORNING.equals(workPlan.period)).count();
+        long afternoon = workPlans.stream().filter(workPlan -> AFTERNOON.equals(workPlan.period)).count();
+        long night = workPlans.stream().filter(workPlan -> NIGHT.equals(workPlan.period)).count();
         sb.append("总计(天): ").append(total).append(", 早班(天): ").append(morning)
                 .append(", 中班(天)").append(afternoon).append(", 晚班(天): ").append(night).append(" }");
         return sb.toString();
@@ -66,9 +68,9 @@ public class Staff implements Comparable<Staff> {
 
     static class WorkPlan {
         private final int date;
-        private final String period;
+        private final Period period;
 
-        WorkPlan(int date, String period) {
+        WorkPlan(int date, Period period) {
             this.date = date;
             this.period = period;
         }
