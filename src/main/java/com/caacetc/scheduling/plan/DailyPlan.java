@@ -22,6 +22,18 @@ public class DailyPlan {
         return morning.number() + afternoon.number() + night.number();
     }
 
+    public int morningNumber() {
+        return morning.number();
+    }
+
+    public int afternoonNumber() {
+        return afternoon.number();
+    }
+
+    public int nightNumber() {
+        return night.number();
+    }
+
     @Override
     public String toString() {
         return String.format("第 %s 天:  早上 %s 人  中午 %s 人  晚上 %s 人 ; 总计 %s 人",
