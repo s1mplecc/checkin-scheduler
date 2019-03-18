@@ -19,12 +19,12 @@ public class Scheduler {
     }
 
     public void schedule() {
-        int expectStaffs = expectStaffs();
-        assignStaffs(expectStaffs);
+        int expectStaffsNum = expectStaffsNum();
+        assignStaffs(expectStaffsNum);
     }
 
-    private void assignStaffs(int expectStaffs) {
-        staffs = initStaffList(expectStaffs);
+    private void assignStaffs(int expectStaffsNum) {
+        staffs = initStaffList(expectStaffsNum);
         try {
             for (DailyPlan dailyPlan : dailyPlans) {
                 dailyPlan.assign(staffs);
@@ -33,11 +33,11 @@ public class Scheduler {
             for (DailyPlan dailyPlan : dailyPlans) {
                 dailyPlan.clear();
             }
-            assignStaffs(expectStaffs + 1);
+            assignStaffs(expectStaffsNum + 1);
         }
     }
 
-    public int expectStaffs() {
+    public int expectStaffsNum() {
         List<Integer> needs = new ArrayList<>();
         for (DailyPlan dailyPlan : dailyPlans) {
             needs.add(dailyPlan.morning().number());
