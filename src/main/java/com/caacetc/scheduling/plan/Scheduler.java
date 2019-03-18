@@ -8,10 +8,16 @@ import java.util.stream.Collectors;
 public class Scheduler {
     private static final int CYCLE = 2;
     private final List<DailyPlan> dailyPlans;
+    private final float morningRate;
+    private final float afternoonRate;
+    private final float nightRate;
     private LinkedList<Staff> staffs;
 
     public Scheduler(List<DailyPlan> dailyPlans) {
         this.dailyPlans = dailyPlans;
+        this.morningRate = morningRate();
+        this.afternoonRate = afternoonRate();
+        this.nightRate = nightRate();
     }
 
     public List<Staff> staffs() {
