@@ -11,7 +11,7 @@ public class Staff implements Comparable<Staff> {
     private final int id;
     private final List<WorkPlan> workPlans;
     private final Set<Period> periodFlags;
-    private int lastDate;
+    private int lastDate = -2;
 
     public Staff(int id) {
         this.id = id;
@@ -32,11 +32,12 @@ public class Staff implements Comparable<Staff> {
             throw new RuntimeException();
         }
 
-        workPlans.add(new WorkPlan(date, period));
+        lastDate = date;
         periodFlags.add(period);
         if (periodFlags.size() == 3) {
             periodFlags.clear();
         }
+        workPlans.add(new WorkPlan(date, period));
     }
 
     @Override

@@ -42,10 +42,16 @@ public class DailyPlan {
         return night;
     }
 
-    public void assign(LinkedList<Staff> staffs) {
+    public void assign(LinkedList<Staff> staffs) throws StaffNotEnoughException {
         morning().assign(staffs);
         afternoon().assign(staffs);
         night().assign(staffs);
+    }
+
+    public void clear() {
+        morning.clear();
+        afternoon.clear();
+        night.clear();
     }
 
     public class Container {
@@ -64,7 +70,7 @@ public class DailyPlan {
             return number;
         }
 
-        public void assign(LinkedList<Staff> staffs) {
+        public void assign(LinkedList<Staff> staffs) throws StaffNotEnoughException {
             while (assignedStaffs.size() < number) {
                 boolean have = false;
                 for (int i = 0; i < staffs.size(); i++) {
@@ -78,9 +84,13 @@ public class DailyPlan {
                     }
                 }
                 if (!have) {
-                    System.out.println("-----");
+                    throw new StaffNotEnoughException();
                 }
             }
+        }
+
+        public void clear() {
+            assignedStaffs.clear();
         }
     }
 }

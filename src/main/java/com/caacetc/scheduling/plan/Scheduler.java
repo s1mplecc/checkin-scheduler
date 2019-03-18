@@ -20,9 +20,20 @@ public class Scheduler {
 
     public void schedule() {
         int expectStaffs = expectStaffs();
+        assignStaffs(expectStaffs);
+    }
+
+    private void assignStaffs(int expectStaffs) {
         staffs = initStaffList(expectStaffs);
-        for (DailyPlan dailyPlan : dailyPlans) {
-            dailyPlan.assign(staffs);
+        try {
+            for (DailyPlan dailyPlan : dailyPlans) {
+                dailyPlan.assign(staffs);
+            }
+        } catch (StaffNotEnoughException e) {
+            for (DailyPlan dailyPlan : dailyPlans) {
+                dailyPlan.clear();
+            }
+            assignStaffs(expectStaffs + 1);
         }
     }
 
@@ -34,7 +45,6 @@ public class Scheduler {
             needs.add(dailyPlan.night().number());
         }
         int max = 0;
-        int begin = 0;
         for (int i = 0; i <= needs.size() - 3 * CYCLE; i++) {
             int temp = 0;
             for (int j = i; j < i + 3 * CYCLE; j++) {
@@ -42,16 +52,9 @@ public class Scheduler {
             }
             if (temp > max) {
                 max = temp;
-                begin = i;
             }
         }
-        System.out.println(String.format("至少需要%d名员工，忙碌峰值从：%s到%s", max, dateFormatBy(begin), dateFormatBy(begin + CYCLE * 3 - 1)));
         return max;
-    }
-
-    private String dateFormatBy(int index) {
-        return String.format("第%d天%s",
-                1 + index / 3, index % 3 == 0 ? "早上" : index % 3 == 1 ? "中午" : "晚上");
     }
 
     private LinkedList<Staff> initStaffList(int totalStaffNum) {
