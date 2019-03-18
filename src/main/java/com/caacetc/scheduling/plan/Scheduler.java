@@ -37,6 +37,24 @@ public class Scheduler {
         }
     }
 
+    public float morningRate() {
+        float total = dailyPlans.stream().mapToInt(DailyPlan::totalNumber).sum();
+        float morning = dailyPlans.stream().mapToInt(dailyPlan -> dailyPlan.morning().number()).sum();
+        return morning / total;
+    }
+
+    public float afternoonRate() {
+        float total = dailyPlans.stream().mapToInt(DailyPlan::totalNumber).sum();
+        float afternoon = dailyPlans.stream().mapToInt(dailyPlan -> dailyPlan.afternoon().number()).sum();
+        return afternoon / total;
+    }
+
+    public float nightRate() {
+        float total = dailyPlans.stream().mapToInt(DailyPlan::totalNumber).sum();
+        float night = dailyPlans.stream().mapToInt(dailyPlan -> dailyPlan.night().number()).sum();
+        return night / total;
+    }
+
     public int expectStaffsNum() {
         List<Integer> needs = new ArrayList<>();
         for (DailyPlan dailyPlan : dailyPlans) {

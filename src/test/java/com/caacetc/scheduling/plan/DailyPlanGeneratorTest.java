@@ -7,7 +7,7 @@ import java.util.List;
 public class DailyPlanGeneratorTest {
     @Test
     public void should_schedule_staff_correctly() {
-        DailyPlansGenerator generator = new DailyPlansGenerator(2, 10);
+        DailyPlansGenerator generator = new DailyPlansGenerator(1, 10);
         List<DailyPlan> dailyPlans = generator.generate(31);
         System.out.println(generator);
 
@@ -16,5 +16,8 @@ public class DailyPlanGeneratorTest {
         for (Staff staff : scheduler.staffs()) {
             System.out.println(staff);
         }
+        System.out.println(scheduler.morningRate());
+        System.out.println(scheduler.afternoonRate());
+        System.out.println(scheduler.nightRate());
     }
 }
