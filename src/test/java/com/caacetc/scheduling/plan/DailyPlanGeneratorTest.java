@@ -8,7 +8,7 @@ public class DailyPlanGeneratorTest {
     @Test
     public void should_schedule_staff_correctly() {
         DailyPlansGenerator generator = new DailyPlansGenerator(1, 10);
-        List<DailyPlan> dailyPlans = generator.generate(31);
+        List<DailyPlan> dailyPlans = generator.generate(1000);
         System.out.println(generator);
 
         Scheduler scheduler = new Scheduler(dailyPlans);

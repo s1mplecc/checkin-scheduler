@@ -61,8 +61,7 @@ public class DailyPlan {
 
         public Container(Period period, int upperBound, int lowerBound) {
             this.period = period;
-            Random random = new Random();
-            this.number = lowerBound + random.nextInt(upperBound - lowerBound);
+            this.number = lowerBound + new Random().nextInt(upperBound - lowerBound);
             this.assignedStaffs = new HashSet<>();
         }
 
@@ -72,34 +71,38 @@ public class DailyPlan {
 
         public void assign(LinkedList<Staff> staffs, float morningRate, float afternoonRate, float nightRate) throws StaffNotEnoughException {
             while (assignedStaffs.size() < number) {
-                boolean have = false;
+                boolean isMatchedStaffExist = false;
+
                 for (int i = 0; i < staffs.size(); i++) {
                     if (staffs.get(i).nextIsExpectedPeriod(period, morningRate, afternoonRate, nightRate)
                             && staffs.get(i).isHaveRest(date)) {
-                        Staff staff = staffs.remove(i);
-                        assignedStaffs.add(staff);
-                        staff.addWorkPlan(date, period);
-                        staffs.addLast(staff);
-                        have = true;
+                        assignByIndex(staffs, i);
+                        isMatchedStaffExist = true;
                         break;
                     }
                 }
-                if (!have) {
+
+                if (!isMatchedStaffExist) {
                     for (int i = 0; i < staffs.size(); i++) {
                         if (staffs.get(i).isHaveRest(date)) {
-                            Staff staff = staffs.remove(i);
-                            assignedStaffs.add(staff);
-                            staff.addWorkPlan(date, period);
-                            staffs.addLast(staff);
-                            have = true;
+                            assignByIndex(staffs, i);
+                            isMatchedStaffExist = true;
                             break;
                         }
                     }
                 }
-                if (!have) {
+
+                if (!isMatchedStaffExist) {
                     throw new StaffNotEnoughException();
                 }
             }
+        }
+
+        private void assignByIndex(LinkedList<Staff> staffs, int index) {
+            Staff staff = staffs.remove(index);
+            assignedStaffs.add(staff);
+            staff.addWorkPlan(date, period);
+            staffs.addLast(staff);
         }
 
         public void clear() {
