@@ -15,8 +15,8 @@ public class DailyPlan {
 
     public DailyPlan(int date, int lowerBound, int upperBound) {
         this.date = date;
-        this.morning = new Container(MORNING, upperBound, lowerBound);
-        this.afternoon = new Container(AFTERNOON, upperBound, lowerBound);
+        this.morning = new Container(MORNING, upperBound * 2, lowerBound * 2);
+        this.afternoon = new Container(AFTERNOON, upperBound * 3, lowerBound * 3);
         this.night = new Container(NIGHT, upperBound, lowerBound);
     }
 
