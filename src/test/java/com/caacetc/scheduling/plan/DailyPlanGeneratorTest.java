@@ -21,5 +21,8 @@ public class DailyPlanGeneratorTest {
         for (Staff staff : scheduler.staffs()) {
             System.out.println(staff);
         }
+
+        System.out.println();
+        scheduler.alter(0, 1);
     }
 }

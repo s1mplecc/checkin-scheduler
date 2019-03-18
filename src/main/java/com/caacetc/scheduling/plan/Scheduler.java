@@ -37,38 +37,42 @@ public class Scheduler {
                 .period();
 
         Set<Staff> possibleAlterStaffs;
-        // todo: date + 1
-        switch (alterPeriod) {
-            case MORNING:
-                possibleAlterStaffs = dailyPlans.get(date + 1).morning().assignedStaffs();
-                break;
-            case AFTERNOON:
-                possibleAlterStaffs = dailyPlans.get(date + 1).afternoon().assignedStaffs();
-                break;
-            case NIGHT:
-                possibleAlterStaffs = dailyPlans.get(date + 1).night().assignedStaffs();
-                break;
-            default:
-                possibleAlterStaffs = new HashSet<>();
-        }
         boolean isAlter = false;
-        while (!isAlter) {
+        for (int possibleAlterDate = 0; possibleAlterDate < 31; possibleAlterDate++) {
+            if (date == possibleAlterDate) {
+                continue;
+            }
+            if (isAlter) {
+                break;
+            }
+
+            switch (alterPeriod) {
+                case MORNING:
+                    possibleAlterStaffs = dailyPlans.get(possibleAlterDate).morning().assignedStaffs();
+                    break;
+                case AFTERNOON:
+                    possibleAlterStaffs = dailyPlans.get(possibleAlterDate).afternoon().assignedStaffs();
+                    break;
+                case NIGHT:
+                    possibleAlterStaffs = dailyPlans.get(possibleAlterDate).night().assignedStaffs();
+                    break;
+                default:
+                    possibleAlterStaffs = new HashSet<>();
+            }
             for (Staff possibleAlterStaff : possibleAlterStaffs) {
-                // todo: date + 1
-                if (!breakRestRule(date, possibleAlterStaff) && !breakRestRule(date + 1, staff)) {
-                    System.out.println("Date_" + (date + 1) + " " + staffId + " ---> " + possibleAlterStaff.id());
+                if (meetRestRule(date, possibleAlterStaff) && meetRestRule(possibleAlterDate, staff)) {
+                    System.out.println("Date_" + (possibleAlterDate + 1) + " " + staffId + " ---> " + possibleAlterStaff.id());
                     isAlter = true;
                     break;
                 }
             }
         }
-
     }
 
-    private boolean breakRestRule(int date, Staff possibleAlterStaff) {
-        return possibleAlterStaff.workPlans().stream()
+    private boolean meetRestRule(int date, Staff staff) {
+        return staff.workPlans().stream()
                 .mapToInt(Staff.WorkPlan::date)
-                .anyMatch(date0 -> Math.abs(date - date0) <= 1);
+                .noneMatch(date0 -> Math.abs(date - date0) <= 1);
     }
 
     private void assignStaffs(int expectStaffsNum) {
