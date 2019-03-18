@@ -13,11 +13,13 @@ public class DailyPlanGeneratorTest {
 
         Scheduler scheduler = new Scheduler(dailyPlans);
         scheduler.schedule();
+
+        System.out.println("早班总占比: " + scheduler.morningRate());
+        System.out.println("中班总占比: " + scheduler.afternoonRate());
+        System.out.println("晚班总占比: " + scheduler.nightRate() + "\n");
+
         for (Staff staff : scheduler.staffs()) {
             System.out.println(staff);
         }
-        System.out.println(scheduler.morningRate());
-        System.out.println(scheduler.afternoonRate());
-        System.out.println(scheduler.nightRate());
     }
 }

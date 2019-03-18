@@ -85,6 +85,18 @@ public class DailyPlan {
                     }
                 }
                 if (!have) {
+                    for (int i = 0; i < staffs.size(); i++) {
+                        if (staffs.get(i).isHaveRest(date)) {
+                            Staff staff = staffs.remove(i);
+                            assignedStaffs.add(staff);
+                            staff.addWorkPlan(date, period);
+                            staffs.addLast(staff);
+                            have = true;
+                            break;
+                        }
+                    }
+                }
+                if (!have) {
                     throw new StaffNotEnoughException();
                 }
             }

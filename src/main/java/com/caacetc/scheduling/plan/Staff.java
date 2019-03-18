@@ -1,22 +1,18 @@
 package com.caacetc.scheduling.plan;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static com.caacetc.scheduling.plan.Period.*;
 
 public class Staff implements Comparable<Staff> {
     private final int id;
     private final List<WorkPlan> workPlans;
-    private final Set<Period> periodFlags;
     private int lastDate = -2;
 
     public Staff(int id) {
         this.id = id;
         this.workPlans = new ArrayList<>();
-        this.periodFlags = new HashSet<>();
     }
 
     public boolean nextIsExpectedPeriod(Period period, float morningRate, float afternoonRate, float nightRate) {
@@ -47,11 +43,25 @@ public class Staff implements Comparable<Staff> {
 
     public void addWorkPlan(int date, Period period) {
         lastDate = date;
-        periodFlags.add(period);
-        if (periodFlags.size() == 3) {
-            periodFlags.clear();
-        }
         workPlans.add(new WorkPlan(date, period));
+    }
+
+    public float morningRate() {
+        float total = workPlans.size();
+        float morning = workPlans.stream().filter(workPlan -> MORNING.equals(workPlan.period())).count();
+        return morning / total;
+    }
+
+    public float afternoonRate() {
+        float total = workPlans.size();
+        float afternoon = workPlans.stream().filter(workPlan -> AFTERNOON.equals(workPlan.period())).count();
+        return afternoon / total;
+    }
+
+    public float nightRate() {
+        float total = workPlans.size();
+        float night = workPlans.stream().filter(workPlan -> NIGHT.equals(workPlan.period())).count();
+        return night / total;
     }
 
     @Override
@@ -67,7 +77,10 @@ public class Staff implements Comparable<Staff> {
         long afternoon = workPlans.stream().filter(workPlan -> AFTERNOON.equals(workPlan.period)).count();
         long night = workPlans.stream().filter(workPlan -> NIGHT.equals(workPlan.period)).count();
         sb.append("总计(天): ").append(total).append(", 早班(天): ").append(morning)
-                .append(", 中班(天)").append(afternoon).append(", 晚班(天): ").append(night).append(" }");
+                .append(", 中班(天)").append(afternoon).append(", 晚班(天): ").append(night).append(" }")
+                .append(" | { 早班占比: ").append(morningRate())
+                .append(", 中班占比: ").append(afternoonRate())
+                .append(", 晚班占比: ").append(nightRate()).append(" }");
         return sb.toString();
     }
 
