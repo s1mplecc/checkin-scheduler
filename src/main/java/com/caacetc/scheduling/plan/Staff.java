@@ -8,7 +8,7 @@ import static com.caacetc.scheduling.plan.Period.*;
 public class Staff implements Comparable<Staff> {
     private final int id;
     private final List<WorkPlan> workPlans;
-    private int lastDate = -2;
+    private int lastDate = -999;
 
     public Staff(int id) {
         this.id = id;
