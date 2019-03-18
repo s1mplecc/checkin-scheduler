@@ -65,6 +65,10 @@ public class DailyPlan {
             this.assignedStaffs = new HashSet<>();
         }
 
+        public Set<Staff> assignedStaffs() {
+            return assignedStaffs;
+        }
+
         public int number() {
             return number;
         }

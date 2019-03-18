@@ -1,8 +1,6 @@
 package com.caacetc.scheduling.plan;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Scheduler {
@@ -27,6 +25,50 @@ public class Scheduler {
     public void schedule() {
         int expectStaffsNum = expectStaffsNum();
         assignStaffs(expectStaffsNum);
+    }
+
+    public void alter(int staffId, int date) {
+        Staff staff = staffs().get(staffId);
+
+        Period alterPeriod = staff.workPlans().stream()
+                .filter(workPlan -> workPlan.date() == date)
+                .findFirst()
+                .orElseThrow(RuntimeException::new)
+                .period();
+
+        Set<Staff> possibleAlterStaffs;
+        // todo: date + 1
+        switch (alterPeriod) {
+            case MORNING:
+                possibleAlterStaffs = dailyPlans.get(date + 1).morning().assignedStaffs();
+                break;
+            case AFTERNOON:
+                possibleAlterStaffs = dailyPlans.get(date + 1).afternoon().assignedStaffs();
+                break;
+            case NIGHT:
+                possibleAlterStaffs = dailyPlans.get(date + 1).night().assignedStaffs();
+                break;
+            default:
+                possibleAlterStaffs = new HashSet<>();
+        }
+        boolean isAlter = false;
+        while (!isAlter) {
+            for (Staff possibleAlterStaff : possibleAlterStaffs) {
+                // todo: date + 1
+                if (!breakRestRule(date, possibleAlterStaff) && !breakRestRule(date + 1, staff)) {
+                    System.out.println("Date_" + (date + 1) + " " + staffId + " ---> " + possibleAlterStaff.id());
+                    isAlter = true;
+                    break;
+                }
+            }
+        }
+
+    }
+
+    private boolean breakRestRule(int date, Staff possibleAlterStaff) {
+        return possibleAlterStaff.workPlans().stream()
+                .mapToInt(Staff.WorkPlan::date)
+                .anyMatch(date0 -> Math.abs(date - date0) <= 1);
     }
 
     private void assignStaffs(int expectStaffsNum) {

@@ -15,6 +15,10 @@ public class Staff implements Comparable<Staff> {
         this.workPlans = new ArrayList<>();
     }
 
+    public List<WorkPlan> workPlans() {
+        return workPlans;
+    }
+
     public boolean nextIsExpectedPeriod(Period period, float morningRate, float afternoonRate, float nightRate) {
         if (workPlans.size() == 0) {
             return true;
@@ -99,6 +103,10 @@ public class Staff implements Comparable<Staff> {
         return this.id - another.id;
     }
 
+    public int id() {
+        return id;
+    }
+
     static class WorkPlan {
         private final int date;
         private final Period period;
@@ -110,6 +118,10 @@ public class Staff implements Comparable<Staff> {
 
         public Period period() {
             return period;
+        }
+
+        public int date() {
+            return date;
         }
 
         @Override
