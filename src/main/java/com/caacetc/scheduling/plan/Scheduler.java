@@ -33,7 +33,7 @@ public class Scheduler {
         staffs = initStaffList(expectStaffsNum);
         try {
             for (DailyPlan dailyPlan : dailyPlans) {
-                dailyPlan.assign(staffs);
+                dailyPlan.assign(staffs, morningRate, afternoonRate, nightRate);
             }
         } catch (StaffNotEnoughException e) {
             for (DailyPlan dailyPlan : dailyPlans) {

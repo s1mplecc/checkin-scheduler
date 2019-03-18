@@ -19,19 +19,33 @@ public class Staff implements Comparable<Staff> {
         this.periodFlags = new HashSet<>();
     }
 
+    public boolean nextIsExpectedPeriod(Period period, float morningRate, float afternoonRate, float nightRate) {
+        if (workPlans.size() == 0) {
+            return true;
+        } else {
+            return period.equals(expectNext(morningRate, afternoonRate, nightRate));
+        }
+    }
+
+    public Period expectNext(float morningRate, float afternoonRate, float nightRate) {
+        float total = workPlans.size();
+        float morning = workPlans.stream().filter(workPlan -> MORNING.equals(workPlan.period())).count();
+        float afternoon = workPlans.stream().filter(workPlan -> AFTERNOON.equals(workPlan.period())).count();
+        float night = workPlans.stream().filter(workPlan -> NIGHT.equals(workPlan.period())).count();
+
+        float m0 = Math.abs((morning + 1) / (total + 1) - morningRate);
+        float a0 = Math.abs((afternoon + 1) / (total + 1) - afternoonRate);
+        float n0 = Math.abs((night + 1) / (total + 1) - nightRate);
+
+        float min = Math.min(Math.min(m0, a0), n0);
+        return min == m0 ? MORNING : min == a0 ? AFTERNOON : NIGHT;
+    }
+
     public boolean isHaveRest(int currentDate) {
         return currentDate - lastDate > 1;
     }
 
-    public boolean isBalancedAfterAssign(Period period) {
-        return !periodFlags.contains(period);
-    }
-
     public void addWorkPlan(int date, Period period) {
-        if (!isBalancedAfterAssign(period)) {
-            throw new RuntimeException();
-        }
-
         lastDate = date;
         periodFlags.add(period);
         if (periodFlags.size() == 3) {
@@ -79,6 +93,10 @@ public class Staff implements Comparable<Staff> {
         WorkPlan(int date, Period period) {
             this.date = date;
             this.period = period;
+        }
+
+        public Period period() {
+            return period;
         }
 
         @Override

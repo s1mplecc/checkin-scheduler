@@ -42,10 +42,10 @@ public class DailyPlan {
         return night;
     }
 
-    public void assign(LinkedList<Staff> staffs) throws StaffNotEnoughException {
-        morning().assign(staffs);
-        afternoon().assign(staffs);
-        night().assign(staffs);
+    public void assign(LinkedList<Staff> staffs, float morningRate, float afternoonRate, float nightRate) throws StaffNotEnoughException {
+        morning().assign(staffs, morningRate, afternoonRate, nightRate);
+        afternoon().assign(staffs, morningRate, afternoonRate, nightRate);
+        night().assign(staffs, morningRate, afternoonRate, nightRate);
     }
 
     public void clear() {
@@ -70,11 +70,12 @@ public class DailyPlan {
             return number;
         }
 
-        public void assign(LinkedList<Staff> staffs) throws StaffNotEnoughException {
+        public void assign(LinkedList<Staff> staffs, float morningRate, float afternoonRate, float nightRate) throws StaffNotEnoughException {
             while (assignedStaffs.size() < number) {
                 boolean have = false;
                 for (int i = 0; i < staffs.size(); i++) {
-                    if (staffs.get(i).isBalancedAfterAssign(period) && staffs.get(i).isHaveRest(date)) {
+                    if (staffs.get(i).nextIsExpectedPeriod(period, morningRate, afternoonRate, nightRate)
+                            && staffs.get(i).isHaveRest(date)) {
                         Staff staff = staffs.remove(i);
                         assignedStaffs.add(staff);
                         staff.addWorkPlan(date, period);
