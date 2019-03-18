@@ -66,14 +66,19 @@ public class DailyPlan {
 
         public void assign(LinkedList<Staff> staffs) {
             while (assignedStaffs.size() < number) {
+                boolean have = false;
                 for (int i = 0; i < staffs.size(); i++) {
-                    if (staffs.get(i).isBalancedAfterAssign(period)) {
+                    if (staffs.get(i).isBalancedAfterAssign(period) && staffs.get(i).isHaveRest(date)) {
                         Staff staff = staffs.remove(i);
                         assignedStaffs.add(staff);
                         staff.addWorkPlan(date, period);
                         staffs.addLast(staff);
+                        have = true;
                         break;
                     }
+                }
+                if (!have) {
+                    System.out.println("-----");
                 }
             }
         }

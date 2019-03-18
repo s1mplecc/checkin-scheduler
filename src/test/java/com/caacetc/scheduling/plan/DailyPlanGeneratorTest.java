@@ -11,9 +11,9 @@ public class DailyPlanGeneratorTest {
         List<DailyPlan> dailyPlans = generator.generate(31);
         System.out.println(generator);
 
-        Scheduling scheduling = new Scheduling(dailyPlans);
-        scheduling.schedule();
-        for (Staff staff : scheduling.staffs()) {
+        Scheduler scheduler = new Scheduler(dailyPlans);
+        scheduler.schedule();
+        for (Staff staff : scheduler.staffs()) {
             System.out.println(staff);
         }
     }

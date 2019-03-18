@@ -11,11 +11,16 @@ public class Staff implements Comparable<Staff> {
     private final int id;
     private final List<WorkPlan> workPlans;
     private final Set<Period> periodFlags;
+    private int lastDate;
 
     public Staff(int id) {
         this.id = id;
         this.workPlans = new ArrayList<>();
         this.periodFlags = new HashSet<>();
+    }
+
+    public boolean isHaveRest(int currentDate) {
+        return currentDate - lastDate > 1;
     }
 
     public boolean isBalancedAfterAssign(Period period) {

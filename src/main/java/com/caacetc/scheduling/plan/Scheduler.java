@@ -5,12 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Scheduling {
-    private static final int CYCLE = 3;
+public class Scheduler {
+    private static final int CYCLE = 2;
     private final List<DailyPlan> dailyPlans;
     private LinkedList<Staff> staffs;
 
-    public Scheduling(List<DailyPlan> dailyPlans) {
+    public Scheduler(List<DailyPlan> dailyPlans) {
         this.dailyPlans = dailyPlans;
     }
 
