@@ -14,12 +14,15 @@ public class PassengerDistribution {
 
     public List<Interval> estimate(List<Flight> flights) {
         intervals = initIntervals(flights);
-
-        Flight flight = flights.get(0);
-        accumulate(flight.departTime(), flight.premiumCabinNum(), flight.economyCabinNum());
+        flights.forEach(flight -> accumulate(flight.departTime(), flight.premiumCabinNum(), flight.economyCabinNum()));
         return intervals;
     }
 
+    /**
+     * 取期望值为 90min，标准差为 10min 的正态分布，
+     * 旅客从起飞前 120min 到前 60min，每间隔 5min 积分 * 该航班旅客人数，
+     * 累积每个时间段的离港旅客期望
+     */
     private void accumulate(Date departTime, Integer premiumCabinNum, Integer economyCabinNum) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(departTime);
