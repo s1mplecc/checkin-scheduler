@@ -29,8 +29,8 @@ public class PassengerDistribution {
         calendar.add(Calendar.HOUR, -2);
 
         for (int i = 60; i <= 120; i += INTERVAL) {
-            long premium = Math.round(distribution.probability(i, i + INTERVAL) * premiumCabinNum);
-            long economy = Math.round(distribution.probability(i, i + INTERVAL) * economyCabinNum);
+            double premium = distribution.probability(i, i + INTERVAL) * premiumCabinNum;
+            double economy = distribution.probability(i, i + INTERVAL) * economyCabinNum;
 
             intervals.stream()
                     .filter(interval -> interval.calendar().equals(calendar))
@@ -73,14 +73,14 @@ public class PassengerDistribution {
 
     public class Interval {
         private Calendar calendar;
-        private Long premiumCabinNum;
-        private Long economyCabinNum;
+        private double premiumCabinNum;
+        private double economyCabinNum;
 
         Interval(Calendar calendar) {
-            this(calendar, 0L, 0L);
+            this(calendar, 0.0, 0.0);
         }
 
-        Interval(Calendar calendar, Long premiumCabinNum, Long economyCabinNum) {
+        Interval(Calendar calendar, double premiumCabinNum, double economyCabinNum) {
             this.calendar = calendar;
             this.premiumCabinNum = premiumCabinNum;
             this.economyCabinNum = economyCabinNum;
@@ -90,12 +90,20 @@ public class PassengerDistribution {
             return calendar;
         }
 
-        @Override
-        public String toString() {
-            return calendar.getTime() + " : " + premiumCabinNum + ", " + economyCabinNum;
+        public long premiumCabinNum() {
+            return (long) premiumCabinNum;
         }
 
-        public void accumulate(long premium, long economy) {
+        public long economyCabinNum() {
+            return (long) economyCabinNum;
+        }
+
+        @Override
+        public String toString() {
+            return calendar.getTime() + " : " + premiumCabinNum() + ", " + economyCabinNum();
+        }
+
+        public void accumulate(double premium, double economy) {
             this.premiumCabinNum += premium;
             this.economyCabinNum += economy;
         }
