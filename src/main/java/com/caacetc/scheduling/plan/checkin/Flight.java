@@ -11,22 +11,24 @@ public class Flight {
     private final String departTime;
     private final String passengerNum;
     private final String region;
+    private final String destination;
 
     private Integer economyCabinNum;
     private Integer premiumCabinNum;
 
-    public Flight(String date, String departTime, String passengerNum, String region) {
+    public Flight(String date, String departTime, String passengerNum, String region, String destination) {
         this.date = date;
         this.departTime = departTime;
         this.passengerNum = passengerNum;
         this.region = region;
+        this.destination = destination;
         this.economyCabinNum = 0;
         this.premiumCabinNum = 0;
 
-        parseCabinNumsBy(passengerNum);
+        computeCabinNumsBy(passengerNum);
     }
 
-    public void parseCabinNumsBy(String passengerNum) {
+    public void computeCabinNumsBy(String passengerNum) {
         for (CabinRank rank : CabinRank.values()) {
             Pattern compile = rank.pattern();
             Matcher matcher = compile.matcher(passengerNum);
