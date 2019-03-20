@@ -1,4 +1,4 @@
-package com.caacetc.scheduling.plan.core;
+package com.caacetc.scheduling.plan.shuttle;
 
 import java.util.ArrayList;
 import java.util.List;

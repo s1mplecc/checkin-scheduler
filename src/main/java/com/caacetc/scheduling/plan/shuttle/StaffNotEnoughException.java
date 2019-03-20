@@ -1,4 +1,4 @@
-package com.caacetc.scheduling.plan.core;
+package com.caacetc.scheduling.plan.shuttle;
 
 public class StaffNotEnoughException extends Exception {
     public StaffNotEnoughException(String message) {

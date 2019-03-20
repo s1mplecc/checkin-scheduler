@@ -1,4 +1,4 @@
-package com.caacetc.scheduling.plan.core;
+package com.caacetc.scheduling.plan.shuttle;
 
 import java.util.*;
 import java.util.stream.Collectors;
