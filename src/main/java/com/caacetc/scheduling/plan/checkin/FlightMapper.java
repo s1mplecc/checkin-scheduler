@@ -8,13 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlightMapper {
-    public static void main(String[] args) {
-        List<Flight> a = new FlightMapper().a();
-        System.out.println(a.size());
-        System.out.println(a.get(0));
-    }
-
-    public List<Flight> a() {
+    public List<Flight> flights() {
         Result<Record> records = DBConnector.context()
                 .select()
                 .from("flights")

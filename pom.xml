@@ -17,6 +17,7 @@
         <mockito.version>2.20.1</mockito.version>
         <jooq.version>3.11.10</jooq.version>
         <mysql-connector-java.version>8.0.15</mysql-connector-java.version>
+        <lombok.version>1.18.0</lombok.version>
     </properties>
 
     <dependencies>
@@ -52,6 +53,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>${mysql-connector-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

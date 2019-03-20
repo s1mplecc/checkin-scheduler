@@ -1,5 +1,8 @@
 package com.caacetc.scheduling.plan.checkin;
 
+import lombok.ToString;
+
+@ToString
 public class Flight {
     private String date;
     private String departTime;

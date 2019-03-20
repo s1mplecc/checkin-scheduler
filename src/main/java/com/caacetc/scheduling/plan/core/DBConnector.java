@@ -9,7 +9,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnector {
+    private static DSLContext context;
+
     public static DSLContext context() {
+        if (context == null) {
+            context = init();
+        }
+        return context;
+    }
+
+    private static DSLContext init() {
         String userName = "root";
         String password = "HP-PrintJet2107";
         String url = "jdbc:mysql://172.18.21.87:3306/guitai";
