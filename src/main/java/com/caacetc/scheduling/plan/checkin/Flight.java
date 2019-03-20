@@ -16,6 +16,18 @@ public class Flight {
     private final String destination;
     private Date departTime;
 
+    public Date departTime() {
+        return departTime;
+    }
+
+    public Integer economyCabinNum() {
+        return economyCabinNum;
+    }
+
+    public Integer premiumCabinNum() {
+        return premiumCabinNum;
+    }
+
     private Integer economyCabinNum;
     private Integer premiumCabinNum;
 
