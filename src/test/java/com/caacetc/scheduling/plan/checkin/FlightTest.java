@@ -9,5 +9,6 @@ public class FlightTest {
     public void should_() {
         List<Flight> flights = new FlightMapper().flights();
         System.out.println(flights.get(0));
+        System.out.println(flights.get(1000));
     }
 }
