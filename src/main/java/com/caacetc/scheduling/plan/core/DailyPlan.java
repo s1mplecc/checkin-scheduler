@@ -1,11 +1,11 @@
-package com.caacetc.scheduling.plan;
+package com.caacetc.scheduling.plan.core;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 
-import static com.caacetc.scheduling.plan.Period.*;
+import static com.caacetc.scheduling.plan.core.Period.*;
 
 public class DailyPlan {
     private int date;

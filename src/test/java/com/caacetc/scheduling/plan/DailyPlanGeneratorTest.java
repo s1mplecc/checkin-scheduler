@@ -1,5 +1,9 @@
 package com.caacetc.scheduling.plan;
 
+import com.caacetc.scheduling.plan.core.DailyPlan;
+import com.caacetc.scheduling.plan.core.DailyPlansGenerator;
+import com.caacetc.scheduling.plan.core.Scheduler;
+import com.caacetc.scheduling.plan.core.Staff;
 import org.junit.Test;
 
 import java.util.List;

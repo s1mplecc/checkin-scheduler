@@ -1,9 +1,9 @@
-package com.caacetc.scheduling.plan;
+package com.caacetc.scheduling.plan.core;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.caacetc.scheduling.plan.Period.*;
+import static com.caacetc.scheduling.plan.core.Period.*;
 
 public class Staff implements Comparable<Staff> {
     private final int id;

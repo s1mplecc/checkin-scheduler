@@ -1,4 +1,4 @@
-package com.caacetc.scheduling.plan;
+package com.caacetc.scheduling.plan.core;
 
 public enum Period {
     MORNING("早"),

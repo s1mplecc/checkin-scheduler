@@ -15,6 +15,7 @@
         <junit.version>4.12</junit.version>
         <assertj-core.version>3.9.1</assertj-core.version>
         <mockito.version>2.20.1</mockito.version>
+        <jooq.version>3.11.10</jooq.version>
     </properties>
 
     <dependencies>
@@ -40,6 +41,11 @@
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq</artifactId>
+            <version>${jooq.version}</version>
         </dependency>
     </dependencies>
 
