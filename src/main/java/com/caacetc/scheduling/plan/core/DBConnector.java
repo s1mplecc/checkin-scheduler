@@ -9,12 +9,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DBConnector {
-    public static DSLContext context() throws SQLException {
+    public static DSLContext context() {
         String userName = "root";
-        String password = "";
-        String url = "jdbc:mysql://localhost:3306/library";
+        String password = "HP-PrintJet2107";
+        String url = "jdbc:mysql://172.18.21.87:3306/guitai";
 
-        Connection conn = DriverManager.getConnection(url, userName, password);
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(url, userName, password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return DSL.using(conn, SQLDialect.MYSQL);
     }
 }

@@ -16,6 +16,7 @@
         <assertj-core.version>3.9.1</assertj-core.version>
         <mockito.version>2.20.1</mockito.version>
         <jooq.version>3.11.10</jooq.version>
+        <mysql-connector-java.version>8.0.15</mysql-connector-java.version>
     </properties>
 
     <dependencies>
@@ -46,6 +47,11 @@
             <groupId>org.jooq</groupId>
             <artifactId>jooq</artifactId>
             <version>${jooq.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql-connector-java.version}</version>
         </dependency>
     </dependencies>
 
