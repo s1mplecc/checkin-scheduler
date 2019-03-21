@@ -16,6 +16,9 @@ public class Flight {
     private final String destination;
     private Date departTime;
 
+    private Integer economyCabinNum;
+    private Integer premiumCabinNum;
+
     public Date departTime() {
         return departTime;
     }
@@ -27,9 +30,6 @@ public class Flight {
     public Integer premiumCabinNum() {
         return premiumCabinNum;
     }
-
-    private Integer economyCabinNum;
-    private Integer premiumCabinNum;
 
     public Flight(String date, String departTime, String passengerNum, String region, String destination) {
         this.date = date;

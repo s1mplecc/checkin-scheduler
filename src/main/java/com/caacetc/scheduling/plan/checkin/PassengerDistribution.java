@@ -12,6 +12,7 @@ public class PassengerDistribution {
     private static NormalDistribution distribution = new NormalDistribution(90, 10);
     private List<Interval> intervals;
 
+    // todo: 1. 00:00前超时
     public List<Interval> estimate(List<Flight> flights) {
         intervals = initIntervals(flights);
         flights.forEach(flight -> accumulate(flight.departTime(), flight.premiumCabinNum(), flight.economyCabinNum()));
