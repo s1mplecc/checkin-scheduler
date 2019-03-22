@@ -1,5 +1,6 @@
-package com.caacetc.scheduling.plan.checkin;
+package com.caacetc.scheduling.plan.checkin.mapper;
 
+import com.caacetc.scheduling.plan.checkin.Flight;
 import com.caacetc.scheduling.plan.core.DBConnector;
 import org.jooq.Record;
 import org.jooq.Result;
