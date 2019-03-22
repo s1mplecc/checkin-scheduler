@@ -15,7 +15,7 @@ public class PassengerDistribution {
     // todo: 1. 00:00前超时
     public List<Interval> estimate(List<Flight> flights) {
         intervals = initIntervals(flights);
-        flights.forEach(flight -> accumulate(flight.departTime(), flight.premiumCabinNum(), flight.economyCabinNum()));
+        flights.forEach(this::accumulate);
         return intervals;
     }
 
@@ -23,20 +23,32 @@ public class PassengerDistribution {
      * 取期望值为 90min，标准差为 10min 的正态分布，
      * 旅客从起飞前 120min 到前 60min，每间隔 5min 积分 * 该航班旅客人数，
      * 累积每个时间段的离港旅客期望
+     *
+     * @param flight
      */
-    private void accumulate(Date departTime, Integer premiumCabinNum, Integer economyCabinNum) {
+    private void accumulate(Flight flight) {
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(departTime);
+        calendar.setTime(flight.departTime());
         calendar.add(Calendar.HOUR, -2);
 
         for (int i = 60; i <= 120; i += INTERVAL) {
-            double premium = distribution.probability(i, i + INTERVAL) * premiumCabinNum;
-            double economy = distribution.probability(i, i + INTERVAL) * economyCabinNum;
+            double premium = distribution.probability(i, i + INTERVAL) * flight.premiumCabinNum();
 
+            double dEconomy = 0.0;
+            double iEconomy = 0.0;
+
+            if (flight.isDomestic()) {
+                dEconomy = distribution.probability(i, i + INTERVAL) * flight.economyCabinNum();
+            } else {
+                iEconomy = distribution.probability(i, i + INTERVAL) * flight.economyCabinNum();
+            }
+
+            double finalDEconomy = dEconomy;
+            double finalIEconomy = iEconomy;
             intervals.stream()
                     .filter(interval -> interval.calendar().equals(calendar))
                     .findFirst()
-                    .ifPresent(interval -> interval.accumulate(premium, economy));
+                    .ifPresent(interval -> interval.accumulate(premium, finalDEconomy, finalIEconomy));
 
             calendar.add(Calendar.MINUTE, INTERVAL);
         }
@@ -74,17 +86,19 @@ public class PassengerDistribution {
 
     public class Interval {
         private Calendar calendar;
-        private double premiumCabinNum;
-        private double economyCabinNum;
+        private double premiumCabinNum; // 高端旅客人数
+        private double dEconomyCabinNum; // 国内经济舱旅客人数
+        private double iEconomyCabinNum; // 国际经济舱旅客人数
 
         Interval(Calendar calendar) {
-            this(calendar, 0.0, 0.0);
+            this(calendar, 0.0, 0.0, 0.0);
         }
 
-        Interval(Calendar calendar, double premiumCabinNum, double economyCabinNum) {
+        Interval(Calendar calendar, double premiumCabinNum, double dEconomyCabinNum, double iEconomyCabinNum) {
             this.calendar = calendar;
             this.premiumCabinNum = premiumCabinNum;
-            this.economyCabinNum = economyCabinNum;
+            this.dEconomyCabinNum = dEconomyCabinNum;
+            this.iEconomyCabinNum = iEconomyCabinNum;
         }
 
         public Calendar calendar() {
@@ -95,18 +109,23 @@ public class PassengerDistribution {
             return (long) premiumCabinNum;
         }
 
-        public long economyCabinNum() {
-            return (long) economyCabinNum;
+        public long dEconomyCabinNum() {
+            return (long) dEconomyCabinNum;
+        }
+
+        public long iEconomyCabinNum() {
+            return (long) iEconomyCabinNum;
         }
 
         @Override
         public String toString() {
-            return calendar.getTime() + " : " + premiumCabinNum() + ", " + economyCabinNum();
+            return calendar.getTime() + " : " + premiumCabinNum() + ", " + dEconomyCabinNum() + ", " + iEconomyCabinNum();
         }
 
-        public void accumulate(double premium, double economy) {
+        public void accumulate(double premium, double dEconomy, double iEconomy) {
             this.premiumCabinNum += premium;
-            this.economyCabinNum += economy;
+            this.dEconomyCabinNum += dEconomy;
+            this.iEconomyCabinNum += iEconomy;
         }
     }
 }
