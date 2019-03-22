@@ -1,5 +1,6 @@
 package com.caacetc.scheduling.plan.checkin;
 
+import com.caacetc.scheduling.plan.checkin.domain.Counter;
 import com.caacetc.scheduling.plan.checkin.mapper.CounterMapper;
 import org.junit.Test;
 

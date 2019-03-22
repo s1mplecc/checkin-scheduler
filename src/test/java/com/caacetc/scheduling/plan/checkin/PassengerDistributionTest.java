@@ -1,5 +1,8 @@
 package com.caacetc.scheduling.plan.checkin;
 
+import com.caacetc.scheduling.plan.checkin.domain.Flight;
+import com.caacetc.scheduling.plan.checkin.domain.Interval;
+import com.caacetc.scheduling.plan.checkin.domain.PassengerDistribution;
 import com.caacetc.scheduling.plan.checkin.mapper.FlightMapper;
 import org.junit.Test;
 

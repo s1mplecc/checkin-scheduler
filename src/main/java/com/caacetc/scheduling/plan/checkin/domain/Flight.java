@@ -1,4 +1,4 @@
-package com.caacetc.scheduling.plan.checkin;
+package com.caacetc.scheduling.plan.checkin.domain;
 
 import lombok.ToString;
 
