@@ -1,6 +1,6 @@
 package com.caacetc.scheduling.plan.checkin.mapper;
 
-import com.caacetc.scheduling.plan.checkin.domain.Counter;
+import com.caacetc.scheduling.plan.checkin.domain.counter.Counter;
 import com.caacetc.scheduling.plan.core.DBConnector;
 import org.jooq.Record;
 import org.jooq.Result;
