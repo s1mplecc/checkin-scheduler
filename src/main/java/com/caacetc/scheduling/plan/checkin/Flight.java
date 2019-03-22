@@ -19,18 +19,6 @@ public class Flight {
     private Integer economyCabinNum;
     private Integer premiumCabinNum;
 
-    public Date departTime() {
-        return departTime;
-    }
-
-    public Integer economyCabinNum() {
-        return economyCabinNum;
-    }
-
-    public Integer premiumCabinNum() {
-        return premiumCabinNum;
-    }
-
     public Flight(String date, String departTime, String passengerNum, String region, String destination) {
         this.date = date;
         this.passengerNum = passengerNum;
@@ -45,6 +33,34 @@ public class Flight {
         }
 
         computeCabinNumsBy(passengerNum);
+    }
+
+    public Date departTime() {
+        return departTime;
+    }
+
+    public String date() {
+        return date;
+    }
+
+    public String passengerNum() {
+        return passengerNum;
+    }
+
+    public String region() {
+        return region;
+    }
+
+    public String destination() {
+        return destination;
+    }
+
+    public Integer economyCabinNum() {
+        return economyCabinNum;
+    }
+
+    public Integer premiumCabinNum() {
+        return premiumCabinNum;
     }
 
     public void computeCabinNumsBy(String passengerNum) {
