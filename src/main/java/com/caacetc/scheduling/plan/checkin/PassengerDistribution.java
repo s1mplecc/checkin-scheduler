@@ -12,7 +12,6 @@ public class PassengerDistribution {
     private static NormalDistribution distribution = new NormalDistribution(90, 10);
     private List<Interval> intervals;
 
-    // todo: 1. 00:00前超时
     public List<Interval> estimate(List<Flight> flights) {
         intervals = initIntervals(flights);
         flights.forEach(this::accumulate);
@@ -23,8 +22,6 @@ public class PassengerDistribution {
      * 取期望值为 90min，标准差为 10min 的正态分布，
      * 旅客从起飞前 120min 到前 60min，每间隔 5min 积分 * 该航班旅客人数，
      * 累积每个时间段的离港旅客期望
-     *
-     * @param flight
      */
     private void accumulate(Flight flight) {
         Calendar calendar = Calendar.getInstance();
