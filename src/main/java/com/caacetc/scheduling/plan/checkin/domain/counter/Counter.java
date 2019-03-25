@@ -53,6 +53,14 @@ public class Counter {
         }
     }
 
+    public boolean isPrem() {
+        return "高端".equals(type);
+    }
+
+    public boolean isEcon() {
+        return "经济".equals(type);
+    }
+
     public String id() {
         return id;
     }
