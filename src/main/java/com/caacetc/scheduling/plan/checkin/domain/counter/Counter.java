@@ -20,7 +20,11 @@ public class Counter {
     }
 
     public void addOpenPeriods(OpenPeriod openPeriod) {
-        openPeriods.add(openPeriod);
+        if (openPeriod.isGt3Hours()) {
+            openPeriods.addAll(openPeriod.split());
+        } else {
+            openPeriods.add(openPeriod);
+        }
     }
 
     public String id() {
