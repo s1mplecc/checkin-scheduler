@@ -13,6 +13,9 @@ public class CounterSchedulerTest {
     public void should_() {
         List<Flight> flights = new FlightMapper().flights();
         List<Interval> estimate = new PassengerDistribution().estimate(flights);
-        new CounterScheduler().schedule(estimate);
+        List<Counter> schedule = new CounterScheduler().schedule(estimate);
+        for (Counter counter : schedule) {
+            System.out.println(counter);
+        }
     }
 }

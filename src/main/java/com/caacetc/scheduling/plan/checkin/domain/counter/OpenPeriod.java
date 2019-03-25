@@ -1,5 +1,6 @@
 package com.caacetc.scheduling.plan.checkin.domain.counter;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -12,6 +13,13 @@ public class OpenPeriod {
     public OpenPeriod(Calendar startTime, Calendar endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    @Override
+    public String toString() {
+        return new SimpleDateFormat("MM-dd hh:mm").format(startTime.getTime())
+                + " ~ " +
+                new SimpleDateFormat("MM-dd hh:mm").format(endTime.getTime());
     }
 
     public boolean isGt3Hours() {
