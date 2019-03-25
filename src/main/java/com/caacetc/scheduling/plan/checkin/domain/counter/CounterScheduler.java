@@ -3,6 +3,7 @@ package com.caacetc.scheduling.plan.checkin.domain.counter;
 import com.caacetc.scheduling.plan.checkin.domain.Interval;
 import com.caacetc.scheduling.plan.checkin.mapper.CounterMapper;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -12,13 +13,14 @@ import java.util.List;
  */
 public class CounterScheduler {
     private List<Counter> counters;
+    private List<Counter> premCounters;
     private int maxIE;
     private int maxDE;
     private int maxP;
 
-
     public CounterScheduler() {
         counters = new CounterMapper().counters();
+        premCounters = new CounterMapper().premCounters();
     }
 
     public CounterScheduler(List<Counter> counters) {
@@ -26,17 +28,21 @@ public class CounterScheduler {
     }
 
     // todo 计算每个柜台需要开放的时间段
-    public void schedule(List<Interval> intervals) {
-//        intervals.stream()
-//                .filter(interval -> interval.premiumCounters() > 11)
-//                .forEach(System.out::println);
-//
-//        intervals.stream()
-//                .filter(interval -> interval.dEconomyCounters() > 7)
-//                .forEach(System.out::println);
+    public List<Counter> schedule(List<Interval> intervals) {
+        intervals.stream()
+                .forEach(interval -> {
+                    int temp = Math.min(premCounters.size(), interval.premiumCounters());
+                    for (int i = 0; i < temp; i++) {
+                        Calendar endTime = (Calendar) interval.startTime().clone();
+                        endTime.add(Calendar.MINUTE, 5);
+                        premCounters.get(i).open(interval.startTime(), endTime);
+                    }
+                });
 
         intervals.stream()
                 .filter(interval -> interval.iEconomyCounters() > 11)
                 .forEach(System.out::println);
+
+        return null;
     }
 }

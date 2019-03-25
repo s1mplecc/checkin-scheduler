@@ -44,4 +44,12 @@ public class OpenPeriod {
 
         return result;
     }
+
+    public void append(Calendar endTime) {
+        this.endTime = endTime;
+    }
+
+    public void propel(Calendar startTime) {
+        this.startTime = startTime;
+    }
 }

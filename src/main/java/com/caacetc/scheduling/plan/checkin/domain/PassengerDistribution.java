@@ -43,7 +43,7 @@ public class PassengerDistribution {
             double finalDEconomy = dEconomy;
             double finalIEconomy = iEconomy;
             intervals.stream()
-                    .filter(interval -> interval.calendar().equals(calendar))
+                    .filter(interval -> interval.startTime().equals(calendar))
                     .findFirst()
                     .ifPresent(interval -> interval.accumulate(premium, finalDEconomy, finalIEconomy));
 

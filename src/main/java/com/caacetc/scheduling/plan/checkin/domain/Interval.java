@@ -3,7 +3,7 @@ package com.caacetc.scheduling.plan.checkin.domain;
 import java.util.Calendar;
 
 public class Interval {
-    private Calendar calendar;
+    private Calendar startTime;
     private double premiumCabinNum; // 高端旅客人数
     private double dEconomyCabinNum; // 国内经济舱旅客人数
     private double iEconomyCabinNum; // 国际经济舱旅客人数
@@ -23,12 +23,12 @@ public class Interval {
      */
     private int premiumCounters;
 
-    Interval(Calendar calendar) {
-        this(calendar, 0.0, 0.0, 0.0);
+    Interval(Calendar startTime) {
+        this(startTime, 0.0, 0.0, 0.0);
     }
 
-    Interval(Calendar calendar, double premiumCabinNum, double dEconomyCabinNum, double iEconomyCabinNum) {
-        this.calendar = calendar;
+    Interval(Calendar startTime, double premiumCabinNum, double dEconomyCabinNum, double iEconomyCabinNum) {
+        this.startTime = startTime;
         this.premiumCabinNum = premiumCabinNum;
         this.dEconomyCabinNum = dEconomyCabinNum;
         this.iEconomyCabinNum = iEconomyCabinNum;
@@ -48,8 +48,8 @@ public class Interval {
         return (int) (premiumCabinNum * 0.95 * 0.55 * 120 / 300);
     }
 
-    public Calendar calendar() {
-        return calendar;
+    public Calendar startTime() {
+        return startTime;
     }
 
     public long premiumCabinNum() {
@@ -67,7 +67,7 @@ public class Interval {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(calendar.getTime()).append(" : ")
+        sb.append(startTime.getTime()).append(" : ")
                 .append(premiumCounters()).append(", ")
                 .append(dEconomyCounters()).append(", ")
                 .append(iEconomyCounters());

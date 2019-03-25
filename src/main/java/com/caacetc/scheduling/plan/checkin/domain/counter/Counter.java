@@ -3,7 +3,9 @@ package com.caacetc.scheduling.plan.checkin.domain.counter;
 import lombok.ToString;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @ToString
 public class Counter {
@@ -19,7 +21,31 @@ public class Counter {
         this.openPeriods = new ArrayList<>();
     }
 
-    public void addOpenPeriods(OpenPeriod openPeriod) {
+    public void open(Calendar startTime, Calendar endTime) {
+        AtomicBoolean isAppendOrPropel = new AtomicBoolean(false);
+
+        openPeriods.stream()
+                .filter(openPeriod -> openPeriod.endTime().equals(startTime))
+                .findFirst()
+                .ifPresent(openPeriod -> {
+                    openPeriod.append(endTime);
+                    isAppendOrPropel.set(true);
+                });
+
+        openPeriods.stream()
+                .filter(openPeriod -> openPeriod.startTime().equals(endTime))
+                .findFirst()
+                .ifPresent(openPeriod -> {
+                    openPeriod.propel(startTime);
+                    isAppendOrPropel.set(true);
+                });
+
+        if (!isAppendOrPropel.get()) {
+            openPeriods.add(new OpenPeriod(startTime, endTime));
+        }
+    }
+
+    public void addOpenPeriod(OpenPeriod openPeriod) {
         if (openPeriod.isGt3Hours()) {
             openPeriods.addAll(openPeriod.split());
         } else {
