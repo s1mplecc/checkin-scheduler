@@ -30,16 +30,16 @@ public class OpenPeriod {
     public List<OpenPeriod> split() {
         List<OpenPeriod> result = new ArrayList<>();
 
-        OpenPeriod current = this;
         Calendar tempStartTime = startTime;
-        while (current.endTime().before(endTime)) {
-            result.add(current);
+        Calendar after3Hours = (Calendar) tempStartTime.clone();
+        after3Hours.add(Calendar.HOUR, 3);
 
-            Calendar after3Hours = (Calendar) tempStartTime.clone();
+        while (after3Hours.before(endTime)) {
+            result.add(new OpenPeriod((Calendar) tempStartTime.clone(), (Calendar) after3Hours.clone()));
+            tempStartTime.add(Calendar.HOUR, 3);
             after3Hours.add(Calendar.HOUR, 3);
-            current = new OpenPeriod(tempStartTime, after3Hours);
-            tempStartTime = after3Hours;
         }
+
         result.add(new OpenPeriod(tempStartTime, endTime));
 
         return result;
