@@ -17,9 +17,6 @@ public class CounterScheduler {
     private List<Counter> premCounters;
     private List<Counter> dEconCounters;
     private List<Counter> iEconCounters;
-    private int maxIE;
-    private int maxDE;
-    private int maxP;
 
     public CounterScheduler() {
         counters = new ArrayList<>();
