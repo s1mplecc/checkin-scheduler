@@ -3,7 +3,7 @@ package com.caacetc.scheduling.plan.checkin.domain.staff;
 import lombok.ToString;
 
 @ToString
-public class Staff {
+public class Staff implements Comparable<Staff> {
     private String id;
     private String type;
     private Agenda agenda;
@@ -32,5 +32,15 @@ public class Staff {
         return agenda.oneWeekLte5Days(workplan)
                 && agenda.mostlyContinue4Days(workplan)
                 && agenda.lastIntervalGt12Hours(workplan);
+    }
+
+    public Agenda agenda() {
+        return agenda;
+    }
+
+    @SuppressWarnings("NullableProblems")
+    @Override
+    public int compareTo(Staff another) {
+        return agenda.workHours() - another.agenda().workHours();
     }
 }

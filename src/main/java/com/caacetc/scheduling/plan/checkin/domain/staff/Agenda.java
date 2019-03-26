@@ -43,4 +43,8 @@ public class Agenda {
                 .map(wp -> workplan.startTime().getTime().getTime() - wp.endTime().getTime().getTime())
                 .allMatch(interval -> interval >= 1000 * 60 * 60 * 12);
     }
+
+    public int workHours() {
+        return workplans.size() * 8;
+    }
 }
