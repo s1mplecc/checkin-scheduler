@@ -18,6 +18,12 @@ public class Staff {
         return id;
     }
 
+    /**
+     * 1、每个员工上班即上 8hours
+     * 2、一周上 5 天班
+     * 3、最多连续 4 天
+     * 4、两次上班间隔 > 12hours
+     */
     public void addWorkPlan(Workplan workplan) {
         if (!isLegal(workplan)) {
             throw new ScheduleStaffException();
@@ -26,7 +32,9 @@ public class Staff {
     }
 
     public boolean isLegal(Workplan workplan) {
-        return true;
+        return agenda.oneWeekLte5Days()
+                && agenda.mostlyContinue4Days()
+                && agenda.lastIntervalGt12Hours();
     }
 
     public void dailyLaborHours() {

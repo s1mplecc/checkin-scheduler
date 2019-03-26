@@ -11,4 +11,16 @@ public class Agenda {
     public void add(Workplan workPlan) {
 
     }
+
+    public boolean oneWeekLte5Days() {
+        return false;
+    }
+
+    public boolean mostlyContinue4Days() {
+        return false;
+    }
+
+    public boolean lastIntervalGt12Hours() {
+        return false;
+    }
 }
