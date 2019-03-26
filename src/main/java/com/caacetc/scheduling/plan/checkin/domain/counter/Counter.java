@@ -22,8 +22,18 @@ public class Counter {
         this.openPeriods = new ArrayList<>();
     }
 
-    private int durationHours() {
-        return openPeriods.stream().reduce(0, (i, o) -> i += o.durationHours(), (i, o) -> i);
+    public List<OpenPeriod> openPeriodsAfterSplit() {
+        List<OpenPeriod> openPeriods = openPeriods();
+
+        List<OpenPeriod> result = openPeriods.stream()
+                .filter(openPeriod -> !openPeriod.isGt3Hours())
+                .collect(Collectors.toList());
+
+        openPeriods.stream()
+                .filter(OpenPeriod::isGt3Hours)
+                .forEach(openPeriod -> result.addAll(openPeriod.split()));
+
+        return result;
     }
 
     /**
@@ -51,18 +61,6 @@ public class Counter {
         return openPeriods.stream()
                 .filter(OpenPeriod::isLongerThan1Hour)
                 .collect(Collectors.toList());
-    }
-
-    public List<OpenPeriod> openPeriodsAfterSplit() {
-        List<OpenPeriod> result = openPeriods.stream()
-                .filter(openPeriod -> !openPeriod.isGt3Hours())
-                .collect(Collectors.toList());
-
-        openPeriods.stream()
-                .filter(OpenPeriod::isGt3Hours)
-                .forEach(openPeriod -> result.addAll(openPeriod.split()));
-
-        return result;
     }
 
     public void open(Calendar startTime, Calendar endTime) {

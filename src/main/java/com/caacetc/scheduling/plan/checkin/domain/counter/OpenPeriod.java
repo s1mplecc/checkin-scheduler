@@ -6,7 +6,6 @@ import com.caacetc.scheduling.plan.checkin.domain.staff.Workplan;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedList;
 import java.util.List;
 
 public class OpenPeriod implements Comparable<OpenPeriod> {
@@ -19,17 +18,17 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
         this.endTime = endTime;
     }
 
-    public void assign(LinkedList<Staff> staffs) {
+    public void assign(List<Staff> staffs) {
         Workplan workplan = new Workplan(startTime);
 
-        Staff staff = staffs.stream()
-                .filter(s -> s.isLegal(workplan))
+        Staff one = staffs.stream()
+                .filter(staff -> staff.isLegal(workplan))
                 .sorted()
                 .findFirst()
                 .orElse(new Staff("", ""));
 //                .orElseThrow(ScheduleStaffException::new);
 
-        staff.addWorkPlan(workplan);
+        one.addWorkPlan(workplan);
     }
 
     public int durationHours() {

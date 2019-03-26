@@ -5,12 +5,11 @@ import com.caacetc.scheduling.plan.checkin.domain.counter.OpenPeriod;
 import com.caacetc.scheduling.plan.checkin.mapper.StaffMapper;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class StaffScheduler {
-    private LinkedList<Staff> econCheckInStaffs;
-    private LinkedList<Staff> premCheckInStaffs;
+    private List<Staff> econCheckInStaffs;
+    private List<Staff> premCheckInStaffs;
 
     public StaffScheduler() {
         econCheckInStaffs = new StaffMapper().econCheckInStaffs();
@@ -19,7 +18,7 @@ public class StaffScheduler {
 
     public List<Staff> schedule(List<Counter> counters) {
         counters.forEach(counter -> {
-            List<OpenPeriod> openPeriods = counter.openPeriods();
+            List<OpenPeriod> openPeriods = counter.openPeriodsAfterSplit();
             if (counter.isPrem()) {
                 openPeriods.forEach(openPeriod -> openPeriod.assign(premCheckInStaffs));
             } else {
