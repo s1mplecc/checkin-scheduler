@@ -21,6 +21,10 @@ public class Counter {
         this.openPeriods = new ArrayList<>();
     }
 
+    public List<OpenPeriod> openPeriods() {
+        return openPeriods;
+    }
+
     public void open(Calendar startTime, Calendar endTime) {
         AtomicBoolean isAppendOrPropel = new AtomicBoolean(false);
 

@@ -1,8 +1,12 @@
 package com.caacetc.scheduling.plan.checkin.domain.counter;
 
+import com.caacetc.scheduling.plan.checkin.domain.staff.Staff;
+import com.caacetc.scheduling.plan.checkin.domain.staff.Workplan;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 public class OpenPeriod {
@@ -59,5 +63,18 @@ public class OpenPeriod {
 
     public void propel(Calendar startTime) {
         this.startTime = startTime;
+    }
+
+    public void assign(LinkedList<Staff> staffs) {
+        Workplan workplan = new Workplan(startTime, endTime);
+        for (int i = 0; i < staffs.size(); i++) {
+            Staff staff = staffs.get(i);
+            if (staff.isLegal(workplan)) {
+                this.staffId = staff.id();
+                staff.addWorkPlan(workplan);
+                staffs.addLast(staffs.remove(i));
+                break;
+            }
+        }
     }
 }

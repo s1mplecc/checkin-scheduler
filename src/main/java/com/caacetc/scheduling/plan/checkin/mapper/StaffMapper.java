@@ -5,18 +5,17 @@ import com.caacetc.scheduling.plan.core.DBConnector;
 import org.jooq.Record;
 import org.jooq.Result;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedList;
 
 public class StaffMapper {
-    public List<Staff> econCheckInStaffs() {
+    public LinkedList<Staff> econCheckInStaffs() {
         Result<Record> records = DBConnector.context()
                 .select()
                 .from("staff_econ_checkin")
                 .fetch();
 
         return records.stream()
-                .reduce(new ArrayList<>(), (staffs, record) -> {
+                .reduce(new LinkedList<>(), (staffs, record) -> {
                     String id = (String) record.get("员工编号");
                     String type = (String) record.get("岗位");
                     staffs.add(new Staff(id, type));
@@ -24,14 +23,14 @@ public class StaffMapper {
                 }, (l, a) -> l);
     }
 
-    public List<Staff> premCheckInStaffs() {
+    public LinkedList<Staff> premCheckInStaffs() {
         Result<Record> records = DBConnector.context()
                 .select()
                 .from("staff_prem_checkin")
                 .fetch();
 
         return records.stream()
-                .reduce(new ArrayList<>(), (staffs, record) -> {
+                .reduce(new LinkedList<>(), (staffs, record) -> {
                     String id = (String) record.get("员工编号");
                     String type = (String) record.get("岗位");
                     staffs.add(new Staff(id, type));

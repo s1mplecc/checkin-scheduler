@@ -4,10 +4,13 @@ public class Staff {
     private String id;
     private String type;
     private Agenda agenda;
-
     public Staff(String id, String type) {
         this.id = id;
         this.type = type;
+    }
+
+    public String id() {
+        return id;
     }
 
     public void addWorkPlan(Workplan workplan) {

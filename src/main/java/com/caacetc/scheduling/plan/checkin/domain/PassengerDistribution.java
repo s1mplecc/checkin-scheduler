@@ -15,6 +15,7 @@ public class PassengerDistribution {
     public List<Interval> estimate(List<Flight> flights) {
         intervals = initIntervals(flights);
         flights.forEach(this::accumulate);
+
         return intervals;
     }
 
