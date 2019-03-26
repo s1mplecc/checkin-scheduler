@@ -24,14 +24,14 @@ public class Staff implements Comparable<Staff> {
      * 3、最多连续 4 天
      * 4、两次上班间隔 > 12hours
      */
-    public void addWorkPlan(Workplan workplan) {
-        agenda.add(workplan);
+    public void addWorkPlan(WorkDuration workDuration) {
+        agenda.add(workDuration);
     }
 
-    public boolean isLegal(Workplan workplan) {
-        return agenda.oneWeekLte5Days(workplan)
-                && agenda.mostlyContinue4Days(workplan)
-                && agenda.lastIntervalGt12Hours(workplan);
+    public boolean isLegal(WorkDuration workDuration) {
+        return agenda.oneWeekLte5Days(workDuration)
+                && agenda.mostlyContinue4Days(workDuration)
+                && agenda.lastIntervalGt12Hours(workDuration);
     }
 
     public Agenda agenda() {

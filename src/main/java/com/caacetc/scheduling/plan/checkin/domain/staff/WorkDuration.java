@@ -3,32 +3,30 @@ package com.caacetc.scheduling.plan.checkin.domain.staff;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Workplan {
-    private final Calendar startTime;
-    private final Calendar endTime;
+/**
+ * 员工工作类，包含上班时间、下班时间、工作在柜台的时间片段
+ */
+public class WorkDuration {
+    private final Calendar onDuty;
+    private final Calendar offDuty;
 
-    public Workplan(Calendar startTime) {
-        this.startTime = startTime;
-        Calendar endTime = (Calendar) startTime.clone();
+    public WorkDuration(Calendar onDuty) {
+        this.onDuty = onDuty;
+        Calendar endTime = (Calendar) onDuty.clone();
         endTime.add(Calendar.HOUR_OF_DAY, 8);
-        this.endTime = endTime;
-    }
-
-    Workplan(Calendar startTime, Calendar endTime) {
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.offDuty = endTime;
     }
 
     public Calendar endTime() {
-        return endTime;
+        return offDuty;
     }
 
     public Calendar startTime() {
-        return startTime;
+        return onDuty;
     }
 
     public Calendar mondayThisWeek() {
-        Calendar monday = (Calendar) startTime.clone();
+        Calendar monday = (Calendar) onDuty.clone();
         monday.setFirstDayOfWeek(Calendar.MONDAY);
         int i = -monday.get(Calendar.DAY_OF_WEEK) + 2;
         if (i == 1) {
@@ -44,8 +42,8 @@ public class Workplan {
 
     @Override
     public String toString() {
-        return new SimpleDateFormat("MM-dd HH:mm").format(startTime.getTime())
+        return new SimpleDateFormat("MM-dd HH:mm").format(onDuty.getTime())
                 + " ~ " +
-                new SimpleDateFormat("MM-dd HH:mm").format(endTime.getTime());
+                new SimpleDateFormat("MM-dd HH:mm").format(offDuty.getTime());
     }
 }

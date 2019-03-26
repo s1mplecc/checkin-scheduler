@@ -7,29 +7,29 @@ import java.util.Calendar;
 import static java.util.Calendar.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class WorkplanTest {
+public class WorkDurationTest {
     @Test
     public void should_return_monday_this_week() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2000, Calendar.MARCH, 1, 1, 1, 1);
 
-        Workplan workplan = new Workplan(calendar, calendar);
-        Calendar mondayThisWeek = workplan.mondayThisWeek();
+        WorkDuration workDuration = new WorkDuration(calendar);
+        Calendar mondayThisWeek = workDuration.mondayThisWeek();
 
         assertThat(mondayThisWeek.get(Calendar.DAY_OF_WEEK)).isEqualTo(MONDAY);
         assertThat(mondayThisWeek.get(Calendar.MONTH)).isEqualTo(FEBRUARY);
         assertThat(mondayThisWeek.get(Calendar.DAY_OF_MONTH)).isEqualTo(28);
 
         calendar.add(Calendar.DAY_OF_WEEK, 3);
-        Workplan workplan2 = new Workplan(calendar, calendar);
-        Calendar mondayThisWeek2 = workplan2.mondayThisWeek();
+        WorkDuration workDuration2 = new WorkDuration(calendar);
+        Calendar mondayThisWeek2 = workDuration2.mondayThisWeek();
 
         assertThat(mondayThisWeek.equals(mondayThisWeek2)).isTrue();
 
 
         calendar.add(Calendar.DAY_OF_WEEK, 4);
-        Workplan workplan3 = new Workplan(calendar, calendar);
-        Calendar mondayThisWeek3 = workplan3.mondayThisWeek();
+        WorkDuration workDuration3 = new WorkDuration(calendar);
+        Calendar mondayThisWeek3 = workDuration3.mondayThisWeek();
 
         assertThat(mondayThisWeek3.get(Calendar.DAY_OF_WEEK)).isEqualTo(MONDAY);
         assertThat(mondayThisWeek3.get(Calendar.MONTH)).isEqualTo(MARCH);
@@ -41,8 +41,8 @@ public class WorkplanTest {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2019, JANUARY, 14, 0, 0, 0);
 
-        Workplan workplan = new Workplan(calendar, calendar);
-        Calendar mondayThisWeek = workplan.mondayThisWeek();
+        WorkDuration workDuration = new WorkDuration(calendar);
+        Calendar mondayThisWeek = workDuration.mondayThisWeek();
 
         assertThat(mondayThisWeek.get(Calendar.DAY_OF_WEEK)).isEqualTo(MONDAY);
         assertThat(mondayThisWeek.get(Calendar.MONTH)).isEqualTo(JANUARY);
