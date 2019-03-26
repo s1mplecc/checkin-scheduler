@@ -1,5 +1,6 @@
 package com.caacetc.scheduling.plan.checkin.domain.staff;
 
+import com.caacetc.scheduling.plan.checkin.domain.counter.OpenPeriod;
 import lombok.ToString;
 
 @ToString
@@ -24,14 +25,15 @@ public class Staff implements Comparable<Staff> {
      * 3、最多连续 4 天
      * 4、两次上班间隔 > 12hours
      */
-    public void addWorkPlan(WorkDuration workDuration) {
-        agenda.add(workDuration);
+    public void addWorkPlan(OpenPeriod openPeriod) {
+        agenda.add(openPeriod);
     }
 
-    public boolean isLegal(WorkDuration workDuration) {
-        return agenda.oneWeekLte5Days(workDuration)
-                && agenda.mostlyContinue4Days(workDuration)
-                && agenda.lastIntervalGt12Hours(workDuration);
+    public boolean isLegal(OpenPeriod openPeriod) {
+        return agenda.oneWeekLte5Days(openPeriod)
+                && agenda.mostlyContinue4Days(openPeriod)
+                && agenda.lastIntervalGt12Hours(openPeriod)
+                && agenda.inWorkDuration(openPeriod);
     }
 
     public Agenda agenda() {

@@ -1,8 +1,6 @@
 package com.caacetc.scheduling.plan.checkin.domain.counter;
 
 import com.caacetc.scheduling.plan.checkin.domain.staff.Staff;
-import com.caacetc.scheduling.plan.checkin.domain.staff.WorkDuration;
-import com.caacetc.scheduling.plan.checkin.domain.staff.WorkPeriod;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +10,6 @@ import java.util.List;
 public class OpenPeriod implements Comparable<OpenPeriod> {
     private Calendar startTime;
     private Calendar endTime;
-    private String staffId;
 
     public OpenPeriod(Calendar startTime, Calendar endTime) {
         this.startTime = startTime;
@@ -20,18 +17,14 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
     }
 
     public void assign(List<Staff> staffs) {
-        WorkPeriod workPeriod = new WorkPeriod(startTime, endTime);
-
-        WorkDuration workDuration = new WorkDuration(startTime);
-
         Staff one = staffs.stream()
-                .filter(staff -> staff.isLegal(workDuration))
+                .filter(staff -> staff.isLegal(this))
                 .sorted()
                 .findFirst()
                 .orElse(new Staff("", ""));
 //                .orElseThrow(ScheduleStaffException::new);
 
-        one.addWorkPlan(workDuration);
+        one.addWorkPlan(this);
     }
 
     public int durationHours() {

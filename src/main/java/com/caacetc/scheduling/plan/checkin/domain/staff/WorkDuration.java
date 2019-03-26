@@ -1,7 +1,11 @@
 package com.caacetc.scheduling.plan.checkin.domain.staff;
 
+import com.caacetc.scheduling.plan.checkin.domain.counter.OpenPeriod;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * 员工工作类，包含上班时间、下班时间、工作在柜台的时间片段
@@ -9,19 +13,25 @@ import java.util.Calendar;
 public class WorkDuration {
     private final Calendar onDuty;
     private final Calendar offDuty;
+    private final List<OpenPeriod> workPeriods;
 
     public WorkDuration(Calendar onDuty) {
         this.onDuty = onDuty;
         Calendar endTime = (Calendar) onDuty.clone();
         endTime.add(Calendar.HOUR_OF_DAY, 8);
         this.offDuty = endTime;
+        this.workPeriods = new ArrayList<>();
     }
 
-    public Calendar endTime() {
+    public void add(OpenPeriod workPeriod) {
+        workPeriods.add(workPeriod);
+    }
+
+    public Calendar offDuty() {
         return offDuty;
     }
 
-    public Calendar startTime() {
+    public Calendar onDuty() {
         return onDuty;
     }
 
