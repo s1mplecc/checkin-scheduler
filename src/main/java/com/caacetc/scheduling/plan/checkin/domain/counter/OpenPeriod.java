@@ -19,6 +19,19 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
         this.endTime = endTime;
     }
 
+    public void assign(LinkedList<Staff> staffs) {
+        Workplan workplan = new Workplan(startTime);
+
+        Staff staff = staffs.stream()
+                .filter(s -> s.isLegal(workplan))
+                .sorted()
+                .findFirst()
+                .orElse(new Staff("", ""));
+//                .orElseThrow(ScheduleStaffException::new);
+
+        staff.addWorkPlan(workplan);
+    }
+
     public int durationHours() {
         long l = (endTime.getTime().getTime() - startTime.getTime().getTime());
         return (int) (l / (1000 * 60 * 60));
@@ -68,19 +81,6 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
 
     public void propel(Calendar startTime) {
         this.startTime = startTime;
-    }
-
-    public void assign(LinkedList<Staff> staffs) {
-        Workplan workplan = new Workplan(startTime);
-
-        Staff staff = staffs.stream()
-                .filter(s -> s.isLegal(workplan))
-                .sorted()
-                .findFirst()
-                .orElse(new Staff("", ""));
-//                .orElseThrow(ScheduleStaffException::new);
-
-        staff.addWorkPlan(workplan);
     }
 
     public boolean isLongerThan1Hour() {

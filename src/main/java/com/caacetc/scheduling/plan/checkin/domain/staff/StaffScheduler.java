@@ -19,7 +19,7 @@ public class StaffScheduler {
 
     public List<Staff> schedule(List<Counter> counters) {
         counters.forEach(counter -> {
-            List<OpenPeriod> openPeriods = counter.openPeriodsAfterSplit();
+            List<OpenPeriod> openPeriods = counter.openPeriods();
             if (counter.isPrem()) {
                 openPeriods.forEach(openPeriod -> openPeriod.assign(premCheckInStaffs));
             } else {
