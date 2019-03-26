@@ -22,9 +22,34 @@ public class Counter {
         this.openPeriods = new ArrayList<>();
     }
 
-    public List<OpenPeriod> openPeriodsAfterSplit() {
-        // todo-zz: combine if intervals less than 30min; abandon if intervals continue less than 30min
+    /**
+     * combine if two intervals less than 15min;
+     * abandon if intervals continue less than 1hour
+     */
+    public List<OpenPeriod> getOpenPeriods() {
+        List<OpenPeriod> result = new ArrayList<>();
 
+        openPeriods.stream()
+                .sorted()
+                .forEach(openPeriod -> {
+                    if (result.isEmpty()) {
+                        result.add(openPeriod);
+                    }
+
+                    OpenPeriod lastOne = result.get(result.size() - 1);
+                    if (lastOne.only15minutesAfter(openPeriod)) {
+                        openPeriod.combineWith(lastOne);
+                    } else {
+                        result.add(openPeriod);
+                    }
+                });
+
+        return openPeriods.stream()
+                .filter(OpenPeriod::isLongerThan1Hour)
+                .collect(Collectors.toList());
+    }
+
+    public List<OpenPeriod> openPeriodsAfterSplit() {
         List<OpenPeriod> result = openPeriods.stream()
                 .filter(openPeriod -> !openPeriod.isGt3Hours())
                 .collect(Collectors.toList());

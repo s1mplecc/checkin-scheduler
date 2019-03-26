@@ -9,7 +9,7 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
-public class OpenPeriod {
+public class OpenPeriod implements Comparable<OpenPeriod> {
     private Calendar startTime;
     private Calendar endTime;
     private String staffId;
@@ -76,5 +76,24 @@ public class OpenPeriod {
                 break;
             }
         }
+    }
+
+    public boolean isLongerThan1Hour() {
+        long l = endTime.getTime().getTime() - startTime.getTime().getTime();
+        return l >= 1000 * 60 * 60;
+    }
+
+    @Override
+    public int compareTo(OpenPeriod another) {
+        return (int) (this.startTime.getTime().getTime() - another.startTime().getTime().getTime());
+    }
+
+    public boolean only15minutesAfter(OpenPeriod lastOne) {
+        long l = lastOne.endTime().getTime().getTime() - this.startTime.getTime().getTime();
+        return l <= 1000 * 60 * 15;
+    }
+
+    public void combineWith(OpenPeriod openPeriod) {
+        this.endTime = openPeriod.endTime;
     }
 }
