@@ -1,6 +1,5 @@
 package com.caacetc.scheduling.plan.checkin.domain.counter;
 
-import com.caacetc.scheduling.plan.checkin.domain.staff.ScheduleStaffException;
 import com.caacetc.scheduling.plan.checkin.domain.staff.Staff;
 import com.caacetc.scheduling.plan.checkin.domain.staff.Workplan;
 
@@ -18,6 +17,11 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
     public OpenPeriod(Calendar startTime, Calendar endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public int durationHours() {
+        long l = (endTime.getTime().getTime() - startTime.getTime().getTime());
+        return (int) (l / (1000 * 60 * 60));
     }
 
     @Override
@@ -73,7 +77,8 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
                 .filter(s -> s.isLegal(workplan))
                 .sorted()
                 .findFirst()
-                .orElseThrow(ScheduleStaffException::new);
+                .orElse(new Staff("", ""));
+//                .orElseThrow(ScheduleStaffException::new);
 
         staff.addWorkPlan(workplan);
     }

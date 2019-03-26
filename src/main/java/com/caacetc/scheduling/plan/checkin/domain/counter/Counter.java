@@ -22,11 +22,15 @@ public class Counter {
         this.openPeriods = new ArrayList<>();
     }
 
+    private int durationHours() {
+        return openPeriods.stream().reduce(0, (i, o) -> i += o.durationHours(), (i, o) -> i);
+    }
+
     /**
      * combine if two intervals less than 15min;
      * abandon if intervals continue less than 1hour
      */
-    public List<OpenPeriod> getOpenPeriods() {
+    public List<OpenPeriod> openPeriods() {
         List<OpenPeriod> result = new ArrayList<>();
 
         openPeriods.stream()
