@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 @ToString
 public class Counter {
@@ -21,8 +22,18 @@ public class Counter {
         this.openPeriods = new ArrayList<>();
     }
 
-    public List<OpenPeriod> openPeriods() {
-        return openPeriods;
+    public List<OpenPeriod> openPeriodsAfterSplit() {
+        // todo-zz: combine if intervals less than 30min; abandon if intervals continue less than 30min
+
+        List<OpenPeriod> result = openPeriods.stream()
+                .filter(openPeriod -> !openPeriod.isGt3Hours())
+                .collect(Collectors.toList());
+
+        openPeriods.stream()
+                .filter(OpenPeriod::isGt3Hours)
+                .forEach(openPeriod -> result.addAll(openPeriod.split()));
+
+        return result;
     }
 
     public void open(Calendar startTime, Calendar endTime) {
@@ -46,14 +57,6 @@ public class Counter {
 
         if (!isAppendOrPropel.get()) {
             openPeriods.add(new OpenPeriod(startTime, endTime));
-        }
-    }
-
-    public void addOpenPeriod(OpenPeriod openPeriod) {
-        if (openPeriod.isGt3Hours()) {
-            openPeriods.addAll(openPeriod.split());
-        } else {
-            openPeriods.add(openPeriod);
         }
     }
 

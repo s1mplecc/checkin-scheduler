@@ -12,7 +12,7 @@ import java.util.List;
 
 public class StaffSchedulerTest {
     @Test
-    public void should_() {
+    public void should_schedule_staffs() {
         List<Flight> flights = new FlightMapper().flights();
         List<Interval> intervals = new PassengerDistribution().estimate(flights);
         List<Counter> counters = new CounterScheduler().schedule(intervals);

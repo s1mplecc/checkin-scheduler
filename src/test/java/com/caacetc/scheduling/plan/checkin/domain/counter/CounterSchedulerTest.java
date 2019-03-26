@@ -10,11 +10,11 @@ import java.util.List;
 
 public class CounterSchedulerTest {
     @Test
-    public void should_() {
+    public void should_schedule_counter() {
         List<Flight> flights = new FlightMapper().flights();
-        List<Interval> estimate = new PassengerDistribution().estimate(flights);
-        List<Counter> schedule = new CounterScheduler().schedule(estimate);
-        for (Counter counter : schedule) {
+        List<Interval> intervals = new PassengerDistribution().estimate(flights);
+        List<Counter> counters = new CounterScheduler().schedule(intervals);
+        for (Counter counter : counters) {
             System.out.println(counter);
         }
     }
