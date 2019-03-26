@@ -20,8 +20,10 @@ public class DBConnector {
 
     private static DSLContext init() {
         String userName = "root";
-        String password = "HP-PrintJet2107";
-        String url = "jdbc:mysql://172.18.21.87:3306/guitai";
+//        String password = "HP-PrintJet2107";
+//        String url = "jdbc:mysql://172.18.21.87:3306/guitai";
+        String password = "root";
+        String url = "jdbc:mysql://127.0.0.1:3306/guitai";
 
         Connection conn = null;
         try {

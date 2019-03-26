@@ -15,7 +15,6 @@ public class PassengerDistribution {
     public List<Interval> estimate(List<Flight> flights) {
         intervals = initIntervals(flights);
         flights.forEach(this::accumulate);
-
         return intervals;
     }
 
@@ -27,7 +26,7 @@ public class PassengerDistribution {
     private void accumulate(Flight flight) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(flight.departTime());
-        calendar.add(Calendar.HOUR, -2);
+        calendar.add(Calendar.HOUR_OF_DAY, -2);
 
         for (int i = 60; i <= 120; i += INTERVAL) {
             double premium = distribution.probability(i, i + INTERVAL) * flight.premiumCabinNum();
@@ -81,5 +80,4 @@ public class PassengerDistribution {
             }
         };
     }
-
 }

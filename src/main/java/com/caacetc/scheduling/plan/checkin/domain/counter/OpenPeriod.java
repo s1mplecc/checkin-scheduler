@@ -21,9 +21,9 @@ public class OpenPeriod {
 
     @Override
     public String toString() {
-        return new SimpleDateFormat("MM-dd hh:mm").format(startTime.getTime())
+        return new SimpleDateFormat("MM-dd HH:mm").format(startTime.getTime())
                 + " ~ " +
-                new SimpleDateFormat("MM-dd hh:mm").format(endTime.getTime());
+                new SimpleDateFormat("MM-dd HH:mm").format(endTime.getTime());
     }
 
     public boolean isGt3Hours() {
@@ -44,12 +44,12 @@ public class OpenPeriod {
 
         Calendar tempStartTime = startTime;
         Calendar after3Hours = (Calendar) tempStartTime.clone();
-        after3Hours.add(Calendar.HOUR, 3);
+        after3Hours.add(Calendar.HOUR_OF_DAY, 3);
 
         while (after3Hours.before(endTime)) {
             result.add(new OpenPeriod((Calendar) tempStartTime.clone(), (Calendar) after3Hours.clone()));
-            tempStartTime.add(Calendar.HOUR, 3);
-            after3Hours.add(Calendar.HOUR, 3);
+            tempStartTime.add(Calendar.HOUR_OF_DAY, 3);
+            after3Hours.add(Calendar.HOUR_OF_DAY, 3);
         }
 
         result.add(new OpenPeriod(tempStartTime, endTime));
@@ -66,7 +66,7 @@ public class OpenPeriod {
     }
 
     public void assign(LinkedList<Staff> staffs) {
-        Workplan workplan = new Workplan(startTime, endTime);
+        Workplan workplan = new Workplan(startTime);
         for (int i = 0; i < staffs.size(); i++) {
             Staff staff = staffs.get(i);
             if (staff.isLegal(workplan)) {

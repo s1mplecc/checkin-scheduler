@@ -25,23 +25,12 @@ public class Staff {
      * 4、两次上班间隔 > 12hours
      */
     public void addWorkPlan(Workplan workplan) {
-        if (!isLegal(workplan)) {
-            throw new ScheduleStaffException();
-        }
         agenda.add(workplan);
     }
 
     public boolean isLegal(Workplan workplan) {
-        return agenda.oneWeekLte5Days()
-                && agenda.mostlyContinue4Days()
-                && agenda.lastIntervalGt12Hours();
-    }
-
-    public void dailyLaborHours() {
-
-    }
-
-    public void monthLaborHours() {
-
+        return agenda.oneWeekLte5Days(workplan)
+                && agenda.mostlyContinue4Days(workplan)
+                && agenda.lastIntervalGt12Hours(workplan);
     }
 }
