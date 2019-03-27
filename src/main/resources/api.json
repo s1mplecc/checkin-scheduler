@@ -1,0 +1,25 @@
+{
+  "flights": [
+    {
+      "id": 1,
+      "region": "I/O",
+      "destination": "XIY",
+      "departTime": 1553671414180,
+      "economyCabinNum": 108,
+      "premiumCabinNum": 11
+    }
+  ],
+  "staffs": [
+    {
+      "id": 1,
+      "jobName": "经济舱值机"
+    },
+    {
+      "id": 2,
+      "jobName": "高端值机"
+    }
+  ],
+  "rules": [
+    {}
+  ]
+}
