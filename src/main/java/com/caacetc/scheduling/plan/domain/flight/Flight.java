@@ -82,6 +82,6 @@ public class Flight {
     }
 
     public boolean isDomestic() {
-        return "国内".equals(region);
+        return "DOM".equals(region);
     }
 }

@@ -13,6 +13,7 @@ public class Staff implements Comparable<Staff> {
     public Staff(StaffRequest staffRequest) {
         this.name = staffRequest.getName();
         this.job = staffRequest.getJob();
+        this.agenda = new Agenda();
     }
 
     public Staff(String name, String job) {

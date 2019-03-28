@@ -24,7 +24,6 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
                 .sorted()
                 .findFirst()
                 .orElse(new Staff("", ""));
-//                .orElseThrow(ScheduleStaffException::new);
 
         one.addWorkPlan(this);
     }
