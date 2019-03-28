@@ -1,8 +1,7 @@
 package com.caacetc.scheduling.plan.controllers;
 
 
-import com.caacetc.scheduling.plan.controllers.request.FlightRequest;
-import com.caacetc.scheduling.plan.controllers.request.StaffRequest;
+import com.caacetc.scheduling.plan.controllers.request.ScheduleRequest;
 import com.caacetc.scheduling.plan.controllers.response.CounterResponse;
 import com.caacetc.scheduling.plan.controllers.response.PassengerDistributionResponse;
 import com.caacetc.scheduling.plan.controllers.response.StaffResponse;
@@ -14,10 +13,7 @@ import com.caacetc.scheduling.plan.domain.flight.PassengerDistribution;
 import com.caacetc.scheduling.plan.domain.staff.Staff;
 import com.caacetc.scheduling.plan.domain.staff.StaffScheduler;
 import com.caacetc.scheduling.plan.gateway.FlightMapper;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -67,11 +63,11 @@ public class SchedulerController {
     }
 
     @PostMapping("/staffs")
-    public List<StaffResponse> staffs2(List<FlightRequest> flights, List<StaffRequest> staffs) {
-        List<Flight> flights1 = flights.stream().map(Flight::new).collect(Collectors.toList());
-        List<Staff> staffs1 = staffs.stream().map(Staff::new).collect(Collectors.toList());
+    public List<StaffResponse> staffs2(@RequestBody ScheduleRequest scheduleRequest) {
+        List<Flight> flights = scheduleRequest.flights();
+        List<Staff> staffs = scheduleRequest.staffs();
 
-        List<Interval> intervals = passengerDistribution.estimate(flights1);
+        List<Interval> intervals = passengerDistribution.estimate(flights);
         List<Counter> counters = counterScheduler.schedule(intervals);
 
         // todo: schedule(counters, staffs1)
@@ -81,4 +77,5 @@ public class SchedulerController {
                 .map(StaffResponse::new)
                 .collect(Collectors.toList());
     }
+
 }
