@@ -1,12 +1,14 @@
 package com.caacetc.scheduling.plan.domain;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 /**
  * 旅客分布区间，区间取 5min，从 00:00 ～ 24:00 的
  */
+@Service
 public class PassengerDistribution {
     private static final int INTERVAL = 5;
     private static NormalDistribution distribution = new NormalDistribution(90, 10);

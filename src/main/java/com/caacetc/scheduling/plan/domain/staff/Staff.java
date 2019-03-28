@@ -1,13 +1,19 @@
 package com.caacetc.scheduling.plan.domain.staff;
 
+import com.caacetc.scheduling.plan.controllers.request.StaffReq;
 import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
 import lombok.ToString;
 
 @ToString
 public class Staff implements Comparable<Staff> {
     private String id;
+    private String name;
     private String type;
     private Agenda agenda;
+
+
+    public Staff(StaffReq staffReq) {
+    }
 
     public Staff(String id, String type) {
         this.id = id;

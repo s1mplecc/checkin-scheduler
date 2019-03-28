@@ -2,6 +2,7 @@ package com.caacetc.scheduling.plan.domain.counter;
 
 import com.caacetc.scheduling.plan.domain.Interval;
 import com.caacetc.scheduling.plan.mapper.CounterMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,6 +13,7 @@ import java.util.List;
  * 1、必开柜台（开放时间段、柜台号），配置传入
  * 2、按需开放（计算所需柜台数大于必须开放数）
  */
+@Service
 public class CounterScheduler {
     private List<Counter> counters;
     private List<Counter> premCounters;

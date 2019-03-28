@@ -18,7 +18,7 @@ public class CounterMapper {
 
         return records.stream()
                 .reduce(new ArrayList<>(), (counters, record) -> {
-                    String id = (String) record.get("柜台号");
+                    String id = (String) record.get("code");
                     String region = (String) record.get("国内/国际");
                     String type = (String) record.get("经济舱/高端");
                     counters.add(new Counter(id, region, type));

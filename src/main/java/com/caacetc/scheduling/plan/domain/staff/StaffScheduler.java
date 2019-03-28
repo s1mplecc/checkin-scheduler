@@ -3,10 +3,12 @@ package com.caacetc.scheduling.plan.domain.staff;
 import com.caacetc.scheduling.plan.domain.counter.Counter;
 import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
 import com.caacetc.scheduling.plan.mapper.StaffMapper;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class StaffScheduler {
     private List<Staff> econCheckInStaffs;
     private List<Staff> premCheckInStaffs;
