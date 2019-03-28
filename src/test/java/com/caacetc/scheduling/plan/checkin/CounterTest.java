@@ -1,7 +1,7 @@
 package com.caacetc.scheduling.plan.checkin;
 
-import com.caacetc.scheduling.plan.checkin.domain.counter.Counter;
-import com.caacetc.scheduling.plan.checkin.mapper.CounterMapper;
+import com.caacetc.scheduling.plan.domain.counter.Counter;
+import com.caacetc.scheduling.plan.mapper.CounterMapper;
 import org.junit.Test;
 
 import java.util.List;
