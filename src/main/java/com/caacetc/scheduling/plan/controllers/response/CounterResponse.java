@@ -7,13 +7,13 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class CounterRes {
+public class CounterResponse {
     private final String id;
     private final String region;
     private final String type;
     private final List<OpenPeriod> openPeriods;
 
-    public CounterRes(Counter counter) {
+    public CounterResponse(Counter counter) {
         id = counter.id();
         region = counter.region();
         type = counter.type();

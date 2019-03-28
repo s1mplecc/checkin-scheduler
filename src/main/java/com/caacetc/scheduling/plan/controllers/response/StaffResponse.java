@@ -7,12 +7,12 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class StaffRes {
+public class StaffResponse {
     private String id;
     private String type;
     private List<WorkDuration> workPlans;
 
-    public StaffRes(Staff staff) {
+    public StaffResponse(Staff staff) {
         id = staff.id();
         type = staff.type();
         workPlans = staff.agenda().workplans();

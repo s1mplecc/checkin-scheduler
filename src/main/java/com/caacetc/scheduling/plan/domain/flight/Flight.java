@@ -1,6 +1,6 @@
 package com.caacetc.scheduling.plan.domain.flight;
 
-import com.caacetc.scheduling.plan.controllers.request.FlightReq;
+import com.caacetc.scheduling.plan.controllers.request.FlightRequest;
 import lombok.Data;
 import lombok.ToString;
 
@@ -22,7 +22,7 @@ public class Flight {
     private Integer economyCabinNum;
     private Integer premiumCabinNum;
 
-    public Flight(FlightReq flightReq) {
+    public Flight(FlightRequest flightRequest) {
         this.date = "";
         this.passengerNum = "";
         this.region = "";

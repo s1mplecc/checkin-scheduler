@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class PassengerDistributionRes {
+public class PassengerDistributionResponse {
     private Date date;
     /**
      * 高端旅客人数
@@ -33,7 +33,7 @@ public class PassengerDistributionRes {
      */
     private int premiumCounters;
 
-    public PassengerDistributionRes(Interval interval) {
+    public PassengerDistributionResponse(Interval interval) {
         date = interval.startTime().getTime();
         dEconomyCabinNum = interval.dEconomyCabinNum();
         iEconomyCabinNum = interval.iEconomyCabinNum();

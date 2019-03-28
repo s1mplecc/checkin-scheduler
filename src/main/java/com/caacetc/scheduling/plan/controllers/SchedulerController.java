@@ -1,11 +1,11 @@
 package com.caacetc.scheduling.plan.controllers;
 
 
-import com.caacetc.scheduling.plan.controllers.request.FlightReq;
-import com.caacetc.scheduling.plan.controllers.request.StaffReq;
-import com.caacetc.scheduling.plan.controllers.response.CounterRes;
-import com.caacetc.scheduling.plan.controllers.response.PassengerDistributionRes;
-import com.caacetc.scheduling.plan.controllers.response.StaffRes;
+import com.caacetc.scheduling.plan.controllers.request.FlightRequest;
+import com.caacetc.scheduling.plan.controllers.request.StaffRequest;
+import com.caacetc.scheduling.plan.controllers.response.CounterResponse;
+import com.caacetc.scheduling.plan.controllers.response.PassengerDistributionResponse;
+import com.caacetc.scheduling.plan.controllers.response.StaffResponse;
 import com.caacetc.scheduling.plan.domain.counter.Counter;
 import com.caacetc.scheduling.plan.domain.counter.CounterScheduler;
 import com.caacetc.scheduling.plan.domain.flight.Flight;
@@ -40,34 +40,34 @@ public class SchedulerController {
     }
 
     @GetMapping("/passengers/distribution")
-    public List<PassengerDistributionRes> passengerDistribution() {
+    public List<PassengerDistributionResponse> passengerDistribution() {
         List<Flight> flights = new FlightMapper().flights();
         return passengerDistribution.estimate(flights).stream()
-                .map(PassengerDistributionRes::new)
+                .map(PassengerDistributionResponse::new)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/counters")
-    public List<CounterRes> counters() {
+    public List<CounterResponse> counters() {
         List<Flight> flights = new FlightMapper().flights();
         List<Interval> intervals = passengerDistribution.estimate(flights);
         return counterScheduler.schedule(intervals).stream()
-                .map(CounterRes::new)
+                .map(CounterResponse::new)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/staffs")
-    public List<StaffRes> staffs() {
+    public List<StaffResponse> staffs() {
         List<Flight> flights = new FlightMapper().flights();
         List<Interval> intervals = passengerDistribution.estimate(flights);
         List<Counter> counters = counterScheduler.schedule(intervals);
         return new StaffScheduler().schedule(counters).stream()
-                .map(StaffRes::new)
+                .map(StaffResponse::new)
                 .collect(Collectors.toList());
     }
 
     @PostMapping("/staffs")
-    public List<StaffRes> staffs2(List<FlightReq> flights, List<StaffReq> staffs) {
+    public List<StaffResponse> staffs2(List<FlightRequest> flights, List<StaffRequest> staffs) {
         List<Flight> flights1 = flights.stream().map(Flight::new).collect(Collectors.toList());
         List<Staff> staffs1 = staffs.stream().map(Staff::new).collect(Collectors.toList());
 
@@ -78,7 +78,7 @@ public class SchedulerController {
         List<Staff> staff = staffScheduler.schedule(counters);
 
         return staff.stream()
-                .map(StaffRes::new)
+                .map(StaffResponse::new)
                 .collect(Collectors.toList());
     }
 }

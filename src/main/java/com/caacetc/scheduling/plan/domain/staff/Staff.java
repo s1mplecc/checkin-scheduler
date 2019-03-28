@@ -1,6 +1,6 @@
 package com.caacetc.scheduling.plan.domain.staff;
 
-import com.caacetc.scheduling.plan.controllers.request.StaffReq;
+import com.caacetc.scheduling.plan.controllers.request.StaffRequest;
 import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
 import lombok.ToString;
 
@@ -12,7 +12,7 @@ public class Staff implements Comparable<Staff> {
     private Agenda agenda;
 
 
-    public Staff(StaffReq staffReq) {
+    public Staff(StaffRequest staffRequest) {
     }
 
     public Staff(String id, String type) {
