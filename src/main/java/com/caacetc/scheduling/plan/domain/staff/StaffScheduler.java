@@ -2,23 +2,18 @@ package com.caacetc.scheduling.plan.domain.staff;
 
 import com.caacetc.scheduling.plan.domain.counter.Counter;
 import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
-import com.caacetc.scheduling.plan.gateway.StaffMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StaffScheduler {
-    private List<Staff> econCheckInStaffs;
-    private List<Staff> premCheckInStaffs;
+    public List<Staff> scheduleBy(List<Counter> counters, List<Staff> staffs) {
+        List<Staff> econCheckInStaffs = filterByJob(staffs, "经济舱值机");
+        List<Staff> premCheckInStaffs = filterByJob(staffs, "高端值机");
 
-    public StaffScheduler() {
-        econCheckInStaffs = new StaffMapper().econCheckInStaffs();
-        premCheckInStaffs = new StaffMapper().premCheckInStaffs();
-    }
-
-    public List<Staff> schedule(List<Counter> counters) {
         counters.forEach(counter -> {
             List<OpenPeriod> openPeriods = counter.openPeriodsAfterSplit();
             if (counter.isPrem()) {
@@ -28,9 +23,15 @@ public class StaffScheduler {
             }
         });
 
-        List<Staff> staffs = new ArrayList<>();
-        staffs.addAll(econCheckInStaffs);
-        staffs.addAll(premCheckInStaffs);
-        return staffs;
+        List<Staff> staffs2 = new ArrayList<>();
+        staffs2.addAll(econCheckInStaffs);
+        staffs2.addAll(premCheckInStaffs);
+        return staffs2;
+    }
+
+    private List<Staff> filterByJob(List<Staff> staffs, String job) {
+        return staffs.stream()
+                .filter(staff -> staff.job().equals(job))
+                .collect(Collectors.toList());
     }
 }

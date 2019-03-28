@@ -14,7 +14,7 @@ public class PassengerCalculator {
     private static NormalDistribution distribution = new NormalDistribution(90, 10);
     private List<PassengerDistribution> passengerDistributions;
 
-    public List<PassengerDistribution> estimate(List<Flight> flights) {
+    public List<PassengerDistribution> estimateBy(List<Flight> flights) {
         passengerDistributions = initIntervals(flights);
         flights.forEach(this::accumulate);
         return passengerDistributions;

@@ -6,6 +6,7 @@ import lombok.ToString;
 
 @ToString
 public class Staff implements Comparable<Staff> {
+    private static final Staff NOBODY = new Staff();
     private String name;
     private String job;
     private Agenda agenda;
@@ -16,14 +17,11 @@ public class Staff implements Comparable<Staff> {
         this.agenda = new Agenda();
     }
 
-    public Staff(String name, String job) {
-        this.name = name;
-        this.job = job;
-        this.agenda = new Agenda();
+    private Staff() {
     }
 
-    public String id() {
-        return name;
+    public static Staff nobody() {
+        return NOBODY;
     }
 
     /**
@@ -43,6 +41,14 @@ public class Staff implements Comparable<Staff> {
                 && agenda.inWorkDuration(openPeriod);
     }
 
+    public String name() {
+        return name;
+    }
+
+    public String job() {
+        return job;
+    }
+
     public Agenda agenda() {
         return agenda;
     }
@@ -51,9 +57,5 @@ public class Staff implements Comparable<Staff> {
     @Override
     public int compareTo(Staff another) {
         return agenda.workHours() - another.agenda().workHours();
-    }
-
-    public String type() {
-        return job;
     }
 }

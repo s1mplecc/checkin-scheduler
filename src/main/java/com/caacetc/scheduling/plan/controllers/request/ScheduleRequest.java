@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,7 +23,15 @@ public class ScheduleRequest {
     }
 
     public List<Flight> flights() {
-        return flights.stream().map(Flight::new).collect(Collectors.toList());
+        return flights.stream()
+                .map(flight -> {
+                    try {
+                        return new Flight(flight);
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
     public List<Staff> staffs() {

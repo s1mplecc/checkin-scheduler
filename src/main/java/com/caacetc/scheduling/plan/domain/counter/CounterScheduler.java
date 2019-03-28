@@ -33,11 +33,11 @@ public class CounterScheduler {
     /**
      * Compute each counter open periods
      */
-    public List<Counter> schedule(List<PassengerDistribution> passengerDistributions) {
+    public List<Counter> scheduleBy(List<PassengerDistribution> passengerDistributions) {
         passengerDistributions.forEach(interval -> {
-            schedule(interval, premCounters, interval.premiumCounters());
-            schedule(interval, dEconCounters, interval.dEconomyCounters());
-            schedule(interval, iEconCounters, interval.iEconomyCounters());
+            scheduleBy(interval, premCounters, interval.premiumCounters());
+            scheduleBy(interval, dEconCounters, interval.dEconomyCounters());
+            scheduleBy(interval, iEconCounters, interval.iEconomyCounters());
         });
 
         counters.addAll(premCounters);
@@ -46,7 +46,7 @@ public class CounterScheduler {
         return counters;
     }
 
-    private void schedule(PassengerDistribution passengerDistribution, List<Counter> counters, int needs) {
+    private void scheduleBy(PassengerDistribution passengerDistribution, List<Counter> counters, int needs) {
         int temp = Math.min(counters.size(), needs);
         for (int i = 0; i < temp; i++) {
             Calendar endTime = (Calendar) passengerDistribution.startTime().clone();

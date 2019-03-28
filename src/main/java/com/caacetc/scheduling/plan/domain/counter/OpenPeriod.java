@@ -23,7 +23,7 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
                 .filter(staff -> staff.isLegal(this))
                 .sorted()
                 .findFirst()
-                .orElse(new Staff("", ""));
+                .orElse(Staff.nobody());
 
         one.addWorkPlan(this);
     }

@@ -13,8 +13,8 @@ public class StaffResponse {
     private List<WorkDuration> workPlans;
 
     public StaffResponse(Staff staff) {
-        id = staff.id();
-        type = staff.type();
+        id = staff.name();
+        type = staff.job();
         workPlans = staff.agenda().workplans();
     }
 }
