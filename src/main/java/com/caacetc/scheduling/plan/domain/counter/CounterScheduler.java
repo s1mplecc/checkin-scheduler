@@ -1,6 +1,6 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
-import com.caacetc.scheduling.plan.domain.flight.Interval;
+import com.caacetc.scheduling.plan.domain.flight.PassengerDistribution;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,8 +33,8 @@ public class CounterScheduler {
     /**
      * Compute each counter open periods
      */
-    public List<Counter> schedule(List<Interval> intervals) {
-        intervals.forEach(interval -> {
+    public List<Counter> schedule(List<PassengerDistribution> passengerDistributions) {
+        passengerDistributions.forEach(interval -> {
             schedule(interval, premCounters, interval.premiumCounters());
             schedule(interval, dEconCounters, interval.dEconomyCounters());
             schedule(interval, iEconCounters, interval.iEconomyCounters());
@@ -46,12 +46,12 @@ public class CounterScheduler {
         return counters;
     }
 
-    private void schedule(Interval interval, List<Counter> counters, int needs) {
+    private void schedule(PassengerDistribution passengerDistribution, List<Counter> counters, int needs) {
         int temp = Math.min(counters.size(), needs);
         for (int i = 0; i < temp; i++) {
-            Calendar endTime = (Calendar) interval.startTime().clone();
+            Calendar endTime = (Calendar) passengerDistribution.startTime().clone();
             endTime.add(Calendar.MINUTE, 5);
-            counters.get(i).open(interval.startTime(), endTime);
+            counters.get(i).open(passengerDistribution.startTime(), endTime);
         }
     }
 }

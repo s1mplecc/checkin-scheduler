@@ -11,8 +11,4 @@ public class FlightRequest {
     private String region;
     private Integer economyCabinNum;
     private Integer premiumCabinNum;
-
-    public FlightRequest(FlightRequest flightRequest) {
-
-    }
 }

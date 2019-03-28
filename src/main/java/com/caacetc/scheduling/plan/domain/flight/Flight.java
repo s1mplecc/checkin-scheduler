@@ -13,20 +13,26 @@ import java.util.regex.Pattern;
 @Data
 @ToString
 public class Flight {
-    private final String date;
-    private final String passengerNum;
-    private final String region;
-    private final String destination;
+    private String passengerNum;
+    private String region;
+    private String destination;
+    private String date;
+    private Long id;
     private Date departTime;
 
     private Integer economyCabinNum;
     private Integer premiumCabinNum;
 
     public Flight(FlightRequest flightRequest) {
-        this.date = "";
-        this.passengerNum = "";
-        this.region = "";
-        this.destination = "";
+        this.id = flightRequest.getId();
+        this.region = flightRequest.getRegion();
+        this.economyCabinNum = flightRequest.getEconomyCabinNum();
+        this.premiumCabinNum = flightRequest.getPremiumCabinNum();
+        try {
+            this.departTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(flightRequest.getDepartTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public Flight(String date, String departTime, String passengerNum, String region, String destination) {
@@ -47,22 +53,6 @@ public class Flight {
 
     public Date departTime() {
         return departTime;
-    }
-
-    public String date() {
-        return date;
-    }
-
-    public String passengerNum() {
-        return passengerNum;
-    }
-
-    public String region() {
-        return region;
-    }
-
-    public String destination() {
-        return destination;
     }
 
     public Integer economyCabinNum() {

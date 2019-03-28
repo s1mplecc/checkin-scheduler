@@ -6,23 +6,23 @@ import lombok.ToString;
 
 @ToString
 public class Staff implements Comparable<Staff> {
-    private String id;
     private String name;
-    private String type;
+    private String job;
     private Agenda agenda;
 
-
     public Staff(StaffRequest staffRequest) {
+        this.name = staffRequest.getName();
+        this.job = staffRequest.getJob();
     }
 
-    public Staff(String id, String type) {
-        this.id = id;
-        this.type = type;
+    public Staff(String name, String job) {
+        this.name = name;
+        this.job = job;
         this.agenda = new Agenda();
     }
 
     public String id() {
-        return id;
+        return name;
     }
 
     /**
@@ -53,6 +53,6 @@ public class Staff implements Comparable<Staff> {
     }
 
     public String type() {
-        return type;
+        return job;
     }
 }

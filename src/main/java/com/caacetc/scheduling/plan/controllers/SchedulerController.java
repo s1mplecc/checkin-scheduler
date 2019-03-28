@@ -8,7 +8,7 @@ import com.caacetc.scheduling.plan.controllers.response.StaffResponse;
 import com.caacetc.scheduling.plan.domain.counter.Counter;
 import com.caacetc.scheduling.plan.domain.counter.CounterScheduler;
 import com.caacetc.scheduling.plan.domain.flight.Flight;
-import com.caacetc.scheduling.plan.domain.flight.Interval;
+import com.caacetc.scheduling.plan.domain.flight.PassengerCalculator;
 import com.caacetc.scheduling.plan.domain.flight.PassengerDistribution;
 import com.caacetc.scheduling.plan.domain.staff.Staff;
 import com.caacetc.scheduling.plan.domain.staff.StaffScheduler;
@@ -26,7 +26,7 @@ public class SchedulerController {
     @Resource
     private StaffScheduler staffScheduler;
     @Resource
-    private PassengerDistribution passengerDistribution;
+    private PassengerCalculator passengerCalculator;
     @Resource
     private CounterScheduler counterScheduler;
 
@@ -38,7 +38,7 @@ public class SchedulerController {
     @GetMapping("/passengers/distribution")
     public List<PassengerDistributionResponse> passengerDistribution() {
         List<Flight> flights = new FlightMapper().flights();
-        return passengerDistribution.estimate(flights).stream()
+        return passengerCalculator.estimate(flights).stream()
                 .map(PassengerDistributionResponse::new)
                 .collect(Collectors.toList());
     }
@@ -46,8 +46,8 @@ public class SchedulerController {
     @GetMapping("/counters")
     public List<CounterResponse> counters() {
         List<Flight> flights = new FlightMapper().flights();
-        List<Interval> intervals = passengerDistribution.estimate(flights);
-        return counterScheduler.schedule(intervals).stream()
+        List<PassengerDistribution> passengerDistributions = passengerCalculator.estimate(flights);
+        return counterScheduler.schedule(passengerDistributions).stream()
                 .map(CounterResponse::new)
                 .collect(Collectors.toList());
     }
@@ -55,8 +55,8 @@ public class SchedulerController {
     @GetMapping("/staffs")
     public List<StaffResponse> staffs() {
         List<Flight> flights = new FlightMapper().flights();
-        List<Interval> intervals = passengerDistribution.estimate(flights);
-        List<Counter> counters = counterScheduler.schedule(intervals);
+        List<PassengerDistribution> passengerDistributions = passengerCalculator.estimate(flights);
+        List<Counter> counters = counterScheduler.schedule(passengerDistributions);
         return new StaffScheduler().schedule(counters).stream()
                 .map(StaffResponse::new)
                 .collect(Collectors.toList());
@@ -67,8 +67,8 @@ public class SchedulerController {
         List<Flight> flights = scheduleRequest.flights();
         List<Staff> staffs = scheduleRequest.staffs();
 
-        List<Interval> intervals = passengerDistribution.estimate(flights);
-        List<Counter> counters = counterScheduler.schedule(intervals);
+        List<PassengerDistribution> passengerDistributions = passengerCalculator.estimate(flights);
+        List<Counter> counters = counterScheduler.schedule(passengerDistributions);
 
         // todo: schedule(counters, staffs1)
         List<Staff> staff = staffScheduler.schedule(counters);
