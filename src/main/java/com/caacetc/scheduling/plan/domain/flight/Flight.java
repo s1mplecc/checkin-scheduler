@@ -1,4 +1,4 @@
-package com.caacetc.scheduling.plan.domain;
+package com.caacetc.scheduling.plan.domain.flight;
 
 import com.caacetc.scheduling.plan.controllers.request.FlightReq;
 import lombok.Data;

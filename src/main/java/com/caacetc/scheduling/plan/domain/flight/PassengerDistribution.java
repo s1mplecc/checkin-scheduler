@@ -1,4 +1,4 @@
-package com.caacetc.scheduling.plan.domain;
+package com.caacetc.scheduling.plan.domain.flight;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.springframework.stereotype.Service;

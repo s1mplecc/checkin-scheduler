@@ -1,7 +1,7 @@
 package com.caacetc.scheduling.plan.checkin;
 
-import com.caacetc.scheduling.plan.domain.Flight;
-import com.caacetc.scheduling.plan.mapper.FlightMapper;
+import com.caacetc.scheduling.plan.domain.flight.Flight;
+import com.caacetc.scheduling.plan.gateway.FlightMapper;
 import org.junit.Test;
 
 import java.util.List;

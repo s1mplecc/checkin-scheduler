@@ -1,9 +1,9 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
-import com.caacetc.scheduling.plan.domain.Flight;
-import com.caacetc.scheduling.plan.domain.Interval;
-import com.caacetc.scheduling.plan.domain.PassengerDistribution;
-import com.caacetc.scheduling.plan.mapper.FlightMapper;
+import com.caacetc.scheduling.plan.domain.flight.Flight;
+import com.caacetc.scheduling.plan.domain.flight.Interval;
+import com.caacetc.scheduling.plan.domain.flight.PassengerDistribution;
+import com.caacetc.scheduling.plan.gateway.FlightMapper;
 import org.junit.Test;
 
 import java.util.List;

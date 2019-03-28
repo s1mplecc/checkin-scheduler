@@ -1,6 +1,5 @@
-package com.caacetc.scheduling.plan.mapper;
+package com.caacetc.scheduling.plan.gateway;
 
-import com.caacetc.scheduling.plan.core.DBConnector;
 import com.caacetc.scheduling.plan.domain.staff.Staff;
 import org.jooq.Record;
 import org.jooq.Result;
@@ -9,7 +8,7 @@ import java.util.LinkedList;
 
 public class StaffMapper {
     public LinkedList<Staff> econCheckInStaffs() {
-        Result<Record> records = DBConnector.context()
+        Result<Record> records = MysqlGateway.context()
                 .select()
                 .from("staff_econ_checkin")
                 .fetch();
@@ -24,7 +23,7 @@ public class StaffMapper {
     }
 
     public LinkedList<Staff> premCheckInStaffs() {
-        Result<Record> records = DBConnector.context()
+        Result<Record> records = MysqlGateway.context()
                 .select()
                 .from("staff_prem_checkin")
                 .fetch();

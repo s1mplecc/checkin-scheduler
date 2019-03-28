@@ -1,4 +1,4 @@
-package com.caacetc.scheduling.plan.domain;
+package com.caacetc.scheduling.plan.domain.flight;
 
 import java.util.Calendar;
 

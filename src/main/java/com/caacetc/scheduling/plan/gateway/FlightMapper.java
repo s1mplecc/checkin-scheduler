@@ -1,7 +1,6 @@
-package com.caacetc.scheduling.plan.mapper;
+package com.caacetc.scheduling.plan.gateway;
 
-import com.caacetc.scheduling.plan.core.DBConnector;
-import com.caacetc.scheduling.plan.domain.Flight;
+import com.caacetc.scheduling.plan.domain.flight.Flight;
 import org.jooq.Record;
 import org.jooq.Result;
 
@@ -10,7 +9,7 @@ import java.util.List;
 
 public class FlightMapper {
     public List<Flight> flights() {
-        Result<Record> records = DBConnector.context()
+        Result<Record> records = MysqlGateway.context()
                 .select()
                 .from("flights")
                 .fetch();

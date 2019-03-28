@@ -1,7 +1,6 @@
-package com.caacetc.scheduling.plan.mapper;
+package com.caacetc.scheduling.plan.domain.counter;
 
-import com.caacetc.scheduling.plan.core.DBConnector;
-import com.caacetc.scheduling.plan.domain.counter.Counter;
+import com.caacetc.scheduling.plan.gateway.MysqlGateway;
 import org.jooq.Record;
 import org.jooq.Result;
 
@@ -9,9 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CounterMapper {
+public class CounterRepository {
     public List<Counter> counters() {
-        Result<Record> records = DBConnector.context()
+        Result<Record> records = MysqlGateway.context()
                 .select()
                 .from("counter")
                 .fetch();

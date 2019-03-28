@@ -1,7 +1,6 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
-import com.caacetc.scheduling.plan.domain.Interval;
-import com.caacetc.scheduling.plan.mapper.CounterMapper;
+import com.caacetc.scheduling.plan.domain.flight.Interval;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,9 +21,9 @@ public class CounterScheduler {
 
     public CounterScheduler() {
         counters = new ArrayList<>();
-        premCounters = new CounterMapper().premCounters();
-        dEconCounters = new CounterMapper().dEconCounters();
-        iEconCounters = new CounterMapper().iEconCounters();
+        premCounters = new CounterRepository().premCounters();
+        dEconCounters = new CounterRepository().dEconCounters();
+        iEconCounters = new CounterRepository().iEconCounters();
     }
 
     public CounterScheduler(List<Counter> counters) {

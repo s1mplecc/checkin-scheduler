@@ -1,4 +1,4 @@
-package com.caacetc.scheduling.plan.core;
+package com.caacetc.scheduling.plan.gateway;
 
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBConnector {
+public class MysqlGateway {
     private static DSLContext context;
 
     public static DSLContext context() {

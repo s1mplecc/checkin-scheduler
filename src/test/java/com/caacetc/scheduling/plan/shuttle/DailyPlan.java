@@ -1,11 +1,11 @@
-package com.caacetc.scheduling.plan.domain.shuttle;
+package com.caacetc.scheduling.plan.shuttle;
 
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.Set;
 
-import static com.caacetc.scheduling.plan.domain.shuttle.Period.*;
+import static com.caacetc.scheduling.plan.shuttle.Period.*;
 
 public class DailyPlan {
     private int date;

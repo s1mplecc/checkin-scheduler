@@ -1,4 +1,4 @@
-package com.caacetc.scheduling.plan.domain.shuttle;
+package com.caacetc.scheduling.plan.shuttle;
 
 import java.util.*;
 import java.util.stream.Collectors;

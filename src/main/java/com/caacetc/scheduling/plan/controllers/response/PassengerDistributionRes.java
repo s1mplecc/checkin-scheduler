@@ -1,6 +1,6 @@
 package com.caacetc.scheduling.plan.controllers.response;
 
-import com.caacetc.scheduling.plan.domain.Interval;
+import com.caacetc.scheduling.plan.domain.flight.Interval;
 import lombok.Data;
 
 import java.util.Date;

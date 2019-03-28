@@ -2,7 +2,7 @@ package com.caacetc.scheduling.plan.domain.staff;
 
 import com.caacetc.scheduling.plan.domain.counter.Counter;
 import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
-import com.caacetc.scheduling.plan.mapper.StaffMapper;
+import com.caacetc.scheduling.plan.gateway.StaffMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
