@@ -1,5 +1,6 @@
 package com.caacetc.scheduling.plan.domain;
 
+import lombok.Data;
 import lombok.ToString;
 
 import java.text.ParseException;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Data
 @ToString
 public class Flight {
     private final String date;

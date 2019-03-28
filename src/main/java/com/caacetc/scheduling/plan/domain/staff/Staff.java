@@ -45,4 +45,8 @@ public class Staff implements Comparable<Staff> {
     public int compareTo(Staff another) {
         return agenda.workHours() - another.agenda().workHours();
     }
+
+    public String type() {
+        return type;
+    }
 }

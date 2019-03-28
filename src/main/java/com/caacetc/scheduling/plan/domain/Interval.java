@@ -52,16 +52,16 @@ public class Interval {
         return startTime;
     }
 
-    public long premiumCabinNum() {
-        return (long) premiumCabinNum;
+    public int premiumCabinNum() {
+        return (int) premiumCabinNum;
     }
 
-    public long dEconomyCabinNum() {
-        return (long) dEconomyCabinNum;
+    public int dEconomyCabinNum() {
+        return (int) dEconomyCabinNum;
     }
 
-    public long iEconomyCabinNum() {
-        return (long) iEconomyCabinNum;
+    public int iEconomyCabinNum() {
+        return (int) iEconomyCabinNum;
     }
 
     @Override

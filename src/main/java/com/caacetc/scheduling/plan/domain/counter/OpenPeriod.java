@@ -1,12 +1,14 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
 import com.caacetc.scheduling.plan.domain.staff.Staff;
+import lombok.Data;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+@Data
 public class OpenPeriod implements Comparable<OpenPeriod> {
     private Calendar startTime;
     private Calendar endTime;
@@ -32,7 +34,7 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
         return (int) (l / (1000 * 60 * 60));
     }
 
-    public boolean isGt3Hours() {
+    public boolean gt3Hours() {
         long l = (endTime.getTime().getTime() - startTime.getTime().getTime());
         return l > 3 * (1000 * 60 * 60);
     }
@@ -71,7 +73,7 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
         this.startTime = startTime;
     }
 
-    public boolean isLongerThan1Hour() {
+    public boolean longerThan1Hour() {
         long l = endTime.getTime().getTime() - startTime.getTime().getTime();
         return l >= 1000 * 60 * 60;
     }

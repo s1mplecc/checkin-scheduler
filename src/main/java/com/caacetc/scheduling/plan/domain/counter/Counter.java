@@ -26,11 +26,11 @@ public class Counter {
         List<OpenPeriod> openPeriods = openPeriods();
 
         List<OpenPeriod> result = openPeriods.stream()
-                .filter(openPeriod -> !openPeriod.isGt3Hours())
+                .filter(openPeriod -> !openPeriod.gt3Hours())
                 .collect(Collectors.toList());
 
         openPeriods.stream()
-                .filter(OpenPeriod::isGt3Hours)
+                .filter(OpenPeriod::gt3Hours)
                 .forEach(openPeriod -> result.addAll(openPeriod.split()));
 
         return result;
@@ -59,7 +59,7 @@ public class Counter {
                 });
 
         return openPeriods.stream()
-                .filter(OpenPeriod::isLongerThan1Hour)
+                .filter(OpenPeriod::longerThan1Hour)
                 .collect(Collectors.toList());
     }
 

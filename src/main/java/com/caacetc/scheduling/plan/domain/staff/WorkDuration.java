@@ -1,6 +1,7 @@
 package com.caacetc.scheduling.plan.domain.staff;
 
 import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
+import lombok.Getter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -11,7 +12,9 @@ import java.util.List;
  * 员工工作类，包含上班时间、下班时间、工作在柜台的时间片段
  */
 public class WorkDuration {
+    @Getter
     private final Calendar onDuty;
+    @Getter
     private final Calendar offDuty;
     private final List<OpenPeriod> workPeriods;
 

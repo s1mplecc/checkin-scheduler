@@ -15,15 +15,15 @@ public class OpenPeriodTest {
         end.add(Calendar.HOUR_OF_DAY, 2);
 
         OpenPeriod openPeriod = new OpenPeriod(start, end);
-        assertThat(openPeriod.isGt3Hours()).isFalse();
+        assertThat(openPeriod.gt3Hours()).isFalse();
 
         end.add(Calendar.HOUR_OF_DAY, 1);
         OpenPeriod openPeriod2 = new OpenPeriod(start, end);
-        assertThat(openPeriod2.isGt3Hours()).isFalse();
+        assertThat(openPeriod2.gt3Hours()).isFalse();
 
         end.add(Calendar.MINUTE, 1);
         OpenPeriod openPeriod3 = new OpenPeriod(start, end);
-        assertThat(openPeriod3.isGt3Hours()).isTrue();
+        assertThat(openPeriod3.gt3Hours()).isTrue();
     }
 
     @Test
