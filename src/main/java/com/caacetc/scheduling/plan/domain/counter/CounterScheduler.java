@@ -20,18 +20,8 @@ public class CounterScheduler {
     @Resource
     private CounterRepository repository;
 
-    private List<Counter> mustOpenCounters;
-    private List<Counter> onDemandPremiumCounters;
-    private List<Counter> onDemandIntEconomyCounters;
-    private List<Counter> onDemandDomEconomyCounters;
-
-
     public CounterScheduler() {
         repository = new CounterRepository();
-        onDemandPremiumCounters = repository.onDemandPremiumCounters();
-        onDemandDomEconomyCounters = repository.onDemandDomEconomyCounters();
-        onDemandIntEconomyCounters = repository.onDemandIntEconomyCounters();
-        mustOpenCounters = repository.mustOpenCounters();
     }
 
     /**
@@ -39,6 +29,11 @@ public class CounterScheduler {
      */
     public List<Counter> scheduleBy(List<PassengerDistribution> passengerDistributions, List<Flight> flights) {
         List<Counter> result = new ArrayList<>();
+
+        List<Counter> mustOpenCounters = repository.mustOpenCounters();
+        List<Counter> onDemandPremiumCounters = repository.onDemandPremiumCounters();
+        List<Counter> onDemandIntEconomyCounters = repository.onDemandIntEconomyCounters();
+        List<Counter> onDemandDomEconomyCounters = repository.onDemandDomEconomyCounters();
 
         scheduleMustOpenCounters(mustOpenCounters);
         passengerDistributions.forEach(distribution -> {

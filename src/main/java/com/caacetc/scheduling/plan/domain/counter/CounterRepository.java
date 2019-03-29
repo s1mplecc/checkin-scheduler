@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class CounterRepository {
@@ -32,18 +33,18 @@ public class CounterRepository {
                 }, (l, a) -> l);
     }
 
-    public List<Counter> counters() {
-        return counters;
+    public Stream<Counter> counters() {
+        return counters.stream().peek(Counter::clear);
     }
 
     public List<Counter> mustOpenCounters() {
-        return counters.stream()
+        return counters()
                 .filter(Counter::mustOpen)
                 .collect(Collectors.toList());
     }
 
     public List<Counter> onDemandDomEconomyCounters() {
-        return counters.stream()
+        return counters()
                 .filter(counter -> !counter.mustOpen())
                 .filter(counter -> {
                     boolean a = counter.id().compareTo("K06") >= 0 && counter.id().compareTo("K12") <= 0;
@@ -56,14 +57,14 @@ public class CounterRepository {
     }
 
     public List<Counter> onDemandIntEconomyCounters() {
-        return counters.stream()
+        return counters()
                 .filter(counter -> !counter.mustOpen())
                 .filter(counter -> counter.id().compareTo("H04") >= 0 && counter.id().compareTo("H08") <= 0)
                 .collect(Collectors.toList());
     }
 
     public List<Counter> onDemandPremiumCounters() {
-        return counters.stream()
+        return counters()
                 .filter(counter -> !counter.mustOpen())
                 .filter(counter -> {
                     boolean isF = counter.id().compareTo("F21") >= 0 && counter.id().compareTo("F31") <= 0;

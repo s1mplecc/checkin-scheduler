@@ -129,6 +129,10 @@ public class Counter implements Comparable<Counter> {
         return type;
     }
 
+    public void clear() {
+        openPeriods.clear();
+    }
+
     @Override
     public int compareTo(Counter o) {
         return id.compareTo(o.id);
