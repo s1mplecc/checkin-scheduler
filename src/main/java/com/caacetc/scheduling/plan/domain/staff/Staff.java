@@ -18,6 +18,8 @@ public class Staff implements Comparable<Staff> {
     }
 
     private Staff() {
+        this.name = "NOBODY";
+        this.agenda = new Agenda();
     }
 
     public static Staff nobody() {

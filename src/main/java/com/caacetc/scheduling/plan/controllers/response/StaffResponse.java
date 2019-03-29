@@ -1,20 +1,18 @@
 package com.caacetc.scheduling.plan.controllers.response;
 
 import com.caacetc.scheduling.plan.domain.staff.Staff;
-import com.caacetc.scheduling.plan.domain.staff.WorkDuration;
 import lombok.Data;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class StaffResponse {
-    private String id;
-    private String type;
-    private List<WorkDuration> workPlans;
+    private String name;
+    private List<WorkDurationResponse> workPlans;
 
     public StaffResponse(Staff staff) {
-        id = staff.name();
-        type = staff.job();
-        workPlans = staff.agenda().workplans();
+        name = staff.name();
+        workPlans = staff.agenda().workplans().stream().map(WorkDurationResponse::new).collect(Collectors.toList());
     }
 }
