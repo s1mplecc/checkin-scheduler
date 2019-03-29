@@ -13,7 +13,7 @@ import static com.caacetc.scheduling.plan.domain.flight.Region.INT;
 
 @ToString
 @Data
-public class Flight {
+public class Flight implements Comparable<Flight> {
     private long id;
     private Date departTime;
     private Region region;
@@ -46,5 +46,10 @@ public class Flight {
 
     public boolean isInternational() {
         return INT.equals(region);
+    }
+
+    @Override
+    public int compareTo(Flight o) {
+        return (int) (this.departTime.getTime() - o.departTime().getTime());
     }
 }

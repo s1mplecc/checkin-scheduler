@@ -43,8 +43,8 @@ public class SchedulerController {
     @PostMapping("/counters")
     public List<CounterResponse> counters(@RequestBody ScheduleRequest scheduleRequest) {
         List<Flight> flights = scheduleRequest.flights();
-        List<PassengerDistribution> passengerDistributions = passengerCalculator.estimateBy(flights);
-        return counterScheduler.scheduleBy(passengerDistributions).stream()
+        List<PassengerDistribution> distributions = passengerCalculator.estimateBy(flights);
+        return counterScheduler.scheduleBy(distributions, flights).stream()
                 .map(CounterResponse::new)
                 .collect(Collectors.toList());
     }
@@ -55,7 +55,7 @@ public class SchedulerController {
         List<Staff> staffs = scheduleRequest.staffs();
 
         List<PassengerDistribution> distributions = passengerCalculator.estimateBy(flights);
-        List<Counter> counters = counterScheduler.scheduleBy(distributions);
+        List<Counter> counters = counterScheduler.scheduleBy(distributions, flights);
         List<Staff> staff = staffScheduler.scheduleBy(counters, staffs);
 
         return staff.stream()

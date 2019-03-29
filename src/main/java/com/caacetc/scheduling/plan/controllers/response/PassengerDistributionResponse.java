@@ -38,8 +38,8 @@ public class PassengerDistributionResponse {
         dEconomyCabinNum = passengerDistribution.dEconomyCabinNum();
         iEconomyCabinNum = passengerDistribution.iEconomyCabinNum();
         premiumCabinNum = passengerDistribution.premiumCabinNum();
-        dEconomyCounters = passengerDistribution.dEconomyCounters();
-        iEconomyCounters = passengerDistribution.iEconomyCounters();
+        dEconomyCounters = passengerDistribution.domEconomyCounters();
+        iEconomyCounters = passengerDistribution.intEconomyCounters();
         premiumCounters = passengerDistribution.premiumCounters();
     }
 }

@@ -1,11 +1,14 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
+import com.caacetc.scheduling.plan.domain.flight.Flight;
 import com.caacetc.scheduling.plan.domain.flight.PassengerDistribution;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 柜台调度类，包括：
@@ -14,44 +17,84 @@ import java.util.List;
  */
 @Service
 public class CounterScheduler {
-    private List<Counter> counters;
-    private List<Counter> premCounters;
-    private List<Counter> dEconCounters;
-    private List<Counter> iEconCounters;
+    @Resource
+    private CounterRepository repository;
+
+    private List<Counter> mustOpenCounters;
+    private List<Counter> onDemandPremiumCounters;
+    private List<Counter> onDemandIntEconomyCounters;
+    private List<Counter> onDemandDomEconomyCounters;
+
 
     public CounterScheduler() {
-        counters = new ArrayList<>();
-        premCounters = new CounterRepository().premCounters();
-        dEconCounters = new CounterRepository().dEconCounters();
-        iEconCounters = new CounterRepository().iEconCounters();
-    }
-
-    public CounterScheduler(List<Counter> counters) {
-        this.counters = counters;
+        repository = new CounterRepository();
+        onDemandPremiumCounters = repository.onDemandPremiumCounters();
+        onDemandDomEconomyCounters = repository.onDemandDomEconomyCounters();
+        onDemandIntEconomyCounters = repository.onDemandIntEconomyCounters();
+        mustOpenCounters = repository.mustOpenCounters();
     }
 
     /**
      * Compute each counter open periods
      */
-    public List<Counter> scheduleBy(List<PassengerDistribution> passengerDistributions) {
+    public List<Counter> scheduleBy(List<PassengerDistribution> passengerDistributions, List<Flight> flights) {
+        List<Counter> result = new ArrayList<>();
+
+        scheduleMustOpenCounters(mustOpenCounters);
         passengerDistributions.forEach(distribution -> {
-            scheduleBy(distribution, premCounters, distribution.premiumCounters());
-            scheduleBy(distribution, dEconCounters, distribution.dEconomyCounters());
-            scheduleBy(distribution, iEconCounters, distribution.iEconomyCounters());
+            scheduleBy(distribution, onDemandPremiumCounters, distribution.premiumCounters());
+            scheduleBy(distribution, onDemandDomEconomyCounters, distribution.domEconomyCounters());
+            scheduleBy(distribution, onDemandIntEconomyCounters, distribution.intEconomyCounters() - 11); // 国际经济舱人工办理柜台必须开放个数
         });
 
-        counters.addAll(premCounters);
-        counters.addAll(dEconCounters);
-        counters.addAll(iEconCounters);
-        return counters;
+        result.addAll(mustOpenCounters);
+        result.addAll(onDemandDomEconomyCounters);
+        result.addAll(onDemandIntEconomyCounters);
+        result.addAll(onDemandPremiumCounters);
+
+        return result.stream()
+                .sorted()
+                .collect(Collectors.toList());
     }
 
-    private void scheduleBy(PassengerDistribution passengerDistribution, List<Counter> counters, int needs) {
+    /**
+     * @param distribution passenger distribution divided by 5 minutes
+     * @param counters     to be scheduled
+     * @param needs        number needs open counter
+     */
+    private void scheduleBy(PassengerDistribution distribution, List<Counter> counters, int needs) {
         int temp = Math.min(counters.size(), needs);
         for (int i = 0; i < temp; i++) {
-            Calendar endTime = (Calendar) passengerDistribution.startTime().clone();
+            Calendar endTime = (Calendar) distribution.startTime().clone();
             endTime.add(Calendar.MINUTE, 5);
-            counters.get(i).open(passengerDistribution.startTime(), endTime);
+            counters.get(i).open(distribution.startTime(), endTime);
         }
+    }
+
+    private void scheduleMustOpenCounters(List<Counter> mustOpenCounters) {
+        mustOpenCounters.forEach(counter -> {
+            // todo-zz statistic flights date and endTime
+            String startTime = "2019-03-01 " + counter.openStartTime();
+            String endTime = "2019-03-01 " + Optional.ofNullable(counter.openEndTime()).orElse(" 23:00");
+
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                Date start1 = sdf.parse(startTime);
+                Calendar start2 = Calendar.getInstance();
+                start2.setTime(start1);
+                Date end1 = sdf.parse(endTime);
+                Calendar end2 = Calendar.getInstance();
+                end2.setTime(end1);
+
+                OpenPeriod openPeriod = new OpenPeriod(start2, end2);
+                counter.openPeriods().add(openPeriod);
+            } catch (ParseException ex) {
+                ex.printStackTrace();
+            }
+        });
+    }
+
+    private void dateTimeOf(List<Flight> flights) {
+//        flights.
     }
 }

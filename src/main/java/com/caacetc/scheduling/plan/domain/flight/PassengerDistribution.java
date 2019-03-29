@@ -19,12 +19,12 @@ public class PassengerDistribution {
         this.iEconomyCabinNum = iEconomyCabinNum;
     }
 
-    public int dEconomyCounters() {
+    public int domEconomyCounters() {
         double v = dEconomyCabinNum * 0.95 * 0.91 * (0.26 + 0.74 * 0.25);
         return (int) (v * 60 / 300);
     }
 
-    public int iEconomyCounters() {
+    public int intEconomyCounters() {
         double v = iEconomyCabinNum * 0.95 * 0.55;
         return (int) (v * 90 / 300);
     }
@@ -53,8 +53,8 @@ public class PassengerDistribution {
     public String toString() {
         return time.getTime() + " : " +
                 premiumCounters() + ", " +
-                dEconomyCounters() + ", " +
-                iEconomyCounters();
+                domEconomyCounters() + ", " +
+                intEconomyCounters();
     }
 
     public void accumulate(double premium, double dEconomy, double iEconomy) {

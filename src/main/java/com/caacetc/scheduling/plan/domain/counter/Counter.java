@@ -9,17 +9,35 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @ToString
-public class Counter {
+public class Counter implements Comparable<Counter> {
     private final String id;
     private final String region;
     private final String type;
-    private List<OpenPeriod> openPeriods;
+    private final List<OpenPeriod> openPeriods;
+    private final int isMustOpen;
+    private final String openStartTime;
+    private final String openEndTime;
 
-    public Counter(String id, String region, String type) {
+    public Counter(String id, String region, String type, int isMustOpen, String openStartTime, String openEndTime) {
         this.id = id;
         this.region = region;
         this.type = type;
+        this.isMustOpen = isMustOpen;
+        this.openStartTime = openStartTime;
+        this.openEndTime = openEndTime;
         this.openPeriods = new ArrayList<>();
+    }
+
+    public String openStartTime() {
+        return openStartTime;
+    }
+
+    public String openEndTime() {
+        return openEndTime;
+    }
+
+    public boolean mustOpen() {
+        return isMustOpen == 1;
     }
 
     public List<OpenPeriod> openPeriods() {
@@ -109,5 +127,10 @@ public class Counter {
 
     public String type() {
         return type;
+    }
+
+    @Override
+    public int compareTo(Counter o) {
+        return id.compareTo(o.id);
     }
 }
