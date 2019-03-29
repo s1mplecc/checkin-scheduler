@@ -27,7 +27,9 @@ public class Agenda {
         }
 
         if (!exist) {
-            workDurations.add(new WorkDuration(openPeriod.startTime()));
+            WorkDuration workDuration = new WorkDuration(openPeriod.startTime());
+            workDuration.add(openPeriod);
+            workDurations.add(workDuration);
         }
     }
 
