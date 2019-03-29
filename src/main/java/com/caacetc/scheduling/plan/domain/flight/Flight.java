@@ -25,7 +25,11 @@ public class Flight implements Comparable<Flight> {
         this.region = flightRequest.getRegion();
         this.economyCabinNum = flightRequest.getEconomyCabinNum();
         this.premiumCabinNum = flightRequest.getPremiumCabinNum();
-        this.departTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(flightRequest.getDepartTime());
+        try {
+            this.departTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(flightRequest.getDepartTime());
+        } catch (ParseException ex) {
+            this.departTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(flightRequest.getDepartTime());
+        }
     }
 
     public Date departTime() {
