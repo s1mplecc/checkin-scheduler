@@ -35,10 +35,11 @@ public class Staff implements Comparable<Staff> {
     }
 
     public boolean isLegal(OpenPeriod openPeriod) {
-        return agenda.oneWeekLte5Days(openPeriod)
+        boolean b = agenda.oneWeekLte5Days(openPeriod)
                 && agenda.mostlyContinue4Days(openPeriod)
                 && agenda.lastIntervalGt12Hours(openPeriod)
                 && agenda.inWorkDuration(openPeriod);
+        return b;
     }
 
     public String name() {

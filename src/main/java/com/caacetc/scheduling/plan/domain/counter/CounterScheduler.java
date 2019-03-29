@@ -34,10 +34,10 @@ public class CounterScheduler {
      * Compute each counter open periods
      */
     public List<Counter> scheduleBy(List<PassengerDistribution> passengerDistributions) {
-        passengerDistributions.forEach(interval -> {
-            scheduleBy(interval, premCounters, interval.premiumCounters());
-            scheduleBy(interval, dEconCounters, interval.dEconomyCounters());
-            scheduleBy(interval, iEconCounters, interval.iEconomyCounters());
+        passengerDistributions.forEach(distribution -> {
+            scheduleBy(distribution, premCounters, distribution.premiumCounters());
+            scheduleBy(distribution, dEconCounters, distribution.dEconomyCounters());
+            scheduleBy(distribution, iEconCounters, distribution.iEconomyCounters());
         });
 
         counters.addAll(premCounters);

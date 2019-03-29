@@ -22,8 +22,12 @@ public class Counter {
         this.openPeriods = new ArrayList<>();
     }
 
+    public List<OpenPeriod> openPeriods() {
+        return openPeriods;
+    }
+
     public List<OpenPeriod> openPeriodsAfterSplit() {
-        List<OpenPeriod> openPeriods = openPeriods();
+        List<OpenPeriod> openPeriods = openPeriodsAfterGoverning();
 
         List<OpenPeriod> result = openPeriods.stream()
                 .filter(openPeriod -> !openPeriod.gt3Hours())
@@ -40,7 +44,7 @@ public class Counter {
      * combine if two intervals less than 15min;
      * abandon if intervals continue less than 1hour
      */
-    public List<OpenPeriod> openPeriods() {
+    public List<OpenPeriod> openPeriodsAfterGoverning() {
         List<OpenPeriod> result = new ArrayList<>();
 
         openPeriods.stream()

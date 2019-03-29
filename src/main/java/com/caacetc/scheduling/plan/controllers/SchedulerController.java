@@ -12,7 +12,10 @@ import com.caacetc.scheduling.plan.domain.flight.PassengerCalculator;
 import com.caacetc.scheduling.plan.domain.flight.PassengerDistribution;
 import com.caacetc.scheduling.plan.domain.staff.Staff;
 import com.caacetc.scheduling.plan.domain.staff.StaffScheduler;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,20 +31,6 @@ public class SchedulerController {
     private PassengerCalculator passengerCalculator;
     @Resource
     private CounterScheduler counterScheduler;
-
-    @PostMapping("/staffs")
-    public List<StaffResponse> staffs(@RequestBody ScheduleRequest scheduleRequest) {
-        List<Flight> flights = scheduleRequest.flights();
-        List<Staff> staffs = scheduleRequest.staffs();
-
-        List<PassengerDistribution> distributions = passengerCalculator.estimateBy(flights);
-        List<Counter> counters = counterScheduler.scheduleBy(distributions);
-        List<Staff> staff = staffScheduler.scheduleBy(counters, staffs);
-
-        return staff.stream()
-                .map(StaffResponse::new)
-                .collect(Collectors.toList());
-    }
 
     @PostMapping("/passengers/distribution")
     public List<PassengerDistributionResponse> passengerDistribution(@RequestBody ScheduleRequest scheduleRequest) {
@@ -60,8 +49,17 @@ public class SchedulerController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping
-    public String ok() {
-        return "OK";
+    @PostMapping("/staffs")
+    public List<StaffResponse> staffs(@RequestBody ScheduleRequest scheduleRequest) {
+        List<Flight> flights = scheduleRequest.flights();
+        List<Staff> staffs = scheduleRequest.staffs();
+
+        List<PassengerDistribution> distributions = passengerCalculator.estimateBy(flights);
+        List<Counter> counters = counterScheduler.scheduleBy(distributions);
+        List<Staff> staff = staffScheduler.scheduleBy(counters, staffs);
+
+        return staff.stream()
+                .map(StaffResponse::new)
+                .collect(Collectors.toList());
     }
 }

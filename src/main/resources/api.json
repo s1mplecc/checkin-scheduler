@@ -3,14 +3,35 @@
     {
       "id": 1,
       "region": "DOM",
-      "departTime": "2019-02-28 13:40:00",
+      "departTime": "2019-03-01 13:40:00",
       "economyCabinNum": 108,
+      "premiumCabinNum": 11
+    },
+    {
+      "id": 1,
+      "region": "DOM",
+      "departTime": "2019-03-01 15:40:00",
+      "economyCabinNum": 208,
       "premiumCabinNum": 11
     },
     {
       "id": 2,
       "region": "INT",
-      "departTime": "2019-02-28 14:40:00",
+      "departTime": "2019-03-02 14:40:00",
+      "economyCabinNum": 118,
+      "premiumCabinNum": 30
+    },
+    {
+      "id": 3,
+      "region": "INT",
+      "departTime": "2019-03-02 15:40:00",
+      "economyCabinNum": 118,
+      "premiumCabinNum": 30
+    },
+    {
+      "id": 4,
+      "region": "INT",
+      "departTime": "2019-03-02 15:40:00",
       "economyCabinNum": 118,
       "premiumCabinNum": 30
     }
