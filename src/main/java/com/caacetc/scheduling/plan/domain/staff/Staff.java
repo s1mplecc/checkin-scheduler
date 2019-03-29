@@ -36,6 +36,7 @@ public class Staff implements Comparable<Staff> {
         agenda.add(openPeriod);
     }
 
+    // todo-zz: bug fix
     public boolean isLegal(OpenPeriod openPeriod) {
         return agenda.oneWeekLte5Days(openPeriod)
                 && agenda.mostlyContinue4Days(openPeriod)
@@ -55,7 +56,6 @@ public class Staff implements Comparable<Staff> {
         return agenda;
     }
 
-    @SuppressWarnings("NullableProblems")
     @Override
     public int compareTo(Staff another) {
         return agenda.workHours() - another.agenda().workHours();

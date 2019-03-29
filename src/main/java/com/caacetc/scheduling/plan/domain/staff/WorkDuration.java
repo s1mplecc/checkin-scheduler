@@ -16,6 +16,7 @@ public class WorkDuration {
     private final Calendar onDuty;
     @Getter
     private final Calendar offDuty;
+    @Getter
     private final List<OpenPeriod> workPeriods;
 
     public WorkDuration(Calendar onDuty) {
