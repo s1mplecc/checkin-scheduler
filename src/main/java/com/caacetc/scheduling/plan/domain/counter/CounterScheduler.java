@@ -72,32 +72,10 @@ public class CounterScheduler {
         mustOpenCounters.forEach(counter -> {
             try {
                 for (FlightDateTime flightDateTime : flightDateTimes) {
-
-                    String startTime = flightDateTime.day() + " " + counter.openStartTime();
-                    String endTime;
-                    String domEndTime = flightDateTime.domEndTime();
-                    String intEndTime = flightDateTime.intEndTime();
-                    if (counter.isDomesticAndIntegrational()) {
-
-                        endTime = flightDateTime.day() + " " +
-                                Optional.ofNullable(counter.openEndTime())
-                                        .orElse(domEndTime.compareTo(intEndTime) > 0 ? domEndTime : intEndTime);
-                    } else if (counter.isDomestic()) {
-                        endTime = flightDateTime.day() + " " + Optional.ofNullable(counter.openEndTime())
-                                .orElse(domEndTime);
-                    } else {
-                        endTime = flightDateTime.day() + " " + Optional.ofNullable(counter.openEndTime())
-                                .orElse(intEndTime);
-                    }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date start1 = sdf.parse(startTime);
-                    Calendar start2 = Calendar.getInstance();
-                    start2.setTime(start1);
-                    Date end1 = sdf.parse(endTime);
-                    Calendar end2 = Calendar.getInstance();
-                    end2.setTime(end1);
-
-                    OpenPeriod openPeriod = new OpenPeriod(start2, end2);
+                    Calendar startTime = parseTime(flightDateTime.day() + " " + counter.openStartTime(), sdf);
+                    Calendar endTime = computeEndTime(counter, flightDateTime, sdf);
+                    OpenPeriod openPeriod = new OpenPeriod(startTime, endTime);
 
                     counter.openPeriods().add(openPeriod);
                 }
@@ -105,6 +83,33 @@ public class CounterScheduler {
                 ex.printStackTrace();
             }
         });
+    }
+
+    private Calendar parseTime(String startTime, SimpleDateFormat sdf) throws ParseException {
+        Date start1 = sdf.parse(startTime);
+        Calendar start2 = Calendar.getInstance();
+        start2.setTime(start1);
+        return start2;
+    }
+
+    private Calendar computeEndTime(Counter counter, FlightDateTime flightDateTime, SimpleDateFormat sdf) throws ParseException {
+        String endTime;
+        String domEndTime = flightDateTime.domEndTime();
+        String intEndTime = flightDateTime.intEndTime();
+        if (counter.isDomesticAndIntegrational()) {
+
+            endTime = flightDateTime.day() + " " +
+                    Optional.ofNullable(counter.openEndTime())
+                            .orElse(domEndTime.compareTo(intEndTime) > 0 ? domEndTime : intEndTime);
+        } else if (counter.isDomestic()) {
+            endTime = flightDateTime.day() + " " + Optional.ofNullable(counter.openEndTime())
+                    .orElse(domEndTime);
+        } else {
+            endTime = flightDateTime.day() + " " + Optional.ofNullable(counter.openEndTime())
+                    .orElse(intEndTime);
+        }
+
+        return parseTime(endTime, sdf);
     }
 
     private List<FlightDateTime> dateTimeOf(List<Flight> flights) {
