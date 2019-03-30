@@ -89,7 +89,7 @@ public class CounterScheduler {
                         endTime = flightDateTime.day() + " " + Optional.ofNullable(counter.openEndTime())
                                 .orElse(intEndTime);
                     }
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     Date start1 = sdf.parse(startTime);
                     Calendar start2 = Calendar.getInstance();
                     start2.setTime(start1);

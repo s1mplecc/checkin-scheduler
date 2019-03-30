@@ -10,8 +10,8 @@ public class FlightDateTime {
 
     public FlightDateTime(String day) {
         this.day = day;
-        this.domEndTime = "23:59";
-        this.intEndTime = "23:59";
+        this.domEndTime = "23:59:59";
+        this.intEndTime = "23:59:59";
     }
 
     public String day() {
@@ -27,7 +27,7 @@ public class FlightDateTime {
     }
 
     public void setDomEndTime(Date domEndTime) {
-        this.domEndTime = new SimpleDateFormat("HH:mm").format(domEndTime);
+        this.domEndTime = new SimpleDateFormat("HH:mm:ss").format(domEndTime);
     }
 
     public String intEndTime() {
