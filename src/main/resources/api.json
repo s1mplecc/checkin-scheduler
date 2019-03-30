@@ -2437,13 +2437,6 @@
       "premiumCabinNum": 40
     },
     {
-      "departTime": "2019-01-13 22:25:00",
-      "economyCabinNum": 262,
-      "id": 40006838,
-      "region": "INT",
-      "premiumCabinNum": 0
-    },
-    {
       "departTime": "2019-01-14 08:50:00",
       "economyCabinNum": 358,
       "id": 40006842,
@@ -2626,13 +2619,6 @@
       "premiumCabinNum": 64
     },
     {
-      "departTime": "2019-01-13 21:55:00",
-      "economyCabinNum": 354,
-      "id": 40008263,
-      "region": "INT",
-      "premiumCabinNum": 0
-    },
-    {
       "departTime": "2019-01-14 08:45:00",
       "economyCabinNum": 396,
       "id": 40008266,
@@ -2640,25 +2626,11 @@
       "premiumCabinNum": 20
     },
     {
-      "departTime": "2019-01-13 19:30:00",
-      "economyCabinNum": 272,
-      "id": 40008269,
-      "region": "INT",
-      "premiumCabinNum": 0
-    },
-    {
       "departTime": "2019-01-14 06:45:00",
       "economyCabinNum": 368,
       "id": 40008274,
       "region": "INT",
       "premiumCabinNum": 54
-    },
-    {
-      "departTime": "2019-01-13 23:05:00",
-      "economyCabinNum": 484,
-      "id": 40008598,
-      "region": "INT",
-      "premiumCabinNum": 0
     },
     {
       "departTime": "2019-01-14 17:25:00",
@@ -2990,13 +2962,6 @@
       "premiumCabinNum": 2
     },
     {
-      "departTime": "2019-01-13 17:05:00",
-      "economyCabinNum": 416,
-      "id": 40010698,
-      "region": "INT",
-      "premiumCabinNum": 0
-    },
-    {
       "departTime": "2019-01-14 02:15:00",
       "economyCabinNum": 486,
       "id": 40010705,
@@ -3044,13 +3009,6 @@
       "id": 40010750,
       "region": "INT",
       "premiumCabinNum": 22
-    },
-    {
-      "departTime": "2019-01-13 23:20:00",
-      "economyCabinNum": 524,
-      "id": 40010757,
-      "region": "INT",
-      "premiumCabinNum": 0
     },
     {
       "departTime": "2019-01-14 05:55:00",
@@ -3121,20 +3079,6 @@
       "id": 40010839,
       "region": "INT",
       "premiumCabinNum": 96
-    },
-    {
-      "departTime": "2019-01-13 20:05:00",
-      "economyCabinNum": 274,
-      "id": 40010874,
-      "region": "INT",
-      "premiumCabinNum": 0
-    },
-    {
-      "departTime": "2019-01-13 21:20:00",
-      "economyCabinNum": 136,
-      "id": 40010893,
-      "region": "INT",
-      "premiumCabinNum": 0
     },
     {
       "departTime": "2019-01-14 13:35:00",

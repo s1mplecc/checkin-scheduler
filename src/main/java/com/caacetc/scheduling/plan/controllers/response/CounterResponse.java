@@ -17,6 +17,6 @@ public class CounterResponse {
         id = counter.id();
         region = counter.region();
         type = counter.type();
-        openPeriods = counter.openPeriods();
+        openPeriods = counter.openPeriodsAfterSplit();
     }
 }
