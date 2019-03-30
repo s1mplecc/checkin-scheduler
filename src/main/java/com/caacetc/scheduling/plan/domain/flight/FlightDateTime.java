@@ -35,6 +35,6 @@ public class FlightDateTime {
     }
 
     public void setIntEndTime(Date intEndTime) {
-        this.intEndTime = new SimpleDateFormat("HH:mm").format(intEndTime);
+        this.intEndTime = new SimpleDateFormat("HH:mm:ss").format(intEndTime);
     }
 }

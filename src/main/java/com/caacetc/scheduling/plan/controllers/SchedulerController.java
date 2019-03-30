@@ -46,7 +46,6 @@ public class SchedulerController {
         List<PassengerDistribution> distributions = passengerCalculator.estimateBy(flights);
         return counterScheduler.scheduleBy(distributions, flights).stream()
                 .map(CounterResponse::new)
-                .filter(counterResponse -> !counterResponse.getOpenPeriods().isEmpty())
                 .collect(Collectors.toList());
     }
 

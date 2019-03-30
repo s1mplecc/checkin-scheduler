@@ -50,6 +50,7 @@ public class CounterScheduler {
         result.addAll(onDemandPremiumCounters);
 
         return result.stream()
+                .filter(counter -> !counter.openPeriods().isEmpty())
                 .sorted()
                 .collect(Collectors.toList());
     }
@@ -72,7 +73,7 @@ public class CounterScheduler {
         mustOpenCounters.forEach(counter -> {
             try {
                 for (FlightDateTime flightDateTime : flightDateTimes) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     Calendar startTime = parseTime(flightDateTime.day() + " " + counter.openStartTime(), sdf);
                     Calendar endTime = computeEndTime(counter, flightDateTime, sdf);
                     OpenPeriod openPeriod = new OpenPeriod(startTime, endTime);
