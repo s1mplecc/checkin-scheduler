@@ -1,6 +1,7 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
 import com.caacetc.scheduling.plan.domain.flight.Flight;
+import com.caacetc.scheduling.plan.domain.flight.FlightDateTime;
 import com.caacetc.scheduling.plan.domain.flight.PassengerDistribution;
 import org.springframework.stereotype.Service;
 
@@ -8,6 +9,7 @@ import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 /**
@@ -35,7 +37,7 @@ public class CounterScheduler {
         List<Counter> onDemandIntEconomyCounters = repository.onDemandIntEconomyCounters();
         List<Counter> onDemandDomEconomyCounters = repository.onDemandDomEconomyCounters();
 
-        scheduleMustOpenCounters(mustOpenCounters);
+        scheduleMustOpenCounters(mustOpenCounters, dateTimeOf(flights));
         passengerDistributions.forEach(distribution -> {
             scheduleBy(distribution, onDemandPremiumCounters, distribution.premiumCounters());
             scheduleBy(distribution, onDemandDomEconomyCounters, distribution.domEconomyCounters());
@@ -66,30 +68,75 @@ public class CounterScheduler {
         }
     }
 
-    private void scheduleMustOpenCounters(List<Counter> mustOpenCounters) {
+    private void scheduleMustOpenCounters(List<Counter> mustOpenCounters, List<FlightDateTime> flightDateTimes) {
         mustOpenCounters.forEach(counter -> {
-            // todo-zz statistic flights date and endTime
-            String startTime = "2019-03-01 " + counter.openStartTime();
-            String endTime = "2019-03-01 " + Optional.ofNullable(counter.openEndTime()).orElse(" 23:00");
-
             try {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Date start1 = sdf.parse(startTime);
-                Calendar start2 = Calendar.getInstance();
-                start2.setTime(start1);
-                Date end1 = sdf.parse(endTime);
-                Calendar end2 = Calendar.getInstance();
-                end2.setTime(end1);
+                for (FlightDateTime flightDateTime : flightDateTimes) {
 
-                OpenPeriod openPeriod = new OpenPeriod(start2, end2);
-                counter.openPeriods().add(openPeriod);
+                    String startTime = flightDateTime.day() + " " + counter.openStartTime();
+                    String endTime;
+                    String domEndTime = flightDateTime.domEndTime();
+                    String intEndTime = flightDateTime.intEndTime();
+                    if (counter.isDomesticAndIntegrational()) {
+
+                        endTime = flightDateTime.day() + " " +
+                                Optional.ofNullable(counter.openEndTime())
+                                        .orElse(domEndTime.compareTo(intEndTime) > 0 ? domEndTime : intEndTime);
+                    } else if (counter.isDomestic()) {
+                        endTime = flightDateTime.day() + " " + Optional.ofNullable(counter.openEndTime())
+                                .orElse(domEndTime);
+                    } else {
+                        endTime = flightDateTime.day() + " " + Optional.ofNullable(counter.openEndTime())
+                                .orElse(intEndTime);
+                    }
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    Date start1 = sdf.parse(startTime);
+                    Calendar start2 = Calendar.getInstance();
+                    start2.setTime(start1);
+                    Date end1 = sdf.parse(endTime);
+                    Calendar end2 = Calendar.getInstance();
+                    end2.setTime(end1);
+
+                    OpenPeriod openPeriod = new OpenPeriod(start2, end2);
+
+                    counter.openPeriods().add(openPeriod);
+                }
             } catch (ParseException ex) {
                 ex.printStackTrace();
             }
         });
     }
 
-    private void dateTimeOf(List<Flight> flights) {
-//        flights.
+    private List<FlightDateTime> dateTimeOf(List<Flight> flights) {
+        List<FlightDateTime> flightDateTimes = new ArrayList<>();
+
+        flights.forEach(flight -> {
+            String day = new SimpleDateFormat("yyyy-MM-dd").format(flight.getDepartTime());
+
+            AtomicBoolean existDay = new AtomicBoolean(false);
+            flightDateTimes.stream()
+                    .filter(flightDateTime -> flightDateTime.day().equals(day))
+                    .findFirst()
+                    .ifPresent(flightDateTime -> {
+                        existDay.set(true);
+
+                        if (flight.isDomestic()) {
+                            flightDateTime.setDomEndTime(flight.getDepartTime());
+                        } else {
+                            flightDateTime.setIntEndTime(flight.getDepartTime());
+                        }
+                    });
+            if (!existDay.get()) {
+                FlightDateTime dateTime = new FlightDateTime(day);
+                if (flight.isDomestic()) {
+                    dateTime.setDomEndTime(flight.getDepartTime());
+                } else {
+                    dateTime.setIntEndTime(flight.getDepartTime());
+                }
+                flightDateTimes.add(dateTime);
+            }
+        });
+
+        return flightDateTimes;
     }
 }

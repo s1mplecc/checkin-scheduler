@@ -16,7 +16,7 @@ public class StaffScheduler {
 
         counters.forEach(counter -> {
             List<OpenPeriod> openPeriods = counter.openPeriodsAfterSplit();
-            if (counter.isPrem()) {
+            if (counter.isPremuim()) {
                 openPeriods.forEach(openPeriod -> openPeriod.assign(premCheckInStaffs));
             } else {
                 openPeriods.forEach(openPeriod -> openPeriod.assign(econCheckInStaffs));

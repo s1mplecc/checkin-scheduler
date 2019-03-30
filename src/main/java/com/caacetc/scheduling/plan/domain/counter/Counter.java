@@ -109,12 +109,24 @@ public class Counter implements Comparable<Counter> {
         }
     }
 
-    public boolean isPrem() {
+    public boolean isPremuim() {
         return "高端".equals(type);
     }
 
-    public boolean isEcon() {
+    public boolean isEconomy() {
         return "经济".equals(type);
+    }
+
+    public boolean isIntegrational() {
+        return "I".equals(region);
+    }
+
+    public boolean isDomestic() {
+        return "D".equals(region);
+    }
+
+    public boolean isDomesticAndIntegrational() {
+        return "D/I".equals(region);
     }
 
     public String id() {
