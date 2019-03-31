@@ -12,6 +12,7 @@ import java.util.List;
 public class OpenPeriod implements Comparable<OpenPeriod> {
     private Calendar startTime;
     private Calendar endTime;
+    private String staffName;
 
     public OpenPeriod(Calendar startTime, Calendar endTime) {
         this.startTime = startTime;
@@ -25,6 +26,7 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
                 .findFirst()
                 .orElse(Staff.nobody());
 
+        this.staffName = one.name();
         one.addWorkPlan(this);
     }
 

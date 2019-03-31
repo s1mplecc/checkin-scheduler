@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @ToString
 public class Counter implements Comparable<Counter> {
-    private final String id;
+    private final String code;
     private final String region;
     private final String type;
     private final List<OpenPeriod> openPeriods;
@@ -18,8 +18,8 @@ public class Counter implements Comparable<Counter> {
     private final String openStartTime;
     private final String openEndTime;
 
-    public Counter(String id, String region, String type, int isMustOpen, String openStartTime, String openEndTime) {
-        this.id = id;
+    public Counter(String code, String region, String type, int isMustOpen, String openStartTime, String openEndTime) {
+        this.code = code;
         this.region = region;
         this.type = type;
         this.isMustOpen = isMustOpen;
@@ -129,8 +129,8 @@ public class Counter implements Comparable<Counter> {
         return "D/I".equals(region);
     }
 
-    public String id() {
-        return id;
+    public String code() {
+        return code;
     }
 
     public String region() {
@@ -147,6 +147,6 @@ public class Counter implements Comparable<Counter> {
 
     @Override
     public int compareTo(Counter o) {
-        return id.compareTo(o.id);
+        return code.compareTo(o.code);
     }
 }

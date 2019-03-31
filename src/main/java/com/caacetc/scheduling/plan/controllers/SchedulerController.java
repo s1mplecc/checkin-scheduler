@@ -43,8 +43,12 @@ public class SchedulerController {
     @PostMapping("/counters")
     public List<CounterResponse> counters(@RequestBody ScheduleRequest scheduleRequest) {
         List<Flight> flights = scheduleRequest.flights();
+        List<Staff> staffs = scheduleRequest.staffs();
+
         List<PassengerDistribution> distributions = passengerCalculator.estimateBy(flights);
-        return counterScheduler.scheduleBy(distributions, flights).stream()
+        List<Counter> counters = counterScheduler.scheduleBy(distributions, flights);
+        staffScheduler.scheduleBy(counters, staffs);
+        return counters.stream()
                 .map(CounterResponse::new)
                 .filter(counterResponse -> !counterResponse.getOpenPeriods().isEmpty())
                 .collect(Collectors.toList());
