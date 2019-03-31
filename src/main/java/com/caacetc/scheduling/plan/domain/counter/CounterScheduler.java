@@ -76,7 +76,7 @@ public class CounterScheduler {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                     Calendar startTime = parseTime(flightDateTime.day() + " " + counter.openStartTime(), sdf);
                     Calendar endTime = computeEndTime(counter, flightDateTime, sdf);
-                    OpenPeriod openPeriod = new OpenPeriod(startTime, endTime);
+                    OpenPeriod openPeriod = new OpenPeriod(counter.code(), startTime, endTime);
 
                     counter.openPeriods().add(openPeriod);
                 }

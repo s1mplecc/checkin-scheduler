@@ -14,15 +14,15 @@ public class OpenPeriodTest {
         Calendar end = (Calendar) start.clone();
         end.add(Calendar.HOUR_OF_DAY, 2);
 
-        OpenPeriod openPeriod = new OpenPeriod(start, end);
+        OpenPeriod openPeriod = new OpenPeriod("A01", start, end);
         assertThat(openPeriod.gt3Hours()).isFalse();
 
         end.add(Calendar.HOUR_OF_DAY, 1);
-        OpenPeriod openPeriod2 = new OpenPeriod(start, end);
+        OpenPeriod openPeriod2 = new OpenPeriod("A01", start, end);
         assertThat(openPeriod2.gt3Hours()).isFalse();
 
         end.add(Calendar.MINUTE, 1);
-        OpenPeriod openPeriod3 = new OpenPeriod(start, end);
+        OpenPeriod openPeriod3 = new OpenPeriod("A01", start, end);
         assertThat(openPeriod3.gt3Hours()).isTrue();
     }
 
@@ -34,7 +34,7 @@ public class OpenPeriodTest {
         end.add(Calendar.HOUR_OF_DAY, 7);
         end.add(Calendar.MINUTE, 30);
 
-        List<OpenPeriod> split = new OpenPeriod(start, end).split();
+        List<OpenPeriod> split = new OpenPeriod("A01", start, end).split();
 
         assertThat(split.size()).isEqualTo(3);
         assertThat(split.get(0).startTime().get(Calendar.HOUR_OF_DAY)).isEqualTo(0);

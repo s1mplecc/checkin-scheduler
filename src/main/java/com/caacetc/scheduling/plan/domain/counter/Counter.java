@@ -105,7 +105,7 @@ public class Counter implements Comparable<Counter> {
                 });
 
         if (!isAppendOrPropel.get()) {
-            openPeriods.add(new OpenPeriod(startTime, endTime));
+            openPeriods.add(new OpenPeriod(code, startTime, endTime));
         }
     }
 

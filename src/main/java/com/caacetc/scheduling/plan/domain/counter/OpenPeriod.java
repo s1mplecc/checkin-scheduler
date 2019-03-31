@@ -10,11 +10,13 @@ import java.util.List;
 
 @Data
 public class OpenPeriod implements Comparable<OpenPeriod> {
+    private final String counterCode;
     private Calendar startTime;
     private Calendar endTime;
     private String staffName;
 
-    public OpenPeriod(Calendar startTime, Calendar endTime) {
+    public OpenPeriod(String counterCode, Calendar startTime, Calendar endTime) {
+        this.counterCode = counterCode;
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -56,12 +58,12 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
         after3Hours.add(Calendar.HOUR_OF_DAY, 3);
 
         while (after3Hours.before(endTime)) {
-            result.add(new OpenPeriod((Calendar) tempStartTime.clone(), (Calendar) after3Hours.clone()));
+            result.add(new OpenPeriod(this.counterCode, (Calendar) tempStartTime.clone(), (Calendar) after3Hours.clone()));
             tempStartTime.add(Calendar.HOUR_OF_DAY, 3);
             after3Hours.add(Calendar.HOUR_OF_DAY, 3);
         }
 
-        result.add(new OpenPeriod(tempStartTime, endTime));
+        result.add(new OpenPeriod(this.counterCode, tempStartTime, endTime));
 
         return result;
     }
