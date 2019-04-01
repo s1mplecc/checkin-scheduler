@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 员工工作类，包含上班时间、下班时间、工作在柜台的时间片段
@@ -16,7 +17,6 @@ public class WorkDuration {
     private final Calendar onDuty;
     @Getter
     private final Calendar offDuty;
-    @Getter
     private final List<OpenPeriod> workPeriods;
 
     public WorkDuration(Calendar onDuty) {
@@ -25,6 +25,10 @@ public class WorkDuration {
         endTime.add(Calendar.HOUR_OF_DAY, 8);
         this.offDuty = endTime;
         this.workPeriods = new ArrayList<>();
+    }
+
+    public List<OpenPeriod> getWorkPeriods() {
+        return workPeriods.stream().sorted().collect(Collectors.toList());
     }
 
     public void add(OpenPeriod workPeriod) {

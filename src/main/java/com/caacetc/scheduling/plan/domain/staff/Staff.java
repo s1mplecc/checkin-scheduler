@@ -4,6 +4,9 @@ import com.caacetc.scheduling.plan.controllers.request.StaffRequest;
 import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
 import lombok.ToString;
 
+import java.util.Calendar;
+import java.util.concurrent.atomic.AtomicReference;
+
 @ToString
 public class Staff implements Comparable<Staff> {
     private static final Staff NOBODY = new Staff();
@@ -38,11 +41,37 @@ public class Staff implements Comparable<Staff> {
 
     // todo-zz: bug fix
     public boolean isLegal(OpenPeriod openPeriod) {
-        boolean b = agenda.oneWeekLte5Days(openPeriod)
-                && agenda.mostlyContinue4Days(openPeriod)
-                && agenda.lastIntervalGt12Hours(openPeriod)
-                && agenda.inWorkDuration(openPeriod);
-        return b;
+        AtomicReference<WorkDuration> workDuration0 = new AtomicReference<>();
+        boolean existWorkPlan = agenda.workplans().stream()
+                .anyMatch(workDuration -> {
+                    if (workDuration.onDuty().get(Calendar.DATE) == openPeriod.startTime().get(Calendar.DATE)) {
+                        workDuration0.set(workDuration);
+                        return true;
+                    }
+                    return false;
+                });
+
+        if (existWorkPlan) {
+            boolean periodStartTimeAfterOnDuty = !openPeriod.startTime().before(workDuration0.get().onDuty());
+            boolean periodEndTimeBeforeOffDuty = !openPeriod.endTime().after(workDuration0.get().offDuty());
+
+            boolean couldInsertPeriod = workDuration0.get().getWorkPeriods().stream()
+                    .sorted()
+                    .filter(openPeriod1 -> openPeriod1.startTime().after(openPeriod.startTime()))
+                    .findFirst()
+                    .filter(openPeriod1 -> openPeriod.endTime().before(openPeriod1.startTime()))
+                    .isPresent();
+
+            return periodStartTimeAfterOnDuty && periodEndTimeBeforeOffDuty && couldInsertPeriod;
+        } else {
+
+            boolean oneWeekLte5Days = agenda.oneWeekLte5Days(openPeriod);
+            boolean mostlyContinue4Days = agenda.mostlyContinue4Days(openPeriod);
+            boolean lastIntervalGt12Hours = agenda.lastIntervalGt12Hours(openPeriod);
+            boolean inWorkDuration = agenda.inWorkDuration(openPeriod);
+
+            return oneWeekLte5Days && mostlyContinue4Days && lastIntervalGt12Hours && inWorkDuration;
+        }
     }
 
     public String name() {
