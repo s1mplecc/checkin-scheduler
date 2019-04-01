@@ -1,4 +1,13 @@
+server:
+  address: ${SERVER_IP:127.0.0.1}
+  port: ${SERVER_PORT:3877}
+
 spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
+
+mysql:
+  url: jdbc:mysql://127.0.0.1:3306/guitai
+  username: root
+  password: root

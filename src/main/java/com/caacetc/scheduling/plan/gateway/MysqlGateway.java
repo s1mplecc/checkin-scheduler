@@ -19,15 +19,19 @@ public class MysqlGateway {
     }
 
     private static DSLContext init() {
-        String userName = "root";
+//        String username = "root";
 //        String password = "HP-PrintJet2107";
 //        String url = "jdbc:mysql://172.18.21.87:3306/guitai";
-        String password = "root";
-        String url = "jdbc:mysql://127.0.0.1:3306/guitai";
+//        String password = "root";
+//        String url = "jdbc:mysql://127.0.0.1:3306/guitai";
+
+        String username = "dbo";
+        String password = "caecaodb";
+        String url = "jdbc:mysql://172.18.21.21:3306/guitai?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true";
 
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url, userName, password);
+            conn = DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             e.printStackTrace();
         }
