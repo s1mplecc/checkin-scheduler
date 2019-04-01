@@ -54,8 +54,8 @@ public class PassengerCalculator {
     }
 
     private List<PassengerDistribution> initIntervals(List<Flight> flights) {
-        Date start = flights.parallelStream().min(dateComparator()).map(Flight::departTime).orElseThrow();
-        Date end = flights.parallelStream().max(dateComparator()).map(Flight::departTime).orElseThrow();
+        Date start = flights.parallelStream().min(Comparator.comparing(Flight::departTime)).get().departTime();
+        Date end = flights.parallelStream().max(Comparator.comparing(Flight::departTime)).get().departTime();
 
         List<PassengerDistribution> passengerDistributions = new ArrayList<>();
 
@@ -67,19 +67,5 @@ public class PassengerCalculator {
         }
 
         return passengerDistributions;
-    }
-
-    private Comparator<Flight> dateComparator() {
-        return new Comparator<>() {
-            @Override
-            public int compare(Flight o1, Flight o2) {
-                return o1.departTime().compareTo(o2.departTime());
-            }
-
-            @Override
-            public boolean equals(Object obj) {
-                return false;
-            }
-        };
     }
 }

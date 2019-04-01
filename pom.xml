@@ -16,7 +16,7 @@
     </parent>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>1.8</java.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
         <guava.version>23.0</guava.version>
         <junit.version>4.12</junit.version>
@@ -96,7 +96,7 @@
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
-                    <release>${java.version}</release>
+                    <!--                    <release>${java.version}</release>-->
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
