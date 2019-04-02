@@ -97,7 +97,7 @@ public class CounterScheduler {
         String endTime;
         String domEndTime = flightDateTime.domEndTime();
         String intEndTime = flightDateTime.intEndTime();
-        if (counter.isDomesticAndIntegrational()) {
+        if (counter.isDomesticAndInternational()) {
 
             endTime = flightDateTime.day() + " " +
                     Optional.ofNullable(counter.openEndTime())

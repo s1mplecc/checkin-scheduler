@@ -117,7 +117,7 @@ public class Counter implements Comparable<Counter> {
         return "经济".equals(type);
     }
 
-    public boolean isIntegrational() {
+    public boolean isInternational() {
         return "I".equals(region);
     }
 
@@ -125,7 +125,7 @@ public class Counter implements Comparable<Counter> {
         return "D".equals(region);
     }
 
-    public boolean isDomesticAndIntegrational() {
+    public boolean isDomesticAndInternational() {
         return "D/I".equals(region);
     }
 
