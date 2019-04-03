@@ -53,6 +53,7 @@ public class PassengerCalculator {
         }
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     private List<PassengerDistribution> initIntervals(List<Flight> flights) {
         Date start = flights.parallelStream().min(Comparator.comparing(Flight::departTime)).get().departTime();
         Date end = flights.parallelStream().max(Comparator.comparing(Flight::departTime)).get().departTime();

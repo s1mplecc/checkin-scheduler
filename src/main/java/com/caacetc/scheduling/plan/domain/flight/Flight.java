@@ -20,7 +20,7 @@ public class Flight implements Comparable<Flight> {
     private int economyCabinNum;
     private int premiumCabinNum;
 
-    public Flight(FlightRequest flightRequest) throws ParseException {
+    public Flight(FlightRequest flightRequest) {
         this.id = flightRequest.getId();
         this.region = flightRequest.getRegion();
         this.economyCabinNum = flightRequest.getEconomyCabinNum();
@@ -28,7 +28,11 @@ public class Flight implements Comparable<Flight> {
         try {
             this.departTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(flightRequest.getDepartTime());
         } catch (ParseException ex) {
-            this.departTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(flightRequest.getDepartTime());
+            try {
+                this.departTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(flightRequest.getDepartTime());
+            } catch (ParseException ex2) {
+                throw new RuntimeException(ex2);
+            }
         }
     }
 

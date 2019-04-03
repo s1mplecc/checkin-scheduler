@@ -5,7 +5,6 @@ import com.caacetc.scheduling.plan.domain.staff.Staff;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,13 +25,8 @@ public class ScheduleRequest {
         }
 
         return flights.stream()
-                .map(flight -> {
-                    try {
-                        return new Flight(flight);
-                    } catch (ParseException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
+                .filter(f -> f.getDepartTime() != null && !f.getDepartTime().isEmpty())
+                .map(Flight::new)
                 .collect(Collectors.toList());
     }
 
