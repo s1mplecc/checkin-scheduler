@@ -49,14 +49,16 @@ public class Emulator {
 
     private List<Distribution> initIntervals(List<Flight> sortedFlights) {
         Instant start = sortedFlights.get(0).departTime().minus(Duration.ofHours(2));
-        Instant end = sortedFlights.get(sortedFlights.size() - 1).departTime().minus(Duration.ofHours(2));
+        Instant end = sortedFlights.get(sortedFlights.size() - 1).departTime().minus(Duration.ofHours(1));
 
         List<Distribution> distributions = new ArrayList<>();
 
         Instant flag = start;
+        int i = 0;
         while (flag.isBefore(end)) {
-            distributions.add(new Distribution(flag));
+            distributions.add(new Distribution(i, flag));
             flag = flag.plus(Duration.ofMinutes(INTERVAL));
+            i++;
         }
 
         return distributions;

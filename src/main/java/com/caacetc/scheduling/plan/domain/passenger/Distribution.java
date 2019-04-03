@@ -3,19 +3,25 @@ package com.caacetc.scheduling.plan.domain.passenger;
 import java.time.Instant;
 
 public class Distribution {
+    private int id;
     private Instant instant;
     private double premiumCabinNum = 0.0;
     private double dEconomyCabinNum = 0.0;
     private double iEconomyCabinNum = 0.0;
 
-    Distribution(Instant instant) {
-        this.instant = Instant.from(instant);
+    Distribution(int id, Instant instant) {
+        this.id = id;
+        this.instant = instant;
     }
 
     public void accumulate(double premium, double dEconomy, double iEconomy) {
         this.premiumCabinNum += premium;
         this.dEconomyCabinNum += dEconomy;
         this.iEconomyCabinNum += iEconomy;
+    }
+
+    public int id() {
+        return id;
     }
 
     public int domEconomyCounters() {
