@@ -15,16 +15,10 @@ public class JooqGateway {
     @Resource
     private DSLContext context;
 
-    private List<Counter> counters;
-
     public List<Counter> counters() {
-        if (counters != null && !counters.isEmpty()) {
-            return counters;
-        }
-
         Result<Record> records = context.select().from("counter").fetch();
 
-        counters = records.stream()
+        return records.stream()
                 .reduce(new ArrayList<>(), (counters1, record) -> {
                     String id = (String) record.get("code");
                     String region = (String) record.get("国内/国际");
@@ -35,6 +29,5 @@ public class JooqGateway {
                     counters1.add(new Counter(id, region, type, isMustOpen, openStartTime, openEndTime));
                     return counters1;
                 }, (l, a) -> l);
-        return counters;
     }
 }

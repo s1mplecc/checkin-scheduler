@@ -1,14 +1,11 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
-import lombok.ToString;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-@ToString
 public class Counter implements Comparable<Counter> {
     private final String code;
     private final String region;
