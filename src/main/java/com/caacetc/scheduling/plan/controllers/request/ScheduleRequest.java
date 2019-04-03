@@ -4,7 +4,6 @@ import com.caacetc.scheduling.plan.domain.flight.Flight;
 import com.caacetc.scheduling.plan.domain.staff.Staff;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.text.ParseException;
 import java.util.List;
@@ -12,7 +11,6 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Data
-@ToString
 public class ScheduleRequest {
     private List<FlightRequest> flights;
     private List<StaffRequest> staffs;
@@ -23,6 +21,10 @@ public class ScheduleRequest {
     }
 
     public List<Flight> flights() {
+        if (flights == null || flights.isEmpty()) {
+            throw new InvalidRequestParamException("flights is null or empty.");
+        }
+
         return flights.stream()
                 .map(flight -> {
                     try {
@@ -35,6 +37,10 @@ public class ScheduleRequest {
     }
 
     public List<Staff> staffs() {
+        if (staffs == null || staffs.isEmpty()) {
+            throw new InvalidRequestParamException("staffs is null or empty.");
+        }
+
         return staffs.stream().map(Staff::new).collect(Collectors.toList());
     }
 }
