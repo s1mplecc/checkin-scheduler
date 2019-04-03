@@ -2,12 +2,22 @@ package com.caacetc.scheduling.plan.domain.staff;
 
 import org.junit.Test;
 
+import java.time.Instant;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAccessor;
 import java.util.Calendar;
 
 import static java.util.Calendar.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class WorkDurationTest {
+    @Test
+    public void should_() {
+        TemporalAccessor parse = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse("2019-02-28T13:40:00.000+0000");
+        Instant from = Instant.from(parse);
+        System.out.println(from);
+    }
+
     @Test
     public void should_return_monday_this_week() {
         Calendar calendar = Calendar.getInstance();

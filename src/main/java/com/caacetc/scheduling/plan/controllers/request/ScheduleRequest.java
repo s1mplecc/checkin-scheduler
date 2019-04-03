@@ -1,12 +1,14 @@
 package com.caacetc.scheduling.plan.controllers.request;
 
 import com.caacetc.scheduling.plan.domain.flight.Flight;
+import com.caacetc.scheduling.plan.domain.flight.FlightBuilder;
 import com.caacetc.scheduling.plan.domain.staff.Staff;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @NoArgsConstructor
 @Data
@@ -19,14 +21,18 @@ public class ScheduleRequest {
         return rules;
     }
 
-    public List<Flight> flights() {
+    /**
+     * @return sorted flights by departTime
+     */
+    public List<Flight> sortedFlights() {
         if (flights == null || flights.isEmpty()) {
-            throw new InvalidRequestParamException("flights is null or empty.");
+            throw new InvalidRequestParamException("sortedFlights is null or empty.");
         }
 
         return flights.stream()
-                .filter(f -> f.getDepartTime() != null && !f.getDepartTime().isEmpty())
-                .map(Flight::new)
+                .map(FlightBuilder::with)
+                .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
+                .sorted()
                 .collect(Collectors.toList());
     }
 

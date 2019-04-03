@@ -1,6 +1,6 @@
 package com.caacetc.scheduling.plan.controllers.response;
 
-import com.caacetc.scheduling.plan.domain.flight.PassengerDistribution;
+import com.caacetc.scheduling.plan.domain.passenger.Distribution;
 import lombok.Data;
 
 import java.util.Date;
@@ -33,13 +33,13 @@ public class PassengerDistributionResponse {
      */
     private int premiumCounters;
 
-    public PassengerDistributionResponse(PassengerDistribution passengerDistribution) {
-        date = passengerDistribution.startTime().getTime();
-        dEconomyCabinNum = passengerDistribution.dEconomyCabinNum();
-        iEconomyCabinNum = passengerDistribution.iEconomyCabinNum();
-        premiumCabinNum = passengerDistribution.premiumCabinNum();
-        dEconomyCounters = passengerDistribution.domEconomyCounters();
-        iEconomyCounters = passengerDistribution.intEconomyCounters();
-        premiumCounters = passengerDistribution.premiumCounters();
+    public PassengerDistributionResponse(Distribution distribution) {
+        date = Date.from(distribution.instant());
+        dEconomyCabinNum = distribution.dEconomyCabinNum();
+        iEconomyCabinNum = distribution.iEconomyCabinNum();
+        premiumCabinNum = distribution.premiumCabinNum();
+        dEconomyCounters = distribution.domEconomyCounters();
+        iEconomyCounters = distribution.intEconomyCounters();
+        premiumCounters = distribution.premiumCounters();
     }
 }

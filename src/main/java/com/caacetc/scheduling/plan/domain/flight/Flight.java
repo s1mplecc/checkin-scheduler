@@ -1,63 +1,53 @@
 package com.caacetc.scheduling.plan.domain.flight;
 
-import com.caacetc.scheduling.plan.controllers.request.FlightRequest;
-import lombok.Data;
-import lombok.ToString;
+import lombok.Setter;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
 
 import static com.caacetc.scheduling.plan.domain.flight.Region.DOM;
 import static com.caacetc.scheduling.plan.domain.flight.Region.INT;
 
-@ToString
-@Data
+@Setter
 public class Flight implements Comparable<Flight> {
-    private long id;
-    private Date departTime;
+    private Instant departTime;
     private Region region;
     private int economyCabinNum;
     private int premiumCabinNum;
 
-    public Flight(FlightRequest flightRequest) {
-        this.id = flightRequest.getId();
-        this.region = flightRequest.getRegion();
-        this.economyCabinNum = flightRequest.getEconomyCabinNum();
-        this.premiumCabinNum = flightRequest.getPremiumCabinNum();
-        try {
-            this.departTime = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").parse(flightRequest.getDepartTime());
-        } catch (ParseException ex) {
-            try {
-                this.departTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(flightRequest.getDepartTime());
-            } catch (ParseException ex2) {
-                throw new RuntimeException(ex2);
-            }
-        }
-    }
-
-    public Date departTime() {
+    public Instant departTime() {
         return departTime;
     }
 
-    public int economyCabinNum() {
-        return economyCabinNum;
+    public int domEconomyCabinNum() {
+        if (region.isDom() || region.isMix()) {
+            return economyCabinNum;
+        } else {
+            return 0;
+        }
+    }
+
+    public int intEconomyCabinNum() {
+        if (region.isInt() || region.isMix()) {
+            return economyCabinNum;
+        } else {
+            return 0;
+        }
     }
 
     public int premiumCabinNum() {
         return premiumCabinNum;
     }
 
-    public boolean isDomestic() {
+    public boolean isDom() {
         return DOM.equals(region);
     }
 
-    public boolean isInternational() {
+    public boolean isInt() {
         return INT.equals(region);
     }
 
     @Override
-    public int compareTo(Flight o) {
-        return (int) (this.departTime.getTime() - o.departTime().getTime());
+    public int compareTo(Flight another) {
+        return departTime.compareTo(another.departTime);
     }
 }

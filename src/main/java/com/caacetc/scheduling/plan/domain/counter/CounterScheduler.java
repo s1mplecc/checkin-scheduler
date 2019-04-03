@@ -2,7 +2,7 @@ package com.caacetc.scheduling.plan.domain.counter;
 
 import com.caacetc.scheduling.plan.domain.flight.Flight;
 import com.caacetc.scheduling.plan.domain.flight.FlightDateTime;
-import com.caacetc.scheduling.plan.domain.flight.PassengerDistribution;
+import com.caacetc.scheduling.plan.domain.passenger.Distribution;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -29,7 +29,7 @@ public class CounterScheduler {
     /**
      * Compute each counter open periods
      */
-    public List<Counter> scheduleBy(List<PassengerDistribution> passengerDistributions, List<Flight> flights) {
+    public List<Counter> scheduleBy(List<Distribution> distributions, List<Flight> flights) {
         List<Counter> result = new ArrayList<>();
 
         List<Counter> mustOpenCounters = repository.mustOpenCounters();
@@ -38,7 +38,7 @@ public class CounterScheduler {
         List<Counter> onDemandDomEconomyCounters = repository.onDemandDomEconomyCounters();
 
         scheduleMustOpenCounters(mustOpenCounters, dateTimeOf(flights));
-        passengerDistributions.forEach(distribution -> {
+        distributions.forEach(distribution -> {
             scheduleBy(distribution, onDemandPremiumCounters, distribution.premiumCounters());
             scheduleBy(distribution, onDemandDomEconomyCounters, distribution.domEconomyCounters());
             scheduleBy(distribution, onDemandIntEconomyCounters, distribution.intEconomyCounters() - 11); // 国际经济舱人工办理柜台必须开放个数
@@ -60,12 +60,12 @@ public class CounterScheduler {
      * @param counters     to be scheduled
      * @param needs        number needs open counter
      */
-    private void scheduleBy(PassengerDistribution distribution, List<Counter> counters, int needs) {
+    private void scheduleBy(Distribution distribution, List<Counter> counters, int needs) {
         int temp = Math.min(counters.size(), needs);
         for (int i = 0; i < temp; i++) {
-            Calendar endTime = (Calendar) distribution.startTime().clone();
+            Calendar endTime = (Calendar) distribution.instant().clone();
             endTime.add(Calendar.MINUTE, 5);
-            counters.get(i).open(distribution.startTime(), endTime);
+            counters.get(i).open(distribution.instant(), endTime);
         }
     }
 
@@ -126,7 +126,7 @@ public class CounterScheduler {
                     .ifPresent(flightDateTime -> {
                         existDay.set(true);
 
-                        if (flight.isDomestic()) {
+                        if (flight.isDom()) {
                             flightDateTime.setDomEndTime(flight.getDepartTime());
                         } else {
                             flightDateTime.setIntEndTime(flight.getDepartTime());
@@ -134,7 +134,7 @@ public class CounterScheduler {
                     });
             if (!existDay.get()) {
                 FlightDateTime dateTime = new FlightDateTime(day);
-                if (flight.isDomestic()) {
+                if (flight.isDom()) {
                     dateTime.setDomEndTime(flight.getDepartTime());
                 } else {
                     dateTime.setIntEndTime(flight.getDepartTime());
