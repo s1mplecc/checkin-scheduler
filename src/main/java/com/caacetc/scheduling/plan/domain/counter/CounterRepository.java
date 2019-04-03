@@ -1,40 +1,20 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
-import com.caacetc.scheduling.plan.gateway.MysqlGateway;
-import org.jooq.Record;
-import org.jooq.Result;
+import com.caacetc.scheduling.plan.gateway.JooqGateway;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Repository
 public class CounterRepository {
-    private List<Counter> counters;
-
-    public CounterRepository() {
-        Result<Record> records = MysqlGateway.context()
-                .select()
-                .from("counter")
-                .fetch();
-
-        counters = records.stream()
-                .reduce(new ArrayList<>(), (counters1, record) -> {
-                    String id = (String) record.get("code");
-                    String region = (String) record.get("国内/国际");
-                    String type = (String) record.get("经济舱/高端");
-                    int isMustOpen = (int) record.get("isMustOpen");
-                    String openStartTime = (String) record.get("openStartTime");
-                    String openEndTime = (String) record.get("openEndTime");
-                    counters1.add(new Counter(id, region, type, isMustOpen, openStartTime, openEndTime));
-                    return counters1;
-                }, (l, a) -> l);
-    }
+    @Resource
+    private JooqGateway gateway;
 
     public Stream<Counter> counters() {
-        return counters.stream().peek(Counter::clear);
+        return gateway.counters().parallelStream().peek(Counter::clear);
     }
 
     public List<Counter> mustOpenCounters() {
@@ -67,10 +47,10 @@ public class CounterRepository {
         return counters()
                 .filter(counter -> !counter.mustOpen())
                 .filter(counter -> {
-                    boolean isF = counter.code().compareTo("F21") >= 0 && counter.code().compareTo("F31") <= 0;
-                    boolean isA = counter.code().compareTo("A09") >= 0 && counter.code().compareTo("A12") <= 0;
-                    boolean isA2 = counter.code().compareTo("A18") >= 0 && counter.code().compareTo("A22") <= 0;
-                    return isF || isA || isA2;
+                    boolean a = counter.code().compareTo("F21") >= 0 && counter.code().compareTo("F31") <= 0;
+                    boolean b = counter.code().compareTo("A09") >= 0 && counter.code().compareTo("A12") <= 0;
+                    boolean c = counter.code().compareTo("A18") >= 0 && counter.code().compareTo("A22") <= 0;
+                    return a || b || c;
                 })
                 .collect(Collectors.toList());
     }

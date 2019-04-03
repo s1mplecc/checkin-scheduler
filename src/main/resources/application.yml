@@ -3,11 +3,14 @@ server:
   port: ${SERVER_PORT:3877}
 
 spring:
+  datasource:
+    #    url: jdbc:mysql://192.168.127.129:3306/ds_db?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true
+    #    username: dbo
+    #    password: caecaodb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/guitai
+    username: root
+    password: root
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-
-mysql:
-  url: jdbc:mysql://127.0.0.1:3306/guitai
-  username: root
-  password: root

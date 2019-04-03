@@ -22,7 +22,6 @@
         <junit.version>4.12</junit.version>
         <assertj-core.version>3.9.1</assertj-core.version>
         <mockito.version>2.20.1</mockito.version>
-        <jooq.version>3.11.10</jooq.version>
         <mysql-connector-java.version>8.0.15</mysql-connector-java.version>
         <lombok.version>1.18.0</lombok.version>
         <commons-math3.version>3.6.1</commons-math3.version>
@@ -37,6 +36,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -60,11 +63,6 @@
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq</artifactId>
-            <version>${jooq.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -96,11 +94,10 @@
                 <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
-                    <!--                    <release>${java.version}</release>-->
+                    <release>${java.version}</release>
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-
         </plugins>
     </build>
 </project>
