@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 柜台调度类，包括：
@@ -30,6 +31,7 @@ public class CounterScheduler {
      * Compute each counter open periods
      */
     public List<Counter> scheduleBy(List<Distribution> distributions, List<Flight> flights) {
+        reduce(distributions);
         List<Counter> result = new ArrayList<>();
 
         List<Counter> mustOpenCounters = repository.mustOpenCounters();
@@ -53,6 +55,28 @@ public class CounterScheduler {
                 .filter(counter -> !counter.openPeriods().isEmpty())
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    private List<CounterDistribution> reduce(final List<Distribution> distributions) {
+        List<CounterDistribution> result = new ArrayList<>();
+
+        for (int i = 0; i < distributions.size(); i++) {
+            if (i % 12 == 0) {
+                Stream<Distribution> stream;
+                if (i + 12 >= distributions.size()) {
+                    stream = distributions.subList(i, distributions.size()).stream();
+                } else {
+                    stream = distributions.subList(i, i + 12).stream();
+                }
+                int maxDomEco = stream.mapToInt(Distribution::domEconomyCounters).max().getAsInt();
+                int maxIntEco = stream.mapToInt(Distribution::intEconomyCounters).max().getAsInt();
+                int maxPre = stream.mapToInt(Distribution::premiumCounters).max().getAsInt();
+
+                result.add(new CounterDistribution(distributions.get(i).instant(), maxDomEco, maxIntEco, maxPre));
+            }
+        }
+        return result;
     }
 
     /**
