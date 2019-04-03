@@ -1,5 +1,6 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -145,5 +146,9 @@ public class Counter implements Comparable<Counter> {
     @Override
     public int compareTo(Counter o) {
         return code.compareTo(o.code);
+    }
+
+    public void open(LocalDateTime startTime) {
+
     }
 }

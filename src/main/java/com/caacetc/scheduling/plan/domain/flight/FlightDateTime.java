@@ -1,7 +1,7 @@
 package com.caacetc.scheduling.plan.domain.flight;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class FlightDateTime {
     private String day;
@@ -26,7 +26,7 @@ public class FlightDateTime {
         return domEndTime;
     }
 
-    public void setDomEndTime(Date domEndTime) {
+    public void setDomEndTime(LocalDateTime domEndTime) {
         this.domEndTime = new SimpleDateFormat("HH:mm:ss").format(domEndTime);
     }
 
@@ -34,7 +34,7 @@ public class FlightDateTime {
         return intEndTime;
     }
 
-    public void setIntEndTime(Date intEndTime) {
+    public void setIntEndTime(LocalDateTime intEndTime) {
         this.intEndTime = new SimpleDateFormat("HH:mm:ss").format(intEndTime);
     }
 }

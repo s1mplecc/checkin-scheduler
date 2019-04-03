@@ -4,8 +4,7 @@ import com.caacetc.scheduling.plan.domain.flight.Flight;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class Emulator {
      * 累积每个时间段的离港旅客期望
      */
     private void accumulate(Flight flight, List<Distribution> distributions) {
-        Instant flag = flight.departTime().minus(Duration.ofHours(2));
+        LocalDateTime flag = flight.departTime().minusHours(2);
 
         for (int i = 60; i <= 120; i += INTERVAL) {
             double probability = distribution.probability(i, i + INTERVAL);
@@ -37,27 +36,27 @@ public class Emulator {
             double domEconomy = probability * flight.domEconomyCabinNum();
             double intEconomy = probability * flight.intEconomyCabinNum();
 
-            Instant finalFlag = flag;
+            LocalDateTime finalFlag = flag;
             distributions.parallelStream()
                     .filter(d -> d.instant().equals(finalFlag))
                     .findFirst()
                     .ifPresent(interval -> interval.accumulate(premium, domEconomy, intEconomy));
 
-            flag = flag.plus(Duration.ofMinutes(INTERVAL));
+            flag = flag.plusMinutes(INTERVAL);
         }
     }
 
     private List<Distribution> initIntervals(List<Flight> sortedFlights) {
-        Instant start = sortedFlights.get(0).departTime().minus(Duration.ofHours(2));
-        Instant end = sortedFlights.get(sortedFlights.size() - 1).departTime().minus(Duration.ofHours(1));
+        LocalDateTime start = sortedFlights.get(0).departTime().minusHours(2);
+        LocalDateTime end = sortedFlights.get(sortedFlights.size() - 1).departTime().minusHours(1);
 
         List<Distribution> distributions = new ArrayList<>();
 
-        Instant flag = start;
+        LocalDateTime flag = start;
         int i = 0;
         while (flag.isBefore(end)) {
             distributions.add(new Distribution(i, flag));
-            flag = flag.plus(Duration.ofMinutes(INTERVAL));
+            flag = flag.plusMinutes(INTERVAL);
             i++;
         }
 

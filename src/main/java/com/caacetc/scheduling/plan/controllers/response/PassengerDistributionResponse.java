@@ -3,6 +3,7 @@ package com.caacetc.scheduling.plan.controllers.response;
 import com.caacetc.scheduling.plan.domain.passenger.Distribution;
 import lombok.Data;
 
+import java.time.ZoneId;
 import java.util.Date;
 
 @Data
@@ -34,7 +35,7 @@ public class PassengerDistributionResponse {
     private int premiumCounters;
 
     public PassengerDistributionResponse(Distribution distribution) {
-        date = Date.from(distribution.instant());
+        date = Date.from(distribution.instant().atZone(ZoneId.systemDefault()).toInstant());
         dEconomyCabinNum = distribution.dEconomyCabinNum();
         iEconomyCabinNum = distribution.iEconomyCabinNum();
         premiumCabinNum = distribution.premiumCabinNum();

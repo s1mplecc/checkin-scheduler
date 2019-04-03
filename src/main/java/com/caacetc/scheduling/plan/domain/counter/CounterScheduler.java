@@ -11,7 +11,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * 柜台调度类，包括：
@@ -31,22 +30,17 @@ public class CounterScheduler {
      * Compute each counter open periods
      */
     public List<Counter> scheduleBy(List<Distribution> distributions, List<Flight> flights) {
-        reduce(distributions);
-        List<Counter> result = new ArrayList<>();
+        List<CounterDistribution> counterDistributions = reduce(distributions);
 
-        List<Counter> mustOpenCounters = repository.mustOpenCounters();
+        List<Counter> result = new ArrayList<>();
+        result.addAll(scheduleMustOpenCounters(dateTimeOf(flights)));
+
         List<Counter> onDemandPremiumCounters = repository.onDemandPremiumCounters();
         List<Counter> onDemandIntEconomyCounters = repository.onDemandIntEconomyCounters();
         List<Counter> onDemandDomEconomyCounters = repository.onDemandDomEconomyCounters();
 
-        scheduleMustOpenCounters(mustOpenCounters, dateTimeOf(flights));
-        distributions.forEach(distribution -> {
-            scheduleBy(distribution, onDemandPremiumCounters, distribution.premiumCounters());
-            scheduleBy(distribution, onDemandDomEconomyCounters, distribution.domEconomyCounters());
-            scheduleBy(distribution, onDemandIntEconomyCounters, distribution.intEconomyCounters() - 11); // 国际经济舱人工办理柜台必须开放个数
-        });
+        counterDistributions.forEach(distribution -> scheduleBy(distribution, onDemandPremiumCounters, onDemandDomEconomyCounters, onDemandIntEconomyCounters));
 
-        result.addAll(mustOpenCounters);
         result.addAll(onDemandDomEconomyCounters);
         result.addAll(onDemandIntEconomyCounters);
         result.addAll(onDemandPremiumCounters);
@@ -57,44 +51,46 @@ public class CounterScheduler {
                 .collect(Collectors.toList());
     }
 
+    private void scheduleBy(CounterDistribution distribution, List<Counter> onDemandPremiumCounters, List<Counter> onDemandDomEconomyCounters, List<Counter> onDemandIntEconomyCounters) {
+        int temp1 = Math.min(onDemandDomEconomyCounters.size(), distribution.domEconomyNum());
+        for (int i = 0; i < temp1; i++) {
+            onDemandDomEconomyCounters.get(i).open(distribution.startTime());
+        }
+        int temp2 = Math.min(onDemandIntEconomyCounters.size(), distribution.intEconomyNum());
+        for (int i = 0; i < temp2; i++) {
+            onDemandIntEconomyCounters.get(i).open(distribution.startTime());
+        }
+        int temp3 = Math.min(onDemandPremiumCounters.size(), distribution.premiumNum());
+        for (int i = 0; i < temp3; i++) {
+            onDemandPremiumCounters.get(i).open(distribution.startTime());
+        }
+    }
+
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     private List<CounterDistribution> reduce(final List<Distribution> distributions) {
-        List<CounterDistribution> result = new ArrayList<>();
+        List<CounterDistribution> counterDistributions = new ArrayList<>();
 
         for (int i = 0; i < distributions.size(); i++) {
             if (i % 12 == 0) {
-                Stream<Distribution> stream;
+                List<Distribution> subList;
                 if (i + 12 >= distributions.size()) {
-                    stream = distributions.subList(i, distributions.size()).stream();
+                    subList = distributions.subList(i, distributions.size());
                 } else {
-                    stream = distributions.subList(i, i + 12).stream();
+                    subList = distributions.subList(i, i + 12);
                 }
-                int maxDomEco = stream.mapToInt(Distribution::domEconomyCounters).max().getAsInt();
-                int maxIntEco = stream.mapToInt(Distribution::intEconomyCounters).max().getAsInt();
-                int maxPre = stream.mapToInt(Distribution::premiumCounters).max().getAsInt();
+                int maxDomEco = subList.stream().mapToInt(Distribution::domEconomyCounters).max().getAsInt();
+                int maxIntEco = subList.stream().mapToInt(Distribution::intEconomyCounters).max().getAsInt();
+                int maxPre = subList.stream().mapToInt(Distribution::premiumCounters).max().getAsInt();
 
-                result.add(new CounterDistribution(distributions.get(i).instant(), maxDomEco, maxIntEco, maxPre));
+                counterDistributions.add(new CounterDistribution(distributions.get(i).instant(), maxDomEco, maxIntEco, maxPre));
             }
         }
-        return result;
+        return counterDistributions;
     }
 
-    /**
-     * @param distribution passenger distribution divided by 5 minutes
-     * @param counters     to be scheduled
-     * @param needs        number needs open counter
-     */
-    private void scheduleBy(Distribution distribution, List<Counter> counters, int needs) {
-        int temp = Math.min(counters.size(), needs);
-        for (int i = 0; i < temp; i++) {
-            Calendar endTime = (Calendar) distribution.instant().clone();
-            endTime.add(Calendar.MINUTE, 5);
-            counters.get(i).open(distribution.instant(), endTime);
-        }
-    }
-
-    private void scheduleMustOpenCounters(List<Counter> mustOpenCounters, List<FlightDateTime> flightDateTimes) {
-        mustOpenCounters.forEach(counter -> {
+    private List<Counter> scheduleMustOpenCounters(List<FlightDateTime> flightDateTimes) {
+        List<Counter> counters = repository.mustOpenCounters();
+        counters.forEach(counter -> {
             try {
                 for (FlightDateTime flightDateTime : flightDateTimes) {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -108,6 +104,7 @@ public class CounterScheduler {
                 ex.printStackTrace();
             }
         });
+        return counters;
     }
 
     private Calendar parseTime(String startTime, SimpleDateFormat sdf) throws ParseException {
@@ -141,7 +138,7 @@ public class CounterScheduler {
         List<FlightDateTime> flightDateTimes = new ArrayList<>();
 
         flights.forEach(flight -> {
-            String day = new SimpleDateFormat("yyyy-MM-dd").format(flight.getDepartTime());
+            String day = new SimpleDateFormat("yyyy-MM-dd").format(flight.departTime());
 
             AtomicBoolean existDay = new AtomicBoolean(false);
             flightDateTimes.stream()
@@ -151,17 +148,17 @@ public class CounterScheduler {
                         existDay.set(true);
 
                         if (flight.isDom()) {
-                            flightDateTime.setDomEndTime(flight.getDepartTime());
+                            flightDateTime.setDomEndTime(flight.departTime());
                         } else {
-                            flightDateTime.setIntEndTime(flight.getDepartTime());
+                            flightDateTime.setIntEndTime(flight.departTime());
                         }
                     });
             if (!existDay.get()) {
                 FlightDateTime dateTime = new FlightDateTime(day);
                 if (flight.isDom()) {
-                    dateTime.setDomEndTime(flight.getDepartTime());
+                    dateTime.setDomEndTime(flight.departTime());
                 } else {
-                    dateTime.setIntEndTime(flight.getDepartTime());
+                    dateTime.setIntEndTime(flight.departTime());
                 }
                 flightDateTimes.add(dateTime);
             }

@@ -1,15 +1,15 @@
 package com.caacetc.scheduling.plan.domain.passenger;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 public class Distribution {
     private int id;
-    private Instant instant;
+    private LocalDateTime instant;
     private double premiumCabinNum = 0.0;
     private double dEconomyCabinNum = 0.0;
     private double iEconomyCabinNum = 0.0;
 
-    Distribution(int id, Instant instant) {
+    Distribution(int id, LocalDateTime instant) {
         this.id = id;
         this.instant = instant;
     }
@@ -50,7 +50,7 @@ public class Distribution {
         return (int) iEconomyCabinNum;
     }
 
-    public Instant instant() {
+    public LocalDateTime instant() {
         return instant;
     }
 }

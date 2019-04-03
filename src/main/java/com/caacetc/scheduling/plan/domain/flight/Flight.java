@@ -2,19 +2,19 @@ package com.caacetc.scheduling.plan.domain.flight;
 
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static com.caacetc.scheduling.plan.domain.flight.Region.DOM;
 import static com.caacetc.scheduling.plan.domain.flight.Region.INT;
 
 @Setter
 public class Flight implements Comparable<Flight> {
-    private Instant departTime;
+    private LocalDateTime departTime;
     private Region region;
     private int economyCabinNum;
     private int premiumCabinNum;
 
-    public Instant departTime() {
+    public LocalDateTime departTime() {
         return departTime;
     }
 
