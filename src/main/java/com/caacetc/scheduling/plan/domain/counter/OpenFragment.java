@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.HOURS;
@@ -31,8 +32,7 @@ public class OpenFragment implements Comparable<OpenFragment> {
     public void assign(List<Staff> staffs) {
         Staff one = staffs.stream()
                 .filter(staff -> staff.isLegal(this))
-                .sorted()
-                .findFirst()
+                .min(Comparator.comparingInt(o -> o.agenda().workDaysNum()))
                 .orElse(Staff.nobody());
 
         staffName = one.name();

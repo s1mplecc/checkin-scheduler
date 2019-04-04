@@ -2,9 +2,14 @@ package com.caacetc.scheduling.plan.domain.staff;
 
 import com.caacetc.scheduling.plan.controllers.request.StaffRequest;
 import com.caacetc.scheduling.plan.domain.counter.OpenFragment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Staff implements Comparable<Staff> {
+    private static final Logger log = LoggerFactory.getLogger(Staff.class);
+
     private static final Staff NOBODY = new Staff();
+
     private final String name;
     private final Job job;
     private final Agenda agenda;
@@ -22,6 +27,7 @@ public class Staff implements Comparable<Staff> {
     }
 
     public static Staff nobody() {
+        log.warn("Staff nobody was assigned");
         return NOBODY;
     }
 
