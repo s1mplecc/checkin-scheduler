@@ -1,13 +1,16 @@
 package com.caacetc.scheduling.plan.domain.staff;
 
 import com.caacetc.scheduling.plan.domain.counter.OpenFragment;
+import com.google.common.collect.Lists;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
+import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.HOURS;
 
 public class Agenda {
@@ -79,8 +82,21 @@ public class Agenda {
         }
 
         // mostly continue 4 days todo
-        workDays.stream()
-                .map(workDay -> workDay.date().until(task.date()).getDays());
+        List<WorkDay> temp = Lists.newArrayList();
+        temp.addAll(workDays);
+        temp.add(w);
+        List<WorkDay> sortedWorkDays = temp.stream().sorted().collect(Collectors.toList());
+        int continueDays = 0;
+        for (int i = 0; i < sortedWorkDays.size() - 1; i++) {
+            if (sortedWorkDays.get(i).date().until(sortedWorkDays.get(i + 1).date(), DAYS) == 1) {
+                continueDays += 1;
+                if (continueDays >= 5) {
+                    return false;
+                }
+            } else {
+                continueDays = 0;
+            }
+        }
 
         return true;
     }
