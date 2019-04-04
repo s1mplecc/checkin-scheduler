@@ -31,11 +31,21 @@ public class CounterScheduler {
     /**
      * Compute each counter open periods
      */
-    public List<Counter> scheduleBy(final List<Distribution> distributions, List<Flight> flights) {
-        List<CounterDistribution> counterDistributions = reduce(distributions);
+    public List<Counter> scheduleBy(final List<Distribution> passengerDistributions, List<Flight> flights) {
+        List<CounterDistribution> counterDistributions = reduce(passengerDistributions);
 
         List<Counter> result = new ArrayList<>();
         result.addAll(scheduleMustOpenCounters(dateTimeOf(flights)));
+        result.addAll(scheduleOnDemandOpenCounters(counterDistributions, passengerDistributions));
+
+        return result.stream()
+                .filter(counter -> !counter.openPeriods().isEmpty())
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
+    private List<Counter> scheduleOnDemandOpenCounters(List<CounterDistribution> counterDistributions, List<Distribution> distributions) {
+        List<Counter> counters = new ArrayList<>();
 
         List<Counter> onDemandPremiumCounters = repository.onDemandPremiumCounters();
         List<Counter> onDemandIntEconomyCounters = repository.onDemandIntEconomyCounters();
@@ -43,14 +53,10 @@ public class CounterScheduler {
 
         counterDistributions.forEach(distribution -> scheduleBy(distribution, onDemandPremiumCounters, onDemandDomEconomyCounters, onDemandIntEconomyCounters));
 
-        result.addAll(onDemandDomEconomyCounters);
-        result.addAll(onDemandIntEconomyCounters);
-        result.addAll(onDemandPremiumCounters);
-
-        return result.stream()
-                .filter(counter -> !counter.openPeriods().isEmpty())
-                .sorted()
-                .collect(Collectors.toList());
+        counters.addAll(onDemandDomEconomyCounters);
+        counters.addAll(onDemandIntEconomyCounters);
+        counters.addAll(onDemandPremiumCounters);
+        return counters;
     }
 
     private void scheduleBy(CounterDistribution distribution, List<Counter> onDemandPremiumCounters, List<Counter> onDemandDomEconomyCounters, List<Counter> onDemandIntEconomyCounters) {
