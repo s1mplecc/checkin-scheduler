@@ -40,10 +40,12 @@ public class Agenda {
         if (workDays.stream().anyMatch(workDay -> workDay.canIncludeTask(task))) {
             return true;
         }
+
         // it means should new one work day to assign
         if (workDays.stream().anyMatch(workDay -> workDay.date().isEqual(task.date()))) {
             return false;
         }
+
         // one week less and equal than 5 days
         WorkDay w = new WorkDay(task.startTime());
         LocalDateTime thisMonday = w.mondayThisWeek();
@@ -55,6 +57,7 @@ public class Agenda {
                 .count() >= 5) {
             return false;
         }
+
         // interval work hours greater and equal than 12 hours
         Optional<WorkDay> before = workDays.stream()
                 .sorted()
@@ -74,6 +77,7 @@ public class Agenda {
                 return false;
             }
         }
+
         // mostly continue 4 days todo
         workDays.stream()
                 .map(workDay -> workDay.date().until(task.date()).getDays());

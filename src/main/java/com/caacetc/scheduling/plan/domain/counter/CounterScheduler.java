@@ -151,14 +151,24 @@ public class CounterScheduler {
                     .filter(flight -> flight.isDom() || flight.isMix())
                     .collect(Collectors.toList());
 
-            LocalTime domEndTime = domFlights.get(domFlights.size() - 1).departTime().toLocalTime();
+            LocalTime domEndTime;
+            if (domFlights.isEmpty()) {
+                domEndTime = LocalTime.MAX;
+            } else {
+                domEndTime = domFlights.get(domFlights.size() - 1).departTime().toLocalTime();
+            }
 
             List<Flight> intFlights = flights.stream()
                     .filter(flight -> flight.departTime().toLocalDate().isEqual(flightDateTime.date()))
                     .filter(flight -> flight.isInt() || flight.isMix())
                     .collect(Collectors.toList());
 
-            LocalTime intEndTime = domFlights.get(intFlights.size() - 1).departTime().toLocalTime();
+            LocalTime intEndTime;
+            if (intFlights.isEmpty()) {
+                intEndTime = LocalTime.MAX;
+            } else {
+                intEndTime = intFlights.get(intFlights.size() - 1).departTime().toLocalTime();
+            }
 
             flightDateTime.setDomEndTime(domEndTime);
             flightDateTime.setIntEndTime(intEndTime);
