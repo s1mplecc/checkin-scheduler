@@ -7,18 +7,19 @@ import lombok.ToString;
 @ToString
 public class Staff implements Comparable<Staff> {
     private static final Staff NOBODY = new Staff();
-    private String name;
-    private String job;
-    private Agenda agenda;
+    private final String name;
+    private final Job job;
+    private final Agenda agenda;
 
     public Staff(StaffRequest staffRequest) {
         this.name = staffRequest.getName();
-        this.job = staffRequest.getJob();
+        this.job = Job.of(staffRequest.getJob());
         this.agenda = new Agenda();
     }
 
     private Staff() {
         this.name = "NOBODY";
+        this.job = Job.INVALID;
         this.agenda = new Agenda();
     }
 
@@ -39,7 +40,7 @@ public class Staff implements Comparable<Staff> {
     // todo-zz: bug fix
     public boolean isLegal(OpenFragment openFragment) {
         return true;
-//        AtomicReference<WorkDuration> workDuration0 = new AtomicReference<>();
+//        AtomicReference<WorkDay> workDuration0 = new AtomicReference<>();
 //        boolean existWorkPlan = agenda.workplans().stream()
 //                .anyMatch(workDuration -> {
 //                    if (workDuration.onDuty().get(Calendar.DATE) == openFragment.startTime().get(Calendar.DATE)) {
@@ -76,7 +77,7 @@ public class Staff implements Comparable<Staff> {
         return name;
     }
 
-    public String job() {
+    public Job job() {
         return job;
     }
 
@@ -86,6 +87,6 @@ public class Staff implements Comparable<Staff> {
 
     @Override
     public int compareTo(Staff another) {
-        return agenda.workHours() - another.agenda().workHours();
+        return agenda.workDays() - another.agenda.workDays();
     }
 }

@@ -9,16 +9,16 @@ import java.util.List;
 
 @ToString
 public class Agenda {
-    private List<WorkDuration> workDurations;
+    private List<WorkDay> workDays;
 
     public Agenda() {
-        workDurations = new ArrayList<>();
+        workDays = new ArrayList<>();
     }
 
     public void add(OpenFragment openFragment) {
 //        boolean exist = false;
 //
-//        for (WorkDuration workDuration : workDurations) {
+//        for (WorkDay workDuration : workDays) {
 //            if (workDuration.onDuty().get(Calendar.DATE) == openFragment.startTime().get(Calendar.DATE)) {
 //                workDuration.add(openFragment);
 //                exist = true;
@@ -27,22 +27,22 @@ public class Agenda {
 //        }
 //
 //        if (!exist) {
-//            WorkDuration workDuration = new WorkDuration(openFragment.startTime());
+//            WorkDay workDuration = new WorkDay(openFragment.startTime());
 //            workDuration.add(openFragment);
-//            workDurations.add(workDuration);
+//            workDays.add(workDuration);
 //        }
     }
 
-    public WorkDuration workDurationOf(OpenFragment openFragment) {
-        return workDurations.stream()
-                .filter(workDuration -> workDuration.onDuty().toLocalDate().isEqual(openFragment.startTime().toLocalDate()))
+    public WorkDay workDurationOf(OpenFragment openFragment) {
+        return workDays.stream()
+                .filter(workDay -> workDay.onDuty().toLocalDate().isEqual(openFragment.startTime().toLocalDate()))
                 .findFirst()
                 .orElse(null);
     }
 
     public boolean inWorkDuration(OpenFragment openFragment) {
         return true;
-//        WorkDuration workDuration = workDurationOf(openFragment);
+//        WorkDay workDuration = workDurationOf(openFragment);
 //        if (workDuration == null) {
 //            return true;
 //        }
@@ -50,16 +50,16 @@ public class Agenda {
     }
 
     public boolean oneWeekLte5Days(OpenFragment openFragment) {
-        WorkDuration workDuration = new WorkDuration(openFragment.startTime());
-        LocalDateTime mondayThisWeek = workDuration.mondayThisWeek();
-        return workDurations.stream()
+        WorkDay workDay = new WorkDay(openFragment.startTime());
+        LocalDateTime mondayThisWeek = workDay.mondayThisWeek();
+        return workDays.stream()
                 .filter(wp -> !wp.onDuty().isBefore(mondayThisWeek))
                 .count() <= 4;
     }
 
     public boolean mostlyContinue4Days(OpenFragment openFragment) {
         return true;
-//        return workDurations.stream()
+//        return workDays.stream()
 //                .filter(wp -> {
 //                    int intervalDate = openFragment.startTime().get(Calendar.DATE) - wp.onDuty().get(Calendar.DATE);
 //                    return intervalDate <= 4;
@@ -69,16 +69,16 @@ public class Agenda {
 
     public boolean lastIntervalGt12Hours(OpenFragment openFragment) {
         return true;
-//        return workDurations.stream()
+//        return workDays.stream()
 //                .map(wp -> openFragment.startTime().getTime().getTime() - wp.offDuty().getTime().getTime())
 //                .allMatch(interval -> interval >= 1000 * 60 * 60 * 12);
     }
 
-    public int workHours() {
-        return workDurations.size() * 8;
+    public int workDays() {
+        return workDays.size();
     }
 
-    public List<WorkDuration> workplans() {
-        return workDurations;
+    public List<WorkDay> workplans() {
+        return workDays;
     }
 }

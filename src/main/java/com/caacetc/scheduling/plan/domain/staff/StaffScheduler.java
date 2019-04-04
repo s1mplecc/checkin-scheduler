@@ -11,8 +11,8 @@ import java.util.stream.Collectors;
 public class StaffScheduler {
     public List<Staff> scheduleBy(List<Counter> counters, List<Staff> inStaffs) {
         List<Staff> staffs = new ArrayList<>();
-        List<Staff> economyCheckInStaffs = filterByJob(inStaffs, "经济舱值机");
-        List<Staff> premiumCheckInStaffs = filterByJob(inStaffs, "高端值机");
+        List<Staff> economyCheckInStaffs = filterByJob(inStaffs, Job.ECONOMY_CHECKIN);
+        List<Staff> premiumCheckInStaffs = filterByJob(inStaffs, Job.PREMIUM_CHECKIN);
         staffs.addAll(economyCheckInStaffs);
         staffs.addAll(premiumCheckInStaffs);
 
@@ -25,7 +25,7 @@ public class StaffScheduler {
         return staffs;
     }
 
-    private List<Staff> filterByJob(List<Staff> staffs, String job) {
+    private List<Staff> filterByJob(List<Staff> staffs, Job job) {
         return staffs.stream()
                 .filter(staff -> staff.job().equals(job))
                 .collect(Collectors.toList());

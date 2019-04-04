@@ -1,7 +1,6 @@
 package com.caacetc.scheduling.plan.domain.staff;
 
 import com.caacetc.scheduling.plan.domain.counter.OpenFragment;
-import lombok.Getter;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -12,17 +11,15 @@ import java.util.stream.Collectors;
 /**
  * 员工工作类，包含上班时间、下班时间、工作在柜台的时间片段
  */
-public class WorkDuration {
-    @Getter
+public class WorkDay {
     private final LocalDateTime onDuty;
-    @Getter
     private final LocalDateTime offDuty;
-    private final List<OpenFragment> workPeriods;
+    private final List<OpenFragment> tasks;
 
-    public WorkDuration(LocalDateTime onDuty) {
+    public WorkDay(LocalDateTime onDuty) {
         this.onDuty = onDuty;
         this.offDuty = onDuty.plusHours(8);
-        this.workPeriods = new ArrayList<>();
+        this.tasks = new ArrayList<>();
     }
 
     public LocalDateTime mondayThisWeek() {
@@ -31,11 +28,11 @@ public class WorkDuration {
     }
 
     public List<OpenFragment> workPeriods() {
-        return workPeriods.stream().sorted().collect(Collectors.toList());
+        return tasks.stream().sorted().collect(Collectors.toList());
     }
 
     public void add(OpenFragment workPeriod) {
-        workPeriods.add(workPeriod);
+        tasks.add(workPeriod);
     }
 
     public LocalDateTime offDuty() {
