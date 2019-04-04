@@ -18,6 +18,6 @@ class WorkDurationResponse {
         this.day = workDay.onDuty().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         this.startTime = workDay.onDuty().format(DateTimeFormatter.ofPattern("HH:mm"));
         this.endTime = workDay.offDuty().format(DateTimeFormatter.ofPattern("HH:mm"));
-        this.workPeriods = workDay.workPeriods();
+        this.workPeriods = workDay.tasks();
     }
 }

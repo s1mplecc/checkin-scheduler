@@ -2,9 +2,7 @@ package com.caacetc.scheduling.plan.domain.staff;
 
 import com.caacetc.scheduling.plan.controllers.request.StaffRequest;
 import com.caacetc.scheduling.plan.domain.counter.OpenFragment;
-import lombok.ToString;
 
-@ToString
 public class Staff implements Comparable<Staff> {
     private static final Staff NOBODY = new Staff();
     private final String name;
@@ -33,7 +31,7 @@ public class Staff implements Comparable<Staff> {
      * 3、最多连续 4 天
      * 4、两次上班间隔 > 12hours
      */
-    public void addWorkPlan(OpenFragment openFragment) {
+    public void assignTask(OpenFragment openFragment) {
         agenda.add(openFragment);
     }
 
@@ -54,7 +52,7 @@ public class Staff implements Comparable<Staff> {
 //            boolean periodStartTimeAfterOnDuty = !openFragment.startTime().before(workDuration0.get().onDuty());
 //            boolean periodEndTimeBeforeOffDuty = !openFragment.endTime().after(workDuration0.get().offDuty());
 //
-//            boolean couldInsertPeriod = workDuration0.get().workPeriods().stream()
+//            boolean couldInsertPeriod = workDuration0.get().tasks().stream()
 //                    .sorted()
 //                    .filter(openPeriod1 -> openPeriod1.startTime().after(openFragment.startTime()))
 //                    .findFirst()
@@ -87,6 +85,6 @@ public class Staff implements Comparable<Staff> {
 
     @Override
     public int compareTo(Staff another) {
-        return agenda.workDays() - another.agenda.workDays();
+        return agenda.workDaysNum() - another.agenda.workDaysNum();
     }
 }

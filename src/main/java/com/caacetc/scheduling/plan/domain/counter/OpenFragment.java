@@ -31,7 +31,7 @@ public class OpenFragment implements Comparable<OpenFragment> {
                 .orElse(Staff.nobody());
 
         this.staffName = one.name();
-        one.addWorkPlan(this);
+        one.assignTask(this);
     }
 
     public boolean gte3Hours() {

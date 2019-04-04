@@ -1,13 +1,14 @@
 package com.caacetc.scheduling.plan.domain.staff;
 
 import com.caacetc.scheduling.plan.domain.counter.OpenFragment;
-import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-@ToString
 public class Agenda {
     private List<WorkDay> workDays;
 
@@ -15,22 +16,23 @@ public class Agenda {
         workDays = new ArrayList<>();
     }
 
-    public void add(OpenFragment openFragment) {
-//        boolean exist = false;
-//
-//        for (WorkDay workDuration : workDays) {
-//            if (workDuration.onDuty().get(Calendar.DATE) == openFragment.startTime().get(Calendar.DATE)) {
-//                workDuration.add(openFragment);
-//                exist = true;
-//                break;
-//            }
-//        }
-//
-//        if (!exist) {
-//            WorkDay workDuration = new WorkDay(openFragment.startTime());
-//            workDuration.add(openFragment);
-//            workDays.add(workDuration);
-//        }
+    public Optional<WorkDay> existWorkDay(LocalDate date) {
+        return workDays.stream()
+                .filter(workDay -> workDay.date().isEqual(date))
+                .findFirst();
+    }
+
+    public void add(OpenFragment task) {
+        AtomicBoolean exist = new AtomicBoolean(false);
+        existWorkDay(task.startTime().toLocalDate())
+                .ifPresent(workDay -> {
+                    exist.set(true);
+                    workDay.add(task);
+                });
+        if (!exist.get()) {
+            WorkDay newWorkDay = new WorkDay(task.startTime());
+            workDays.add(newWorkDay);
+        }
     }
 
     public WorkDay workDurationOf(OpenFragment openFragment) {
@@ -74,7 +76,7 @@ public class Agenda {
 //                .allMatch(interval -> interval >= 1000 * 60 * 60 * 12);
     }
 
-    public int workDays() {
+    public int workDaysNum() {
         return workDays.size();
     }
 
