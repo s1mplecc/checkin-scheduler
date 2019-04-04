@@ -11,12 +11,12 @@ public class CounterResponse {
     private final String code;
     private final String region;
     private final String type;
-    private final List<OpenFragment> openFragments;
+    private final List<OpenFragment> openPeriods;
 
     public CounterResponse(Counter counter) {
         code = counter.code();
         region = counter.region();
         type = counter.type();
-        openFragments = counter.openPeriods();
+        openPeriods = counter.openPeriods();
     }
 }

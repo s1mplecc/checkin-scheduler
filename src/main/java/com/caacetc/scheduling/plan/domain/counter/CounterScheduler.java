@@ -9,9 +9,11 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -97,38 +99,36 @@ public class CounterScheduler {
     }
 
     private List<Counter> scheduleMustOpenCounters(List<FlightDateTime> flightDateTimes) {
+        DateTimeFormatter startTimeFormatter = DateTimeFormatter.ofPattern("H:mm");
+        DateTimeFormatter endTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
         List<Counter> counters = repository.mustOpenCounters();
         counters.stream()
                 .filter(Counter::isDom)
-                .forEach(counter -> {
-                    for (FlightDateTime flightDateTime : flightDateTimes) {
-                        // todo-zz
-                        LocalDateTime startTime = LocalDateTime.of(flightDateTime.date(), LocalTime.parse("0" + counter.openStartTime() + ":00"));
-
-                        LocalDateTime endTime = Optional.ofNullable(counter.openEndTime())
-                                .map(t -> LocalDateTime.of(flightDateTime.date(), LocalTime.parse(t + ":00")))
-                                .orElse(LocalDateTime.of(flightDateTime.date(), flightDateTime.domEndTime()));
-
-                        OpenFragment openFragment = new OpenFragment(counter.code(), startTime, endTime);
-                        counter.openPeriods().add(openFragment);
-                    }
-                });
+                .forEach(counterConsumer(flightDateTimes, startTimeFormatter, endTimeFormatter));
         counters.stream()
                 .filter(Counter::isInt)
-                .forEach(counter -> {
-                    for (FlightDateTime flightDateTime : flightDateTimes) {
-                        // todo-zz
-                        LocalDateTime startTime = LocalDateTime.of(flightDateTime.date(), LocalTime.parse("0" + counter.openStartTime() + ":00"));
-
-                        LocalDateTime endTime = Optional.ofNullable(counter.openEndTime())
-                                .map(t -> LocalDateTime.of(flightDateTime.date(), LocalTime.parse(t + ":00")))
-                                .orElse(LocalDateTime.of(flightDateTime.date(), flightDateTime.intEndTime()));
-
-                        OpenFragment openFragment = new OpenFragment(counter.code(), startTime, endTime);
-                        counter.openPeriods().add(openFragment);
-                    }
-                });
+                .forEach(counterConsumer(flightDateTimes, startTimeFormatter, endTimeFormatter));
         return counters;
+    }
+
+    private Consumer<Counter> counterConsumer(List<FlightDateTime> flightDateTimes, DateTimeFormatter startTimeFormatter, DateTimeFormatter endTimeFormatter) {
+        return counter -> {
+            for (FlightDateTime flightDateTime : flightDateTimes) {
+                LocalDateTime startTime = LocalDateTime.of(
+                        flightDateTime.date(),
+                        LocalTime.from(startTimeFormatter.parse(counter.openStartTime())));
+
+                LocalDateTime endTime = Optional.ofNullable(counter.openEndTime())
+                        .map(t -> LocalDateTime.of(
+                                flightDateTime.date(),
+                                LocalTime.from(endTimeFormatter.parse(counter.openEndTime()))))
+                        .orElse(LocalDateTime.of(flightDateTime.date(), flightDateTime.domEndTime()));
+
+                List<OpenFragment> openFragments = new OpenFragment(counter.code(), startTime, endTime).splitBy3Hours();
+                counter.openPeriods().addAll(openFragments);
+            }
+        };
     }
 
     private List<FlightDateTime> dateTimeOf(List<Flight> flights) {

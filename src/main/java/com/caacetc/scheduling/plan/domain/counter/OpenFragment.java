@@ -4,6 +4,8 @@ import com.caacetc.scheduling.plan.domain.staff.Staff;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.HOURS;
@@ -36,6 +38,20 @@ public class OpenFragment implements Comparable<OpenFragment> {
         return startTime.until(endTime, HOURS) >= 3;
     }
 
+    public List<OpenFragment> splitBy3Hours() {
+        if (!gte3Hours()) {
+            return Collections.singletonList(this);
+        } else {
+            List<OpenFragment> openFragments = new ArrayList<>();
+            LocalDateTime flag = startTime;
+            while (!flag.isAfter(endTime)) {
+                openFragments.add(new OpenFragment(counterCode, flag, flag.plusHours(3)));
+                flag = flag.plusHours(3);
+            }
+            return openFragments;
+        }
+    }
+
     public LocalDateTime startTime() {
         return startTime;
     }
@@ -44,12 +60,8 @@ public class OpenFragment implements Comparable<OpenFragment> {
         return endTime;
     }
 
-    public void append(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public void propel(LocalDateTime startTime) {
-        this.startTime = startTime;
+    public int durationHours() {
+        return (int) startTime.until(endTime, HOURS);
     }
 
     @Override

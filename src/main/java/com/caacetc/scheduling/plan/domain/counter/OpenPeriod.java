@@ -14,7 +14,8 @@ public class OpenPeriod {
     public void add(OpenFragment openFragment) {
         AtomicBoolean canCombine = new AtomicBoolean(false);
         openFragments.stream()
-                .filter(o -> o.endTime().isEqual(openFragment.startTime()))
+                .filter(o -> o.endTime().isEqual(openFragment.startTime())
+                        && o.durationHours() <= 2)
                 .findFirst()
                 .ifPresent(o -> {
                     o.setEndTime(openFragment.endTime());

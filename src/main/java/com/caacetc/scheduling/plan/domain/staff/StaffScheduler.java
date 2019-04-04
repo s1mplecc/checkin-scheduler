@@ -11,21 +11,21 @@ import java.util.stream.Collectors;
 @Service
 public class StaffScheduler {
     public List<Staff> scheduleBy(List<Counter> counters, List<Staff> staffs) {
-        List<Staff> econCheckInStaffs = filterByJob(staffs, "经济舱值机");
-        List<Staff> premCheckInStaffs = filterByJob(staffs, "高端值机");
+        List<Staff> economyCheckInStaffs = filterByJob(staffs, "经济舱值机");
+        List<Staff> premiumCheckInStaffs = filterByJob(staffs, "高端值机");
 
         counters.forEach(counter -> {
             List<OpenFragment> openFragments = counter.openPeriods();
             if (counter.isPremium()) {
-                openFragments.forEach(openPeriod -> openPeriod.assign(premCheckInStaffs));
+                openFragments.forEach(openPeriod -> openPeriod.assign(premiumCheckInStaffs));
             } else {
-                openFragments.forEach(openPeriod -> openPeriod.assign(econCheckInStaffs));
+                openFragments.forEach(openPeriod -> openPeriod.assign(economyCheckInStaffs));
             }
         });
 
         List<Staff> staffs2 = new ArrayList<>();
-        staffs2.addAll(econCheckInStaffs);
-        staffs2.addAll(premCheckInStaffs);
+        staffs2.addAll(economyCheckInStaffs);
+        staffs2.addAll(premiumCheckInStaffs);
         return staffs2;
     }
 
