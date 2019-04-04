@@ -105,14 +105,14 @@ public class CounterScheduler {
         List<Counter> counters = repository.mustOpenCounters();
         counters.stream()
                 .filter(Counter::isDom)
-                .forEach(counterConsumer(flightDateTimes, startTimeFormatter, endTimeFormatter));
+                .forEach(counterConsumer(flightDateTimes, startTimeFormatter, endTimeFormatter, true));
         counters.stream()
                 .filter(Counter::isInt)
-                .forEach(counterConsumer(flightDateTimes, startTimeFormatter, endTimeFormatter));
+                .forEach(counterConsumer(flightDateTimes, startTimeFormatter, endTimeFormatter, false));
         return counters;
     }
 
-    private Consumer<Counter> counterConsumer(List<FlightDateTime> flightDateTimes, DateTimeFormatter startTimeFormatter, DateTimeFormatter endTimeFormatter) {
+    private Consumer<Counter> counterConsumer(List<FlightDateTime> flightDateTimes, DateTimeFormatter startTimeFormatter, DateTimeFormatter endTimeFormatter, boolean isDom) {
         return counter -> {
             for (FlightDateTime flightDateTime : flightDateTimes) {
                 LocalDateTime startTime = LocalDateTime.of(
@@ -123,7 +123,9 @@ public class CounterScheduler {
                         .map(t -> LocalDateTime.of(
                                 flightDateTime.date(),
                                 LocalTime.from(endTimeFormatter.parse(counter.openEndTime()))))
-                        .orElse(LocalDateTime.of(flightDateTime.date(), flightDateTime.domEndTime()));
+                        .orElse(isDom
+                                ? LocalDateTime.of(flightDateTime.date(), flightDateTime.domEndTime())
+                                : LocalDateTime.of(flightDateTime.date(), flightDateTime.intEndTime()));
 
                 List<OpenFragment> openFragments = new OpenFragment(counter.code(), startTime, endTime).splitBy3Hours();
                 counter.openPeriods().addAll(openFragments);
