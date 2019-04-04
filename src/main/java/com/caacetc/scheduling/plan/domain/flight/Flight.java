@@ -4,8 +4,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-import static com.caacetc.scheduling.plan.domain.flight.Region.DOM;
-import static com.caacetc.scheduling.plan.domain.flight.Region.INT;
+import static com.caacetc.scheduling.plan.domain.flight.Region.*;
 
 @Setter
 public class Flight implements Comparable<Flight> {
@@ -44,6 +43,10 @@ public class Flight implements Comparable<Flight> {
 
     public boolean isInt() {
         return INT.equals(region);
+    }
+
+    public boolean isMix() {
+        return MIX.equals(region);
     }
 
     @Override

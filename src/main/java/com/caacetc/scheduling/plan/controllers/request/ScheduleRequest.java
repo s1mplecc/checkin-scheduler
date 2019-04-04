@@ -29,16 +29,16 @@ public class ScheduleRequest {
      * @return sorted flights by departTime
      */
     public List<Flight> sortedFlights() {
-        if (flights == null || flights.isEmpty()) {
-            throw new InvalidRequestParamException("sortedFlights is null or empty.");
-        }
-
         List<Flight> flights = this.flights.stream()
                 .map(FlightBuilder::with)
                 .flatMap(o -> o.map(Stream::of).orElseGet(Stream::empty))
                 .sorted()
                 .collect(Collectors.toList());
         log.info("request flights size = {}", flights.size());
+
+        if (flights.isEmpty()) {
+            throw new InvalidRequestParamException("valid flights is empty.");
+        }
         return flights;
     }
 

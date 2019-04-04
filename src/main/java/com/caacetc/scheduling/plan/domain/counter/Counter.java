@@ -115,11 +115,11 @@ public class Counter implements Comparable<Counter> {
         return "经济".equals(type);
     }
 
-    public boolean isInternational() {
+    public boolean isInt() {
         return "I".equals(region);
     }
 
-    public boolean isDomestic() {
+    public boolean isDom() {
         return "D".equals(region);
     }
 
@@ -148,6 +148,7 @@ public class Counter implements Comparable<Counter> {
         return code.compareTo(o.code);
     }
 
+    // todo-zz
     public void open(LocalDateTime startTime) {
 
     }

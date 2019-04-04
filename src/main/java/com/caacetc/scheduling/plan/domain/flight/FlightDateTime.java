@@ -1,40 +1,29 @@
 package com.caacetc.scheduling.plan.domain.flight;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
+import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+@Setter
 public class FlightDateTime {
-    private String day;
-    private String domEndTime;
-    private String intEndTime;
+    private LocalDate date;
+    private LocalTime domEndTime;
+    private LocalTime intEndTime;
 
-    public FlightDateTime(String day) {
-        this.day = day;
-        this.domEndTime = "23:59:59";
-        this.intEndTime = "23:59:59";
+    public FlightDateTime(LocalDate date) {
+        this.date = date;
     }
 
-    public String day() {
-        return day;
+    public LocalDate date() {
+        return date;
     }
 
-    public void setDay(String day) {
-        this.day = day;
-    }
-
-    public String domEndTime() {
+    public LocalTime domEndTime() {
         return domEndTime;
     }
 
-    public void setDomEndTime(LocalDateTime domEndTime) {
-        this.domEndTime = new SimpleDateFormat("HH:mm:ss").format(domEndTime);
-    }
-
-    public String intEndTime() {
+    public LocalTime intEndTime() {
         return intEndTime;
-    }
-
-    public void setIntEndTime(LocalDateTime intEndTime) {
-        this.intEndTime = new SimpleDateFormat("HH:mm:ss").format(intEndTime);
     }
 }
