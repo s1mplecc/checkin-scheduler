@@ -1,59 +1,32 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
-import com.caacetc.scheduling.plan.domain.staff.Staff;
-import lombok.Data;
-
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import static java.time.temporal.ChronoUnit.HOURS;
+public class OpenPeriod {
+    private final List<OpenFragment> openFragments;
 
-@Data
-public class OpenPeriod implements Comparable<OpenPeriod> {
-    private final String counterCode;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private String staffName;
-
-    public OpenPeriod(String counterCode, LocalDateTime startTime, LocalDateTime endTime) {
-        this.counterCode = counterCode;
-        this.startTime = startTime;
-        this.endTime = endTime;
+    public OpenPeriod() {
+        openFragments = new ArrayList<>();
     }
 
-    public void assign(List<Staff> staffs) {
-        Staff one = staffs.stream()
-                .filter(staff -> staff.isLegal(this))
-                .sorted()
+    public void add(OpenFragment openFragment) {
+        AtomicBoolean canCombine = new AtomicBoolean(false);
+        openFragments.stream()
+                .filter(o -> o.endTime().isEqual(openFragment.startTime()))
                 .findFirst()
-                .orElse(Staff.nobody());
+                .ifPresent(o -> {
+                    o.setEndTime(o.endTime().plusHours(1));
+                    canCombine.set(true);
+                });
 
-        this.staffName = one.name();
-        one.addWorkPlan(this);
+        if (!canCombine.get()) {
+            openFragments.add(openFragment);
+        }
     }
 
-    public boolean gte3Hours() {
-        return startTime.until(endTime, HOURS) >= 3;
-    }
-
-    public LocalDateTime startTime() {
-        return startTime;
-    }
-
-    public LocalDateTime endTime() {
-        return endTime;
-    }
-
-    public void append(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public void propel(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    @Override
-    public int compareTo(OpenPeriod another) {
-        return startTime.compareTo(another.startTime);
+    public List<OpenFragment> openFragments() {
+        return openFragments;
     }
 }

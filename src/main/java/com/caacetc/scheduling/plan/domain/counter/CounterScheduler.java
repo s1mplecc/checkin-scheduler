@@ -103,8 +103,8 @@ public class CounterScheduler {
                                 .map(t -> LocalDateTime.of(flightDateTime.date(), LocalTime.parse(t + ":00")))
                                 .orElse(LocalDateTime.of(flightDateTime.date(), flightDateTime.domEndTime()));
 
-                        OpenPeriod openPeriod = new OpenPeriod(counter.code(), startTime, endTime);
-                        counter.openPeriods().add(openPeriod);
+                        OpenFragment openFragment = new OpenFragment(counter.code(), startTime, endTime);
+                        counter.openPeriods().add(openFragment);
                     }
                 });
         counters.stream()
@@ -118,8 +118,8 @@ public class CounterScheduler {
                                 .map(t -> LocalDateTime.of(flightDateTime.date(), LocalTime.parse(t + ":00")))
                                 .orElse(LocalDateTime.of(flightDateTime.date(), flightDateTime.intEndTime()));
 
-                        OpenPeriod openPeriod = new OpenPeriod(counter.code(), startTime, endTime);
-                        counter.openPeriods().add(openPeriod);
+                        OpenFragment openFragment = new OpenFragment(counter.code(), startTime, endTime);
+                        counter.openPeriods().add(openFragment);
                     }
                 });
         return counters;

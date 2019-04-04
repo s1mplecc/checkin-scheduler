@@ -1,7 +1,7 @@
 package com.caacetc.scheduling.plan.domain.staff;
 
 import com.caacetc.scheduling.plan.controllers.request.StaffRequest;
-import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
+import com.caacetc.scheduling.plan.domain.counter.OpenFragment;
 import lombok.ToString;
 
 @ToString
@@ -32,17 +32,17 @@ public class Staff implements Comparable<Staff> {
      * 3、最多连续 4 天
      * 4、两次上班间隔 > 12hours
      */
-    public void addWorkPlan(OpenPeriod openPeriod) {
-        agenda.add(openPeriod);
+    public void addWorkPlan(OpenFragment openFragment) {
+        agenda.add(openFragment);
     }
 
     // todo-zz: bug fix
-    public boolean isLegal(OpenPeriod openPeriod) {
+    public boolean isLegal(OpenFragment openFragment) {
         return true;
 //        AtomicReference<WorkDuration> workDuration0 = new AtomicReference<>();
 //        boolean existWorkPlan = agenda.workplans().stream()
 //                .anyMatch(workDuration -> {
-//                    if (workDuration.onDuty().get(Calendar.DATE) == openPeriod.startTime().get(Calendar.DATE)) {
+//                    if (workDuration.onDuty().get(Calendar.DATE) == openFragment.startTime().get(Calendar.DATE)) {
 //                        workDuration0.set(workDuration);
 //                        return true;
 //                    }
@@ -50,23 +50,23 @@ public class Staff implements Comparable<Staff> {
 //                });
 //
 //        if (existWorkPlan) {
-//            boolean periodStartTimeAfterOnDuty = !openPeriod.startTime().before(workDuration0.get().onDuty());
-//            boolean periodEndTimeBeforeOffDuty = !openPeriod.endTime().after(workDuration0.get().offDuty());
+//            boolean periodStartTimeAfterOnDuty = !openFragment.startTime().before(workDuration0.get().onDuty());
+//            boolean periodEndTimeBeforeOffDuty = !openFragment.endTime().after(workDuration0.get().offDuty());
 //
 //            boolean couldInsertPeriod = workDuration0.get().workPeriods().stream()
 //                    .sorted()
-//                    .filter(openPeriod1 -> openPeriod1.startTime().after(openPeriod.startTime()))
+//                    .filter(openPeriod1 -> openPeriod1.startTime().after(openFragment.startTime()))
 //                    .findFirst()
-//                    .filter(openPeriod1 -> openPeriod.endTime().before(openPeriod1.startTime()))
+//                    .filter(openPeriod1 -> openFragment.endTime().before(openPeriod1.startTime()))
 //                    .isPresent();
 //
 //            return periodStartTimeAfterOnDuty && periodEndTimeBeforeOffDuty && couldInsertPeriod;
 //        } else {
 //
-//            boolean oneWeekLte5Days = agenda.oneWeekLte5Days(openPeriod);
-//            boolean mostlyContinue4Days = agenda.mostlyContinue4Days(openPeriod);
-//            boolean lastIntervalGt12Hours = agenda.lastIntervalGt12Hours(openPeriod);
-//            boolean inWorkDuration = agenda.inWorkDuration(openPeriod);
+//            boolean oneWeekLte5Days = agenda.oneWeekLte5Days(openFragment);
+//            boolean mostlyContinue4Days = agenda.mostlyContinue4Days(openFragment);
+//            boolean lastIntervalGt12Hours = agenda.lastIntervalGt12Hours(openFragment);
+//            boolean inWorkDuration = agenda.inWorkDuration(openFragment);
 //
 //            return oneWeekLte5Days && mostlyContinue4Days && lastIntervalGt12Hours && inWorkDuration;
 //        }

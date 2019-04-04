@@ -1,17 +1,16 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Counter implements Comparable<Counter> {
     private final String code;
     private final String region;
     private final String type;
-    private final List<OpenPeriod> openPeriods;
     private final int isMustOpen;
     private final String openStartTime;
     private final String openEndTime;
+    private final OpenPeriod openPeriod;
 
     public Counter(String code, String region, String type, int isMustOpen, String openStartTime, String openEndTime) {
         this.code = code;
@@ -20,11 +19,12 @@ public class Counter implements Comparable<Counter> {
         this.isMustOpen = isMustOpen;
         this.openStartTime = openStartTime;
         this.openEndTime = openEndTime;
-        this.openPeriods = new ArrayList<>();
+        openPeriod = new OpenPeriod();
     }
 
     public void open(LocalDateTime startTime) {
-        // todo-zz
+        OpenFragment openFragment = new OpenFragment(code, startTime, startTime.plusHours(1));
+        openPeriod.add(openFragment);
     }
 
     public String openStartTime() {
@@ -39,8 +39,8 @@ public class Counter implements Comparable<Counter> {
         return isMustOpen == 1;
     }
 
-    public List<OpenPeriod> openPeriods() {
-        return openPeriods;
+    public List<OpenFragment> openPeriods() {
+        return openPeriod.openFragments();
     }
 
     public boolean isPremium() {

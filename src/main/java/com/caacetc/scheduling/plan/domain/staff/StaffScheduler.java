@@ -1,7 +1,7 @@
 package com.caacetc.scheduling.plan.domain.staff;
 
 import com.caacetc.scheduling.plan.domain.counter.Counter;
-import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
+import com.caacetc.scheduling.plan.domain.counter.OpenFragment;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ public class StaffScheduler {
         List<Staff> premCheckInStaffs = filterByJob(staffs, "高端值机");
 
         counters.forEach(counter -> {
-            List<OpenPeriod> openPeriods = counter.openPeriods();
+            List<OpenFragment> openFragments = counter.openPeriods();
             if (counter.isPremium()) {
-                openPeriods.forEach(openPeriod -> openPeriod.assign(premCheckInStaffs));
+                openFragments.forEach(openPeriod -> openPeriod.assign(premCheckInStaffs));
             } else {
-                openPeriods.forEach(openPeriod -> openPeriod.assign(econCheckInStaffs));
+                openFragments.forEach(openPeriod -> openPeriod.assign(econCheckInStaffs));
             }
         });
 

@@ -1,6 +1,6 @@
 package com.caacetc.scheduling.plan.controllers.response;
 
-import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
+import com.caacetc.scheduling.plan.domain.counter.OpenFragment;
 import com.caacetc.scheduling.plan.domain.staff.WorkDuration;
 import lombok.Data;
 
@@ -12,7 +12,7 @@ class WorkDurationResponse {
     private String day;
     private String startTime;
     private String endTime;
-    private List<OpenPeriod> workPeriods;
+    private List<OpenFragment> workPeriods;
 
     WorkDurationResponse(WorkDuration workDuration) {
         this.day = workDuration.onDuty().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));

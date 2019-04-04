@@ -1,6 +1,6 @@
 package com.caacetc.scheduling.plan.domain.staff;
 
-import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
+import com.caacetc.scheduling.plan.domain.counter.OpenFragment;
 import lombok.Getter;
 
 import java.time.DayOfWeek;
@@ -17,7 +17,7 @@ public class WorkDuration {
     private final LocalDateTime onDuty;
     @Getter
     private final LocalDateTime offDuty;
-    private final List<OpenPeriod> workPeriods;
+    private final List<OpenFragment> workPeriods;
 
     public WorkDuration(LocalDateTime onDuty) {
         this.onDuty = onDuty;
@@ -30,11 +30,11 @@ public class WorkDuration {
         return onDuty.minusDays(days);
     }
 
-    public List<OpenPeriod> workPeriods() {
+    public List<OpenFragment> workPeriods() {
         return workPeriods.stream().sorted().collect(Collectors.toList());
     }
 
-    public void add(OpenPeriod workPeriod) {
+    public void add(OpenFragment workPeriod) {
         workPeriods.add(workPeriod);
     }
 

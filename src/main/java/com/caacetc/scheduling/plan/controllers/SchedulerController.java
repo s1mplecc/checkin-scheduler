@@ -50,7 +50,7 @@ public class SchedulerController {
         staffScheduler.scheduleBy(counters, staffs);
         return counters.stream()
                 .map(CounterResponse::new)
-                .filter(counterResponse -> !counterResponse.getOpenPeriods().isEmpty())
+                .filter(counterResponse -> !counterResponse.getOpenFragments().isEmpty())
                 .collect(Collectors.toList());
     }
 
