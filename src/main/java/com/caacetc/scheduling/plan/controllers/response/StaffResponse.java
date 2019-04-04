@@ -13,6 +13,6 @@ public class StaffResponse {
 
     public StaffResponse(Staff staff) {
         name = staff.name();
-        workPlans = staff.agenda().workplans().stream().map(WorkDurationResponse::new).collect(Collectors.toList());
+        workPlans = staff.agenda().workplans().stream().sorted().map(WorkDurationResponse::new).collect(Collectors.toList());
     }
 }

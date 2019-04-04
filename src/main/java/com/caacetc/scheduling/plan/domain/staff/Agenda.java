@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,6 +41,7 @@ public class Agenda {
         if (workDays.isEmpty()) {
             return true;
         }
+
         if (workDays.stream().anyMatch(workDay -> workDay.canIncludeTask(task))) {
             return true;
         }
@@ -63,20 +65,18 @@ public class Agenda {
 
         // interval work hours greater and equal than 12 hours
         Optional<WorkDay> before = workDays.stream()
-                .sorted()
                 .filter(workDay -> workDay.date().isBefore(task.date()))
-                .findFirst();
+                .max(Comparator.comparing(WorkDay::date));
         if (before.isPresent()) {
-            if (before.get().offDuty().until(task.startTime(), HOURS) < 12) {
+            if (Math.abs(before.get().offDuty().until(task.startTime(), HOURS)) < 12) {
                 return false;
             }
         }
         Optional<WorkDay> after = workDays.stream()
-                .sorted()
                 .filter(workDay -> workDay.date().isAfter(task.date()))
-                .findFirst();
+                .min(Comparator.comparing(WorkDay::date));
         if (after.isPresent()) {
-            if (after.get().onDuty().until(task.endTime(), HOURS) < 12) {
+            if (Math.abs(after.get().onDuty().until(task.endTime(), HOURS)) < 12) {
                 return false;
             }
         }
