@@ -44,12 +44,10 @@ public class WorkDay implements Comparable<WorkDay> {
             return false;
         }
         return tasks.stream()
-                .noneMatch(t ->
-                        (t.endTime().isAfter(task.startTime())
-                                && t.startTime().isBefore(task.startTime()))
-                                ||
-                                (t.endTime().isAfter(task.endTime())
-                                        && t.startTime().isBefore(task.endTime())));
+                .noneMatch(t -> (t.endTime().isAfter(task.startTime())
+                        && t.startTime().isBefore(task.startTime()))
+                        || (t.endTime().isAfter(task.endTime())
+                        && t.startTime().isBefore(task.endTime())));
     }
 
     public List<OpenFragment> tasks() {

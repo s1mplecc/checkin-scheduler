@@ -28,6 +28,7 @@ public class Agenda {
                 });
         if (!exist.get()) {
             WorkDay newWorkDay = new WorkDay(task.startTime());
+            newWorkDay.add(task);
             workDays.add(newWorkDay);
         }
     }
