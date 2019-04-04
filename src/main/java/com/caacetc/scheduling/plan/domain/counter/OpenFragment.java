@@ -3,6 +3,7 @@ package com.caacetc.scheduling.plan.domain.counter;
 import com.caacetc.scheduling.plan.domain.staff.Staff;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,12 +11,16 @@ import java.util.List;
 
 import static java.time.temporal.ChronoUnit.HOURS;
 
+/**
+ * As open fragment to Counter view,
+ * as task to Staff view.
+ */
 @Data
 public class OpenFragment implements Comparable<OpenFragment> {
     private final String counterCode;
+    private String staffName;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private String staffName;
 
     public OpenFragment(String counterCode, LocalDateTime startTime, LocalDateTime endTime) {
         this.counterCode = counterCode;
@@ -30,7 +35,7 @@ public class OpenFragment implements Comparable<OpenFragment> {
                 .findFirst()
                 .orElse(Staff.nobody());
 
-        this.staffName = one.name();
+        staffName = one.name();
         one.assignTask(this);
     }
 
@@ -62,6 +67,10 @@ public class OpenFragment implements Comparable<OpenFragment> {
 
     public int durationHours() {
         return (int) startTime.until(endTime, HOURS);
+    }
+
+    public LocalDate date() {
+        return startTime().toLocalDate();
     }
 
     @Override

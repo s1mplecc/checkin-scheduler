@@ -31,44 +31,12 @@ public class Staff implements Comparable<Staff> {
      * 3、最多连续 4 天
      * 4、两次上班间隔 > 12hours
      */
-    public void assignTask(OpenFragment openFragment) {
-        agenda.add(openFragment);
+    public void assignTask(OpenFragment task) {
+        agenda.add(task);
     }
 
-    // todo-zz: bug fix
-    public boolean isLegal(OpenFragment openFragment) {
-        return true;
-//        AtomicReference<WorkDay> workDuration0 = new AtomicReference<>();
-//        boolean existWorkPlan = agenda.workplans().stream()
-//                .anyMatch(workDuration -> {
-//                    if (workDuration.onDuty().get(Calendar.DATE) == openFragment.startTime().get(Calendar.DATE)) {
-//                        workDuration0.set(workDuration);
-//                        return true;
-//                    }
-//                    return false;
-//                });
-//
-//        if (existWorkPlan) {
-//            boolean periodStartTimeAfterOnDuty = !openFragment.startTime().before(workDuration0.get().onDuty());
-//            boolean periodEndTimeBeforeOffDuty = !openFragment.endTime().after(workDuration0.get().offDuty());
-//
-//            boolean couldInsertPeriod = workDuration0.get().tasks().stream()
-//                    .sorted()
-//                    .filter(openPeriod1 -> openPeriod1.startTime().after(openFragment.startTime()))
-//                    .findFirst()
-//                    .filter(openPeriod1 -> openFragment.endTime().before(openPeriod1.startTime()))
-//                    .isPresent();
-//
-//            return periodStartTimeAfterOnDuty && periodEndTimeBeforeOffDuty && couldInsertPeriod;
-//        } else {
-//
-//            boolean oneWeekLte5Days = agenda.oneWeekLte5Days(openFragment);
-//            boolean mostlyContinue4Days = agenda.mostlyContinue4Days(openFragment);
-//            boolean lastIntervalGt12Hours = agenda.lastIntervalGt12Hours(openFragment);
-//            boolean inWorkDuration = agenda.inWorkDuration(openFragment);
-//
-//            return oneWeekLte5Days && mostlyContinue4Days && lastIntervalGt12Hours && inWorkDuration;
-//        }
+    public boolean isLegal(OpenFragment task) {
+        return agenda.isLegal(task);
     }
 
     public String name() {
