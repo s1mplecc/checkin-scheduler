@@ -81,7 +81,6 @@ public class Agenda {
             }
         }
 
-        // mostly continue 4 days todo
         List<WorkDay> temp = Lists.newArrayList();
         temp.addAll(workDays);
         temp.add(w);
@@ -90,7 +89,7 @@ public class Agenda {
         for (int i = 0; i < sortedWorkDays.size() - 1; i++) {
             if (sortedWorkDays.get(i).date().until(sortedWorkDays.get(i + 1).date(), DAYS) == 1) {
                 continueDays += 1;
-                if (continueDays >= 5) {
+                if (continueDays >= 4) {
                     return false;
                 }
             } else {

@@ -1,6 +1,7 @@
 package com.caacetc.scheduling.plan.domain.counter;
 
 import com.caacetc.scheduling.plan.domain.staff.Staff;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -20,7 +21,9 @@ import static java.time.temporal.ChronoUnit.HOURS;
 public class OpenFragment implements Comparable<OpenFragment> {
     private final String counterCode;
     private String staffName;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
 
     public OpenFragment(String counterCode, LocalDateTime startTime, LocalDateTime endTime) {
