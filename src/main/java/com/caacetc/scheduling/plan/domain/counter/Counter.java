@@ -4,12 +4,22 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public class Counter implements Comparable<Counter> {
+
+    //-------------------
+    // Load From DateBase
+    //-------------------
+
     private final String code;
     private final String region;
     private final String type;
     private final int isMustOpen;
     private final String openStartTime;
     private final String openEndTime;
+
+    //--------------------------------
+    // Schedule Counter's Open Periods
+    //--------------------------------
+
     private final OpenPeriod openPeriod;
 
     public Counter(String code, String region, String type, int isMustOpen, String openStartTime, String openEndTime) {
@@ -22,8 +32,8 @@ public class Counter implements Comparable<Counter> {
         openPeriod = new OpenPeriod();
     }
 
-    public void open(LocalDateTime startTime) {
-        OpenFragment openFragment = new OpenFragment(code, startTime, startTime.plusHours(1));
+    public void open(LocalDateTime startTime, LocalDateTime endTime) {
+        OpenFragment openFragment = new OpenFragment(code, startTime, endTime);
         openPeriod.add(openFragment);
     }
 

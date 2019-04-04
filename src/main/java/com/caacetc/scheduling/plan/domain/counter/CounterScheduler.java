@@ -56,15 +56,15 @@ public class CounterScheduler {
     private void scheduleBy(CounterDistribution distribution, List<Counter> onDemandPremiumCounters, List<Counter> onDemandDomEconomyCounters, List<Counter> onDemandIntEconomyCounters) {
         int temp1 = Math.min(onDemandDomEconomyCounters.size(), distribution.domEconomyNum());
         for (int i = 0; i < temp1; i++) {
-            onDemandDomEconomyCounters.get(i).open(distribution.startTime());
+            onDemandDomEconomyCounters.get(i).open(distribution.startTime(), distribution.endTime());
         }
         int temp2 = Math.min(onDemandIntEconomyCounters.size(), distribution.intEconomyNum());
         for (int i = 0; i < temp2; i++) {
-            onDemandIntEconomyCounters.get(i).open(distribution.startTime());
+            onDemandIntEconomyCounters.get(i).open(distribution.startTime(), distribution.endTime());
         }
         int temp3 = Math.min(onDemandPremiumCounters.size(), distribution.premiumNum());
         for (int i = 0; i < temp3; i++) {
-            onDemandPremiumCounters.get(i).open(distribution.startTime());
+            onDemandPremiumCounters.get(i).open(distribution.startTime(), distribution.endTime());
         }
     }
 

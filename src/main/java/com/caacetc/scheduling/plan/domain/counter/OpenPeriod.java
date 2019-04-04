@@ -17,7 +17,7 @@ public class OpenPeriod {
                 .filter(o -> o.endTime().isEqual(openFragment.startTime()))
                 .findFirst()
                 .ifPresent(o -> {
-                    o.setEndTime(o.endTime().plusHours(1));
+                    o.setEndTime(openFragment.endTime());
                     canCombine.set(true);
                 });
 
