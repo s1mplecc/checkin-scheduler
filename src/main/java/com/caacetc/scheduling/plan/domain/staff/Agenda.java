@@ -3,8 +3,8 @@ package com.caacetc.scheduling.plan.domain.staff;
 import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 @ToString
@@ -16,59 +16,62 @@ public class Agenda {
     }
 
     public void add(OpenPeriod openPeriod) {
-        boolean exist = false;
-
-        for (WorkDuration workDuration : workDurations) {
-            if (workDuration.onDuty().get(Calendar.DATE) == openPeriod.startTime().get(Calendar.DATE)) {
-                workDuration.add(openPeriod);
-                exist = true;
-                break;
-            }
-        }
-
-        if (!exist) {
-            WorkDuration workDuration = new WorkDuration(openPeriod.startTime());
-            workDuration.add(openPeriod);
-            workDurations.add(workDuration);
-        }
+//        boolean exist = false;
+//
+//        for (WorkDuration workDuration : workDurations) {
+//            if (workDuration.onDuty().get(Calendar.DATE) == openPeriod.startTime().get(Calendar.DATE)) {
+//                workDuration.add(openPeriod);
+//                exist = true;
+//                break;
+//            }
+//        }
+//
+//        if (!exist) {
+//            WorkDuration workDuration = new WorkDuration(openPeriod.startTime());
+//            workDuration.add(openPeriod);
+//            workDurations.add(workDuration);
+//        }
     }
 
     public WorkDuration workDurationOf(OpenPeriod openPeriod) {
         return workDurations.stream()
-                .filter(workDuration -> workDuration.onDuty().get(Calendar.DATE) == openPeriod.startTime().get(Calendar.DATE))
+                .filter(workDuration -> workDuration.onDuty().toLocalDate().isEqual(openPeriod.startTime().toLocalDate()))
                 .findFirst()
                 .orElse(null);
     }
 
     public boolean inWorkDuration(OpenPeriod openPeriod) {
-        WorkDuration workDuration = workDurationOf(openPeriod);
-        if (workDuration == null) {
-            return true;
-        }
-        return !openPeriod.endTime().after(workDuration.offDuty());
+        return true;
+//        WorkDuration workDuration = workDurationOf(openPeriod);
+//        if (workDuration == null) {
+//            return true;
+//        }
+//        return !openPeriod.endTime().after(workDuration.offDuty());
     }
 
     public boolean oneWeekLte5Days(OpenPeriod openPeriod) {
         WorkDuration workDuration = new WorkDuration(openPeriod.startTime());
-        Calendar mondayThisWeek = workDuration.mondayThisWeek();
+        LocalDateTime mondayThisWeek = workDuration.mondayThisWeek();
         return workDurations.stream()
-                .filter(wp -> !wp.onDuty().before(mondayThisWeek))
+                .filter(wp -> !wp.onDuty().isBefore(mondayThisWeek))
                 .count() <= 4;
     }
 
     public boolean mostlyContinue4Days(OpenPeriod openPeriod) {
-        return workDurations.stream()
-                .filter(wp -> {
-                    int intervalDate = openPeriod.startTime().get(Calendar.DATE) - wp.onDuty().get(Calendar.DATE);
-                    return intervalDate <= 4;
-                })
-                .count() <= 4;
+        return true;
+//        return workDurations.stream()
+//                .filter(wp -> {
+//                    int intervalDate = openPeriod.startTime().get(Calendar.DATE) - wp.onDuty().get(Calendar.DATE);
+//                    return intervalDate <= 4;
+//                })
+//                .count() <= 4;
     }
 
     public boolean lastIntervalGt12Hours(OpenPeriod openPeriod) {
-        return workDurations.stream()
-                .map(wp -> openPeriod.startTime().getTime().getTime() - wp.offDuty().getTime().getTime())
-                .allMatch(interval -> interval >= 1000 * 60 * 60 * 12);
+        return true;
+//        return workDurations.stream()
+//                .map(wp -> openPeriod.startTime().getTime().getTime() - wp.offDuty().getTime().getTime())
+//                .allMatch(interval -> interval >= 1000 * 60 * 60 * 12);
     }
 
     public int workHours() {

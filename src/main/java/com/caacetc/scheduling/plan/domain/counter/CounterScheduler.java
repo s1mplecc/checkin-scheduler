@@ -6,13 +6,10 @@ import com.caacetc.scheduling.plan.domain.passenger.Distribution;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -93,25 +90,35 @@ public class CounterScheduler {
         return counterDistributions;
     }
 
-    // todo-zz
     private List<Counter> scheduleMustOpenCounters(List<FlightDateTime> flightDateTimes) {
         List<Counter> counters = repository.mustOpenCounters();
         counters.stream()
                 .filter(Counter::isDom)
                 .forEach(counter -> {
                     for (FlightDateTime flightDateTime : flightDateTimes) {
+                        // todo-zz
                         LocalDateTime startTime = LocalDateTime.of(flightDateTime.date(), LocalTime.parse("0" + counter.openStartTime() + ":00"));
 
                         LocalDateTime endTime = Optional.ofNullable(counter.openEndTime())
                                 .map(t -> LocalDateTime.of(flightDateTime.date(), LocalTime.parse(t + ":00")))
                                 .orElse(LocalDateTime.of(flightDateTime.date(), flightDateTime.domEndTime()));
 
-                        Calendar c1 = Calendar.getInstance();
-                        c1.setTime(Date.from(startTime.atZone(ZoneId.systemDefault()).toInstant()));
-                        Calendar c2 = Calendar.getInstance();
-                        c2.setTime(Date.from(endTime.atZone(ZoneId.systemDefault()).toInstant()));
-                        OpenPeriod openPeriod = new OpenPeriod(counter.code(), c1, c2);
+                        OpenPeriod openPeriod = new OpenPeriod(counter.code(), startTime, endTime);
+                        counter.openPeriods().add(openPeriod);
+                    }
+                });
+        counters.stream()
+                .filter(Counter::isInt)
+                .forEach(counter -> {
+                    for (FlightDateTime flightDateTime : flightDateTimes) {
+                        // todo-zz
+                        LocalDateTime startTime = LocalDateTime.of(flightDateTime.date(), LocalTime.parse("0" + counter.openStartTime() + ":00"));
 
+                        LocalDateTime endTime = Optional.ofNullable(counter.openEndTime())
+                                .map(t -> LocalDateTime.of(flightDateTime.date(), LocalTime.parse(t + ":00")))
+                                .orElse(LocalDateTime.of(flightDateTime.date(), flightDateTime.intEndTime()));
+
+                        OpenPeriod openPeriod = new OpenPeriod(counter.code(), startTime, endTime);
                         counter.openPeriods().add(openPeriod);
                     }
                 });

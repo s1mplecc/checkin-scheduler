@@ -4,7 +4,7 @@ import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
 import com.caacetc.scheduling.plan.domain.staff.WorkDuration;
 import lombok.Data;
 
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Data
@@ -15,9 +15,9 @@ class WorkDurationResponse {
     private List<OpenPeriod> workPeriods;
 
     WorkDurationResponse(WorkDuration workDuration) {
-        this.day = new SimpleDateFormat("yyyy-MM-dd").format(workDuration.onDuty().getTime());
-        this.startTime = new SimpleDateFormat("HH:mm").format(workDuration.onDuty().getTime());
-        this.endTime = new SimpleDateFormat("HH:mm").format(workDuration.offDuty().getTime());
-        this.workPeriods = workDuration.getWorkPeriods();
+        this.day = workDuration.onDuty().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        this.startTime = workDuration.onDuty().format(DateTimeFormatter.ofPattern("HH:mm"));
+        this.endTime = workDuration.offDuty().format(DateTimeFormatter.ofPattern("HH:mm"));
+        this.workPeriods = workDuration.workPeriods();
     }
 }

@@ -3,19 +3,19 @@ package com.caacetc.scheduling.plan.domain.counter;
 import com.caacetc.scheduling.plan.domain.staff.Staff;
 import lombok.Data;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.time.temporal.ChronoUnit.HOURS;
 
 @Data
 public class OpenPeriod implements Comparable<OpenPeriod> {
     private final String counterCode;
-    private Calendar startTime;
-    private Calendar endTime;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private String staffName;
 
-    public OpenPeriod(String counterCode, Calendar startTime, Calendar endTime) {
+    public OpenPeriod(String counterCode, LocalDateTime startTime, LocalDateTime endTime) {
         this.counterCode = counterCode;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -32,73 +32,28 @@ public class OpenPeriod implements Comparable<OpenPeriod> {
         one.addWorkPlan(this);
     }
 
-    public int durationHours() {
-        long l = (endTime.getTime().getTime() - startTime.getTime().getTime());
-        return (int) (l / (1000 * 60 * 60));
+    public boolean gte3Hours() {
+        return startTime.until(endTime, HOURS) >= 3;
     }
 
-    public boolean gt3Hours() {
-        long l = (endTime.getTime().getTime() - startTime.getTime().getTime());
-        return l > 3 * (1000 * 60 * 60);
-    }
-
-    public Calendar startTime() {
+    public LocalDateTime startTime() {
         return startTime;
     }
 
-    public Calendar endTime() {
+    public LocalDateTime endTime() {
         return endTime;
     }
 
-    public List<OpenPeriod> split() {
-        List<OpenPeriod> result = new ArrayList<>();
-
-        Calendar tempStartTime = startTime;
-        Calendar after3Hours = (Calendar) tempStartTime.clone();
-        after3Hours.add(Calendar.HOUR_OF_DAY, 3);
-
-        while (after3Hours.before(endTime)) {
-            result.add(new OpenPeriod(this.counterCode, (Calendar) tempStartTime.clone(), (Calendar) after3Hours.clone()));
-            tempStartTime.add(Calendar.HOUR_OF_DAY, 3);
-            after3Hours.add(Calendar.HOUR_OF_DAY, 3);
-        }
-
-        result.add(new OpenPeriod(this.counterCode, tempStartTime, endTime));
-
-        return result;
-    }
-
-    public void append(Calendar endTime) {
+    public void append(LocalDateTime endTime) {
         this.endTime = endTime;
     }
 
-    public void propel(Calendar startTime) {
+    public void propel(LocalDateTime startTime) {
         this.startTime = startTime;
-    }
-
-    public boolean longerThan1Hour() {
-        long l = endTime.getTime().getTime() - startTime.getTime().getTime();
-        return l >= 1000 * 60 * 60;
-    }
-
-    public boolean only15minutesAfter(OpenPeriod lastOne) {
-        long l = lastOne.endTime().getTime().getTime() - this.startTime.getTime().getTime();
-        return l <= 1000 * 60 * 15;
-    }
-
-    public void combineWith(OpenPeriod openPeriod) {
-        this.endTime = openPeriod.endTime;
     }
 
     @Override
     public int compareTo(OpenPeriod another) {
-        return (int) (this.startTime.getTime().getTime() - another.startTime().getTime().getTime());
-    }
-
-    @Override
-    public String toString() {
-        return new SimpleDateFormat("MM-dd HH:mm").format(startTime.getTime())
-                + " ~ " +
-                new SimpleDateFormat("MM-dd HH:mm").format(endTime.getTime());
+        return startTime.compareTo(another.startTime);
     }
 }

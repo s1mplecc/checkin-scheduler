@@ -2,10 +2,7 @@ package com.caacetc.scheduling.plan.domain.counter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 public class Counter implements Comparable<Counter> {
     private final String code;
@@ -26,6 +23,10 @@ public class Counter implements Comparable<Counter> {
         this.openPeriods = new ArrayList<>();
     }
 
+    public void open(LocalDateTime startTime) {
+        // todo-zz
+    }
+
     public String openStartTime() {
         return openStartTime;
     }
@@ -42,72 +43,7 @@ public class Counter implements Comparable<Counter> {
         return openPeriods;
     }
 
-    public List<OpenPeriod> openPeriodsAfterSplit() {
-        List<OpenPeriod> openPeriods = openPeriodsAfterGoverning();
-
-        List<OpenPeriod> result = openPeriods.stream()
-                .filter(openPeriod -> !openPeriod.gt3Hours())
-                .collect(Collectors.toList());
-
-        openPeriods.stream()
-                .filter(OpenPeriod::gt3Hours)
-                .forEach(openPeriod -> result.addAll(openPeriod.split()));
-
-        return result;
-    }
-
-    /**
-     * combine if two intervals less than 15min;
-     * abandon if intervals continue less than 1hour
-     */
-    public List<OpenPeriod> openPeriodsAfterGoverning() {
-        List<OpenPeriod> result = new ArrayList<>();
-
-        openPeriods.stream()
-                .sorted()
-                .forEach(openPeriod -> {
-                    if (result.isEmpty()) {
-                        result.add(openPeriod);
-                    }
-
-                    OpenPeriod lastOne = result.get(result.size() - 1);
-                    if (lastOne.only15minutesAfter(openPeriod)) {
-                        openPeriod.combineWith(lastOne);
-                    } else {
-                        result.add(openPeriod);
-                    }
-                });
-
-        return openPeriods.stream()
-                .filter(OpenPeriod::longerThan1Hour)
-                .collect(Collectors.toList());
-    }
-
-    public void open(Calendar startTime, Calendar endTime) {
-        AtomicBoolean isAppendOrPropel = new AtomicBoolean(false);
-
-        openPeriods.stream()
-                .filter(openPeriod -> openPeriod.endTime().equals(startTime))
-                .findFirst()
-                .ifPresent(openPeriod -> {
-                    openPeriod.append(endTime);
-                    isAppendOrPropel.set(true);
-                });
-
-        openPeriods.stream()
-                .filter(openPeriod -> openPeriod.startTime().equals(endTime))
-                .findFirst()
-                .ifPresent(openPeriod -> {
-                    openPeriod.propel(startTime);
-                    isAppendOrPropel.set(true);
-                });
-
-        if (!isAppendOrPropel.get()) {
-            openPeriods.add(new OpenPeriod(code, startTime, endTime));
-        }
-    }
-
-    public boolean isPremuim() {
+    public boolean isPremium() {
         return "高端".equals(type);
     }
 
@@ -123,7 +59,7 @@ public class Counter implements Comparable<Counter> {
         return "D".equals(region);
     }
 
-    public boolean isDomesticAndInternational() {
+    public boolean isDomAndInt() {
         return "D/I".equals(region);
     }
 
@@ -139,17 +75,8 @@ public class Counter implements Comparable<Counter> {
         return type;
     }
 
-    public void clear() {
-        openPeriods.clear();
-    }
-
     @Override
     public int compareTo(Counter o) {
         return code.compareTo(o.code);
-    }
-
-    // todo-zz
-    public void open(LocalDateTime startTime) {
-
     }
 }

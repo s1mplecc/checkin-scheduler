@@ -15,8 +15,8 @@ public class StaffScheduler {
         List<Staff> premCheckInStaffs = filterByJob(staffs, "高端值机");
 
         counters.forEach(counter -> {
-            List<OpenPeriod> openPeriods = counter.openPeriodsAfterSplit();
-            if (counter.isPremuim()) {
+            List<OpenPeriod> openPeriods = counter.openPeriods();
+            if (counter.isPremium()) {
                 openPeriods.forEach(openPeriod -> openPeriod.assign(premCheckInStaffs));
             } else {
                 openPeriods.forEach(openPeriod -> openPeriod.assign(econCheckInStaffs));

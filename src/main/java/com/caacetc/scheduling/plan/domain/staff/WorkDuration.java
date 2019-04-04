@@ -3,9 +3,9 @@ package com.caacetc.scheduling.plan.domain.staff;
 import com.caacetc.scheduling.plan.domain.counter.OpenPeriod;
 import lombok.Getter;
 
-import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,20 +14,23 @@ import java.util.stream.Collectors;
  */
 public class WorkDuration {
     @Getter
-    private final Calendar onDuty;
+    private final LocalDateTime onDuty;
     @Getter
-    private final Calendar offDuty;
+    private final LocalDateTime offDuty;
     private final List<OpenPeriod> workPeriods;
 
-    public WorkDuration(Calendar onDuty) {
+    public WorkDuration(LocalDateTime onDuty) {
         this.onDuty = onDuty;
-        Calendar endTime = (Calendar) onDuty.clone();
-        endTime.add(Calendar.HOUR_OF_DAY, 8);
-        this.offDuty = endTime;
+        this.offDuty = onDuty.plusHours(8);
         this.workPeriods = new ArrayList<>();
     }
 
-    public List<OpenPeriod> getWorkPeriods() {
+    public LocalDateTime mondayThisWeek() {
+        int days = onDuty.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue();
+        return onDuty.minusDays(days);
+    }
+
+    public List<OpenPeriod> workPeriods() {
         return workPeriods.stream().sorted().collect(Collectors.toList());
     }
 
@@ -35,33 +38,11 @@ public class WorkDuration {
         workPeriods.add(workPeriod);
     }
 
-    public Calendar offDuty() {
+    public LocalDateTime offDuty() {
         return offDuty;
     }
 
-    public Calendar onDuty() {
+    public LocalDateTime onDuty() {
         return onDuty;
-    }
-
-    public Calendar mondayThisWeek() {
-        Calendar monday = (Calendar) onDuty.clone();
-        monday.setFirstDayOfWeek(Calendar.MONDAY);
-        int i = -monday.get(Calendar.DAY_OF_WEEK) + 2;
-        if (i == 1) {
-            monday.roll(Calendar.DAY_OF_WEEK, -6);
-        } else {
-            monday.roll(Calendar.DAY_OF_WEEK, i);
-        }
-        monday.set(Calendar.HOUR_OF_DAY, 0);
-        monday.set(Calendar.MINUTE, 0);
-        monday.set(Calendar.SECOND, 0);
-        return monday;
-    }
-
-    @Override
-    public String toString() {
-        return new SimpleDateFormat("MM-dd HH:mm").format(onDuty.getTime())
-                + " ~ " +
-                new SimpleDateFormat("MM-dd HH:mm").format(offDuty.getTime());
     }
 }
