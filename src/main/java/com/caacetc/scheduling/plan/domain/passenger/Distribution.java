@@ -26,16 +26,16 @@ public class Distribution {
 
     public int domEconomyCounters() {
         double v = dEconomyCabinNum * 0.95 * 0.91 * (0.26 + 0.74 * 0.25);
-        return (int) (v * 60 / 300);
+        return (int) Math.ceil(v * 60 / 300);
     }
 
     public int intEconomyCounters() {
         double v = iEconomyCabinNum * 0.95 * 0.55;
-        return (int) (v * 90 / 300);
+        return (int) Math.ceil(v * 90 / 300);
     }
 
     public int premiumCounters() {
-        return (int) (premiumCabinNum * 0.95 * 0.55 * 120 / 300);
+        return (int) Math.ceil(premiumCabinNum * 0.95 * 0.55 * 120 / 300);
     }
 
     public int premiumCabinNum() {

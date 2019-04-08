@@ -19,10 +19,10 @@ public class ScheduleRequest {
 
     private List<FlightRequest> flights;
     private List<StaffRequest> staffs;
-    private List<RuleRequest> rules;
+    private List<RuleRequest> rule;
 
     public List<RuleRequest> rules() {
-        return rules;
+        return rule;
     }
 
     /**
